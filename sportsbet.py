@@ -1,0 +1,31 @@
+from webscraper import WebScraper
+from selenium.webdriver.common.by import By
+
+class Sportsbet(WebScraper):
+    def __init__(self):
+        super().__init__()
+        self.source = "Sportsbet"
+        self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
+                        'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'Edward Gaming': 'EDG',
+                        'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
+                        '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
+                        'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
+                        'LOUD': 'LLL', 'JD Gaming': 'JDG'}
+
+    def scrape_data(self):
+        link = "https://www.sportsbet.com.au/betting/e-sports/lol-world-championship-play-in"
+        self.driver.get(link)
+        odds = [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
+        teams = [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size12_fq5j3k2 normal_fgzdi7m caption_f4zed5e']''')]
+
+        link = "https://www.sportsbet.com.au/betting/e-sports/lol-world-championship"
+        self.driver.get(link)
+        odds += [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
+        teams += [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size12_fq5j3k2 normal_fgzdi7m caption_f4zed5e']''')]
+
+        teams = [self.team_mapping[team] for team in teams]
+        self.data = [(teams[i], odds[i]) for i in range(len(teams))]
+
+if __name__ == "__main__":
+    scrape_obj = Sportsbet()
+    scrape_obj.write_to_csv()
