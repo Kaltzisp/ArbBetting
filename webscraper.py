@@ -5,7 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from webdriver_manager.chrome import ChromeDriverManager
 
 class WebScraper():
     def __init__(self):
@@ -16,7 +16,7 @@ class WebScraper():
         options = webdriver.ChromeOptions()
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
-        self.driver = webdriver.Chrome(options=options, executable_path=r'chromedriver.exe')
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
         self.driver.implicitly_wait(10)
 
     def game(self, x):
