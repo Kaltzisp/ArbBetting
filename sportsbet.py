@@ -10,7 +10,7 @@ class Sportsbet(WebScraper):
                         'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
                         '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
                         'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
-                        'LOUD': 'LLL', 'JD Gaming': 'JDG'}
+                        'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX': 'DRX', 'Evil Geniuses': 'EG'}
 
     def scrape_data(self):
         link = "https://www.sportsbet.com.au/betting/e-sports/lol-world-championship-play-in"

@@ -1,18 +1,36 @@
 import pandas as pd
 import numpy as np
 import os
+from sportsbet import Sportsbet
+from ladbrokes import Ladbrokes
+from picklebet import Picklebet
+
+scrape_obj = Sportsbet()
+scrape_obj.write_to_csv()
+
+scrape_obj = Ladbrokes()
+scrape_obj.write_to_csv()
+
+scrape_obj = Picklebet()
+scrape_obj.write_to_csv()
 
 file_list = os.listdir('data/')
 source_list = [file[:-4] for file in file_list]
 
 comb_df = pd.DataFrame()
 for i, file in enumerate(file_list):
+    file_df = pd.read_csv(f'data/{file}')
     if i == 0:
-        comb_df = pd.read_csv(f'data/{file}')
+        comb_df = file_df
     elif i == 1:
-        comb_df = comb_df.merge(pd.read_csv(f'data/{file}'), how="outer", on=["Team 1", "Team 2", "Game"], suffixes=[" " + comb_df["Source"].unique()[0], " " + file[:-4]])
+        comb_df = comb_df.merge(file_df, how="outer", on=["Team 1", "Team 2", "Game"], suffixes=(" " + comb_df["Source"].unique()[0], " " + file[:-4]))
     else:
-        comb_df = comb_df.merge(pd.read_csv(f'data/{file}'), how="outer", on=["Team 1", "Team 2", "Game"], suffixes=["", " " + file[:-4]])
+        file_df.columns = file_df.columns.map(lambda x: str(x) + f' {file[:-4]}' if (x not in ["Team 1", "Team 2", "Game"]) else x)
+        comb_df = comb_df.merge(file_df, how="outer", on=["Team 1", "Team 2", "Game"])
+
+for source in source_list:
+    comb_df[f"Odds 1 {source}"] = comb_df[f"Odds 1 {source}"].fillna(0)
+    comb_df[f"Odds 2 {source}"] = comb_df[f"Odds 2 {source}"].fillna(0)
 
 comb_df["Odds 1"] = np.maximum.reduce([comb_df[f"Odds 1 {source}"] for source in source_list])
 comb_df["Odds 2"] = np.maximum.reduce([comb_df[f"Odds 2 {source}"] for source in source_list])
