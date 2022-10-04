@@ -4,6 +4,8 @@ import os
 from sportsbet import Sportsbet
 from ladbrokes import Ladbrokes
 from picklebet import Picklebet
+from unibet import Unibet
+from neds import Neds
 
 scrape_obj = Sportsbet()
 scrape_obj.write_to_csv()
@@ -12,6 +14,12 @@ scrape_obj = Ladbrokes()
 scrape_obj.write_to_csv()
 
 scrape_obj = Picklebet()
+scrape_obj.write_to_csv()
+
+scrape_obj = Unibet()
+scrape_obj.write_to_csv()
+
+scrape_obj = Neds()
 scrape_obj.write_to_csv()
 
 file_list = os.listdir('data/')
