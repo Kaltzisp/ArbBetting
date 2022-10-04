@@ -18,6 +18,8 @@ class Sportsbet(WebScraper):
         self.driver.get(link)
         odds = [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
         teams = [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size12_fq5j3k2 normal_fgzdi7m caption_f4zed5e']''')]
+        odds = odds[:-1]
+        teams = teams[:-1]
 
         link = "https://www.sportsbet.com.au/betting/e-sports/lol-world-championship"
         self.driver.get(link)
