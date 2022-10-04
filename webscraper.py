@@ -1,3 +1,4 @@
+from abc import abstractmethod
 import time
 import pandas as pd
 from selenium import webdriver
@@ -22,7 +23,8 @@ class WebScraper():
     def game(self, x):
         sorted_teams = sorted([x["Team 1"], x["Team 2"]])
         return(f'{sorted_teams[0]} vs {sorted_teams[1]}')
-
+    
+    @abstractmethod
     def scrape_data(self):
         pass
 
