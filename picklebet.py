@@ -11,13 +11,12 @@ class Picklebet(WebScraper):
                 '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
                 'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
                 'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX':'DRX', 'Royal Never Give Up':'RNG',
-                'Evil Geniuses': 'EG'}
+                'Evil Geniuses': 'EG', 'Fnatic': 'FNC'}
 
     def scrape_data(self):
         link = "https://picklebet.com/?game=lol"
         self.driver.get(link)
-        self.driver.find_element(By.XPATH, '''//*[@id="gatsby-focus-wrapper"]/div[2]/div[2]/div/main/div[1]/div/div[2]/div[2]/div[2]/div[2]/div/button[1]/span''').click()
-        self.driver.find_element(By.XPATH, '''//*[@id="gatsby-focus-wrapper"]/div[2]/div[2]/div/main/div[1]/div/div[2]/div[2]/div[2]/div[2]/div/button[4]/span''').click()
+        self.driver.find_element(By.XPATH, '''//*[@id="gatsby-focus-wrapper"]/div[2]/div[2]/div/main/div[1]/div/div[2]/div[2]/div[2]/div[2]/div/button[2]/span''').click()
 
         odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
         teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]

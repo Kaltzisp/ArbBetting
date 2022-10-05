@@ -12,7 +12,7 @@ class Unibet(WebScraper):
                         '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
                         'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
                         'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX': 'DRX', 'Evil Geniuses': 'EG',
-                        'Royal Never Give Up': 'RNG'}
+                        'Royal Never Give Up': 'RNG', 'Fnatic': 'FNC'}
 
     def scrape_data(self):
         link = "https://www.unibet.com.au/betting/sports/filter/esports/league_of_legends/world_championship/all/matches"
