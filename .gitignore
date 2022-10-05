@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+.mypy_cache/
+
+# Environments
+env/
+
+# IDE
+*.code-workspace
+
+# OS
+.DS_Store
+
+# Logs
+/tmp
+
+# Datafiles
+data/
+.csv
