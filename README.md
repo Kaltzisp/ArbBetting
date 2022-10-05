@@ -5,7 +5,7 @@ Python based arbitrage finder for betting.
 ## Setup
 
 Create new conda environment:  
-`conda create --name your_env`
+`conda create --name your_env python`
 
 Install dependencies from environment.yml:  
 `conda activate your_env`  

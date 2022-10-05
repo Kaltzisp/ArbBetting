@@ -1,5 +1,6 @@
 dependencies:
 - matplotlib
 - pandas
-- selenium
-- webdriver_manager
+- pip:
+  - selenium
+  - webdriver_manager
