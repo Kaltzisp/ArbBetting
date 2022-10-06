@@ -51,6 +51,11 @@ for source in source_list:
 comb_df = comb_df[["Team 1", "Team 2", "Odds 1", "Odds 2", "Odds 1 Source", "Odds 2 Source", "Game"]]
 
 comb_df["Arbitrage %"] = 100*(comb_df["Odds 1"] * comb_df["Odds 2"])/(comb_df["Odds 1"] + comb_df["Odds 2"]) - 100
+comb_df["Team 1 Amount 1"] = (comb_df["Odds 2"] - 1) * comb_df["Odds 1"]
+comb_df["Team 1 Arbitrage %"] = 100 * (comb_df["Odds 1"] * comb_df["Team 1 Amount 1"] / (comb_df["Odds 1"] + comb_df["Team 1 Amount 1"])) - 100
+# comb_df["Team 2 Amount 1"] = 
+# comb_df["Team 2 Amount 2"] = 
+# comb_df["Team 2 Arbitrage %"] = 
 comb_df["Implied Probability"] = 1/comb_df["Odds 1"] + 1/comb_df["Odds 2"]
 
 comb_df.to_csv("comb.csv", index=False)
