@@ -1,26 +1,19 @@
 import pandas as pd
 import numpy as np
 import os
-from sportsbet import Sportsbet
-from ladbrokes import Ladbrokes
-from picklebet import Picklebet
-from unibet import Unibet
-from neds import Neds
+from os.path import dirname, basename, isfile, join
+import glob
 
-scrape_obj = Sportsbet()
-scrape_obj.write_to_csv()
-
-scrape_obj = Ladbrokes()
-scrape_obj.write_to_csv()
-
-scrape_obj = Picklebet()
-scrape_obj.write_to_csv()
-
-scrape_obj = Unibet()
-scrape_obj.write_to_csv()
-
-scrape_obj = Neds()
-scrape_obj.write_to_csv()
+modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
+website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
+for website in website_list:
+    if website != 'webscraper':
+        exec(f"from website.{website} import {website}")
+        exec(f"scrape_obj = {website}()")
+        try:
+            scrape_obj.write_to_csv()
+        except Exception as e:
+            print(website, e)
 
 file_list = os.listdir('data/')
 source_list = [file[:-4] for file in file_list]
@@ -52,10 +45,29 @@ comb_df = comb_df[["Team 1", "Team 2", "Odds 1", "Odds 2", "Odds 1 Source", "Odd
 
 comb_df["Arbitrage %"] = 100*(comb_df["Odds 1"] * comb_df["Odds 2"])/(comb_df["Odds 1"] + comb_df["Odds 2"]) - 100
 comb_df["Team 1 Amount 1"] = (comb_df["Odds 2"] - 1) * comb_df["Odds 1"]
-comb_df["Team 1 Arbitrage %"] = 100 * (comb_df["Odds 1"] * comb_df["Team 1 Amount 1"] / (comb_df["Odds 1"] + comb_df["Team 1 Amount 1"])) - 100
-# comb_df["Team 2 Amount 1"] = 
-# comb_df["Team 2 Amount 2"] = 
-# comb_df["Team 2 Arbitrage %"] = 
 comb_df["Implied Probability"] = 1/comb_df["Odds 1"] + 1/comb_df["Odds 2"]
 
 comb_df.to_csv("comb.csv", index=False)
+
+opp_df = comb_df[comb_df["Implied Probability"] < 1]
+arb_df = pd.DataFrame()
+
+for i in range(len(opp_df)):
+    row = opp_df.iloc[i]
+    for j in range(3):
+        sub_row = row[["Team 1", "Team 2", "Odds 1", "Odds 2", "Odds 1 Source", "Odds 2 Source", "Game"]].copy()
+        if j == 0:
+            sub_row["Amount 1"] = sub_row["Odds 2"]
+            sub_row["Amount 2"] = sub_row["Odds 1"]
+        elif j == 1:
+            sub_row["Amount 1"] = 1
+            sub_row["Amount 2"] = sub_row["Odds 1"]-1
+        elif j == 2:
+            sub_row["Amount 1"] = sub_row["Odds 2"]-1
+            sub_row["Amount 2"] = 1
+        arb_df = arb_df.append(sub_row)
+
+arb_df["Team 1 Win Return"] = 100*((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
+arb_df["Team 2 Win Return"] = 100*((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
+
+arb_df.to_csv("arb.csv", index=False)
