@@ -31,10 +31,10 @@ for i, file in enumerate(file_list):
     if i == 0:
         comb_df = file_df
     elif i == 1:
-        comb_df = comb_df.merge(file_df, how="outer", on=["Game"], suffixes=(" " + comb_df["Source"].unique()[0], " " + file[:-4]))
+        comb_df = comb_df.merge(file_df, how="outer", on=["Team 1", "Team 2", "Game"], suffixes=(" " + comb_df["Source"].unique()[0], " " + file[:-4]))
     else:
         file_df.columns = file_df.columns.map(lambda x: str(x) + f' {file[:-4]}' if (x not in ["Team 1", "Team 2", "Game"]) else x)
-        comb_df = comb_df.merge(file_df, how="outer", on=["Game"])
+        comb_df = comb_df.merge(file_df, how="outer", on=["Team 1", "Team 2", "Game"])
 
 for source in source_list:
     comb_df[f"Odds 1 {source}"] = comb_df[f"Odds 1 {source}"].fillna(0)
