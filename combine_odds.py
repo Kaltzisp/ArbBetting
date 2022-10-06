@@ -67,7 +67,7 @@ for i in range(len(opp_df)):
             sub_row["Amount 2"] = 1
         arb_df = arb_df.append(sub_row)
 
-arb_df["Team 1 Win Return"] = 100*((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
-arb_df["Team 2 Win Return"] = 100*((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
+arb_df["Team 1 Win Return %"] = 100*((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
+arb_df["Team 2 Win Return %"] = 100*((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
 
 arb_df.to_csv("arb.csv", index=False)
