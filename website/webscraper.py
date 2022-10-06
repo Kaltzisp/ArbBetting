@@ -14,11 +14,20 @@ class WebScraper():
         self.odds = []
         self.teams = []
         self.data = []
-        options = webdriver.ChromeOptions()
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option('useAutomationExtension', False)
-        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-        self.driver.implicitly_wait(10)
+        local = False
+        if local:
+            options = webdriver.ChromeOptions()
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option('useAutomationExtension', False)
+            self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+            self.driver.implicitly_wait(10)
+        else:   
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument('--headless')        #remove this for easy debbuing on your laptop /pc
+            chrome_options.add_argument('--no-sandbox')                             
+            chrome_options.add_argument('--disable-dev-shm-usage')
+            self.driver = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+            self.driver.implicitly_wait(10)
 
     def game(self, x):
         sorted_teams = sorted([x["Team 1"], x["Team 2"]])
