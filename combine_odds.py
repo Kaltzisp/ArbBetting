@@ -44,7 +44,6 @@ for source in source_list:
 comb_df = comb_df[["Team 1", "Team 2", "Odds 1", "Odds 2", "Odds 1 Source", "Odds 2 Source", "Game"]]
 
 comb_df["Arbitrage %"] = 100*(comb_df["Odds 1"] * comb_df["Odds 2"])/(comb_df["Odds 1"] + comb_df["Odds 2"]) - 100
-comb_df["Team 1 Amount 1"] = (comb_df["Odds 2"] - 1) * comb_df["Odds 1"]
 comb_df["Implied Probability"] = 1/comb_df["Odds 1"] + 1/comb_df["Odds 2"]
 
 comb_df.to_csv("comb.csv", index=False)
@@ -67,7 +66,8 @@ for i in range(len(opp_df)):
             sub_row["Amount 2"] = 1
         arb_df = arb_df.append(sub_row)
 
-arb_df["Team 1 Win Return %"] = 100*((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
-arb_df["Team 2 Win Return %"] = 100*((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
+if len(arb_df) > 0:
+    arb_df["Team 1 Win Return %"] = 100*((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
+    arb_df["Team 2 Win Return %"] = 100*((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
 
-arb_df.to_csv("arb.csv", index=False)
+    arb_df.to_csv("arb.csv", index=False)

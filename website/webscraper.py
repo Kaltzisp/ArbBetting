@@ -14,7 +14,7 @@ class WebScraper():
         self.odds = []
         self.teams = []
         self.data = []
-        local = False
+        local = True
         if local:
             options = webdriver.ChromeOptions()
             options.add_experimental_option("excludeSwitches", ["enable-automation"])
