@@ -3,6 +3,13 @@ import numpy as np
 import os
 from os.path import dirname, basename, isfile, join
 import glob
+import logging
+import datetime
+
+logger = logging.getLogger(__name__)
+f_handler = logging.FileHandler(f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log')
+f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger.addHandler(f_handler)
 
 modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
 website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
