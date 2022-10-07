@@ -1,0 +1,14 @@
+INFO:WDM:====== WebDriver manager ======
+INFO:WDM:Get LATEST chromedriver version for google-chrome 105.0.5195
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): chromedriver.storage.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://chromedriver.storage.googleapis.com:443 "GET /LATEST_RELEASE_105.0.5195 HTTP/1.1" 200 13
+INFO:WDM:Driver [C:\Users\Eric\.wdm\drivers\chromedriver\win32\105.0.5195\chromedriver.exe] found in cache
+DEBUG:selenium.webdriver.remote.remote_connection:POST http://localhost:58076/session {"capabilities": {"firstMatch": [{}], "alwaysMatch": {"browserName": "chrome", "pageLoadStrategy": "normal", "goog:chromeOptions": {"excludeSwitches": ["enable-automation"], "useAutomationExtension": false, "extensions": [], "args": []}}}}
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:58076
+DEBUG:urllib3.connectionpool:http://localhost:58076 "POST /session HTTP/1.1" 200 788
+DEBUG:selenium.webdriver.remote.remote_connection:Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"105.0.5195.127","chrome":{"chromedriverVersion":"105.0.5195.52 (412c95e518836d8a7d97250d62b29c2ae6a26a85-refs/branch-heads/5195@{#853})","userDataDir":"C:\\Users\\Eric\\AppData\\Local\\Temp\\scoped_dir1744_772905972"},"goog:chromeOptions":{"debuggerAddress":"localhost:58079"},"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"windows","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:virtualAuthenticators":true},"sessionId":"9bf2c426d4c95539b328688b94768551"}} | headers=HTTPHeaderDict({'Content-Length': '788', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+DEBUG:selenium.webdriver.remote.remote_connection:Finished Request
+DEBUG:selenium.webdriver.remote.remote_connection:POST http://localhost:58076/session/9bf2c426d4c95539b328688b94768551/timeouts {"implicit": 10000}
+DEBUG:urllib3.connectionpool:http://localhost:58076 "POST /session/9bf2c426d4c95539b328688b94768551/timeouts HTTP/1.1" 200 14
+DEBUG:selenium.webdriver.remote.remote_connection:Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+DEBUG:selenium.webdriver.remote.remote_connection:Finished Request

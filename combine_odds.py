@@ -3,13 +3,10 @@ import numpy as np
 import os
 from os.path import dirname, basename, isfile, join
 import glob
-import logging
 import datetime
 
-logger = logging.getLogger(__name__)
-f_handler = logging.FileHandler(f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log')
-f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger.addHandler(f_handler)
+import logging
+logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log', encoding='utf-8', level=logging.DEBUG)
 
 modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
 website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
@@ -18,9 +15,11 @@ for website in website_list:
         exec(f"from website.{website} import {website}")
         exec(f"scrape_obj = {website}()")
         try:
+            logging.info(f"Scraping data from {website}")
             scrape_obj.write_to_csv()
         except Exception as e:
-            print(website, e)
+            logging.info(f"Crash scraping data from {website}")
+            logging.info(e)
 
 file_list = os.listdir('data/')
 source_list = [file[:-4] for file in file_list]
