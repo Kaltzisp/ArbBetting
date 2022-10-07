@@ -23,25 +23,28 @@ To generate combined odds data:
 
 ## Git Help
 
-Creates your own branch from your current branch
+Creates your own branch from your current branch:
 
 `git branch name`
 
 
-Changes your current branch
+Changes your current branch:
 
 `git checkout name`
 
-Pulls changes from master into your own branch
+Pulls changes from master into your own branch:
 
 `git pull origin master`
 
-Push changes from local onto your branch
+Push changes from local onto your branch:
 
 `git add .`
 `git commit -m "message"`
 `git push`
 
-Gets all metadata changes from Git (new branch info)
+Gets all metadata changes from Git (new branch info):
 
 `git fetch`
+
+Look at current branch name and modified files
+`git status`
