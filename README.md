@@ -5,6 +5,7 @@ Python based arbitrage finder for betting.
 ## Setup
 
 Download and use VSCode and Anaconda:
+
 https://code.visualstudio.com/
 https://www.anaconda.com/products/distribution
 
