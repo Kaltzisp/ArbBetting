@@ -5,9 +5,7 @@ Python based arbitrage finder for betting.
 ## Setup
 
 Download and use VSCode and Anaconda:
-
 https://code.visualstudio.com/
-
 https://www.anaconda.com/products/distribution
 
 Create new conda environment:  
@@ -24,10 +22,12 @@ To generate combined odds data:
 ## Git Help
 
 Creates your own branch from your current branch
+
 `git branch name`
 
 
 Changes your current branch
+
 `git checkout name`
 
 
