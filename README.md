@@ -32,20 +32,15 @@ Changes your current branch
 
 `git checkout name`
 
-
 Pulls changes from master into your own branch
 
 `git pull origin master`
 
-
 Push changes from local onto your branch
 
 `git add .`
-
 `git commit -m "message"`
-
 `git push`
-
 
 Gets all metadata changes from Git (new branch info)
 
