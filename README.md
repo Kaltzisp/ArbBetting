@@ -4,6 +4,9 @@ Python based arbitrage finder for betting.
 
 ## Setup
 
+Download and use VSCode:
+https://code.visualstudio.com/
+
 Create new conda environment:  
 `conda create --name your_env python`
 
