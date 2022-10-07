@@ -39,7 +39,9 @@ Pulls changes from master into your own branch:
 Push changes from local onto your branch:
 
 `git add .`
+
 `git commit -m "message"`
+
 `git push`
 
 Gets all metadata changes from Git (new branch info):
