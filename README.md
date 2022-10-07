@@ -1,4 +1,4 @@
-# AlgoTrader
+# ArbBetting
 
 Python based arbitrage finder for betting.
 
