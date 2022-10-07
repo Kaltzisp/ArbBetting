@@ -12,7 +12,7 @@ env/
 .DS_Store
 
 # Logs
-/tmp
+logs/
 .log
 
 # Datafiles
