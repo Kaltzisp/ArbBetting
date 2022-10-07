@@ -17,6 +17,10 @@ Install dependencies from environment.yml:
 `conda activate your_env`  
 `conda env update --file environment.yml --prune`
 
+Create folders in directory
+`data`
+`logs`
+
 To generate combined odds data:  
 `python combine_odds.py`
 
