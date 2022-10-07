@@ -47,4 +47,5 @@ Gets all metadata changes from Git (new branch info):
 `git fetch`
 
 Look at current branch name and modified files
+
 `git status`
