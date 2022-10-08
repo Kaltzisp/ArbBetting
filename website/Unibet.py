@@ -18,15 +18,26 @@ class Unibet(WebScraper):
         link = "https://www.unibet.com.au/betting/sports/filter/esports/league_of_legends/world_championship/all/matches"
         self.driver.get(link)
         self.driver.find_element(By.XPATH, '''//*[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]''').click()
-        while True:
-            try:
-                odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''_8e013''')]
-                break
-            except:
-                time.sleep(3)
+        time.sleep(3)
+        odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''_8e013''')]
         teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''c539a''')]
-
         teams = [self.team_mapping[team] for team in teams]
+
+
+        link = "https://www.unibet.com.au/betting/sports/filter/ufc_mma/all/matches"
+        self.driver.get(link)
+        time.sleep(3)
+        odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''_8e013''')]
+        UFCUnibetteams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''c539a''')]
+
+        for team in UFCUnibetteams:
+            if ',' in team:
+                Name = team.split(", ")
+                Name = Name[1] + " " + Name[0]
+            else: 
+                Name = team
+            teams.append(Name)
+
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":

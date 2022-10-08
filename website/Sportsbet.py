@@ -20,6 +20,13 @@ class Sportsbet(WebScraper):
         teams = [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size12_fq5j3k2 normal_fgzdi7m caption_f4zed5e']''')]
 
         teams = [self.team_mapping[team] for team in teams]
+
+
+        link = "https://www.sportsbet.com.au/betting/ufc-mma"
+        self.driver.get(link)
+        odds += [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
+        teams += [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][4:]
+        
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":
