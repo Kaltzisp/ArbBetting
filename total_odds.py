@@ -31,38 +31,29 @@ if __name__ == "__main__":
 
     file_list = os.listdir('data/')
     source_list = [file[:-4] for file in file_list]
+    data_dict = {}
 
     comb_df = pd.DataFrame()
     for i, file in enumerate(file_list):
         file_df = pd.read_csv(f'data/{file}')
-        if i == 0:
-            comb_df = file_df
-        elif i == 1:
-            comb_df = comb_df.merge(file_df, how="outer", on=["Team 1", "Team 2", "Game"], suffixes=(" " + comb_df["Source"].unique()[0], " " + file[:-4]))
-        else:
-            file_df.columns = file_df.columns.map(lambda x: str(x) + f' {file[:-4]}' if (x not in ["Team 1", "Team 2", "Game"]) else x)
-            comb_df = comb_df.merge(file_df, how="outer", on=["Team 1", "Team 2", "Game"])
+        file_df['Source 1'] = file_df['Source']
+        file_df['Source 2'] = file_df['Source']
+        data_dict[file[:-4]] = file_df
 
-    for source in source_list:
-        comb_df[f"Odds 1 {source}"] = comb_df[f"Odds 1 {source}"].fillna(0)
-        comb_df[f"Odds 2 {source}"] = comb_df[f"Odds 2 {source}"].fillna(0)
+    total_df = pd.DataFrame()
+    for source_1 in data_dict:
+        for source_2 in data_dict:
+            df_1 = data_dict[source_1][['Team 1', 'Team 2', 'Odds 1', 'Game', 'Source 1']].copy()
+            df_2 = data_dict[source_1][['Team 1', 'Team 2', 'Odds 2', 'Game', 'Source 2']].copy()
+            total_df = total_df.append(df_1.merge(df_2, how="left", on=['Team 1', 'Team 2', 'Game']))
+    total_df.dropna(inplace=True)
 
-    comb_df["Odds 1"] = np.maximum.reduce([comb_df[f"Odds 1 {source}"] for source in source_list])
-    comb_df["Odds 2"] = np.maximum.reduce([comb_df[f"Odds 2 {source}"] for source in source_list])
-    comb_df["Odds 1 Source"] = np.nan
-    comb_df["Odds 2 Source"] = np.nan
-    for source in source_list:
-        comb_df.loc[comb_df['Odds 1'] == comb_df[f'Odds 1 {source}'], 'Odds 1 Source'] = source
-        comb_df.loc[comb_df['Odds 2'] == comb_df[f'Odds 2 {source}'], 'Odds 2 Source'] = source
+    total_df["Arbitrage %"] = 100*(total_df["Odds 1"] * total_df["Odds 2"])/(total_df["Odds 1"] + total_df["Odds 2"]) - 100
+    total_df["Implied Probability"] = 1/total_df["Odds 1"] + 1/total_df["Odds 2"]
 
-    comb_df = comb_df[["Team 1", "Team 2", "Odds 1", "Odds 2", "Odds 1 Source", "Odds 2 Source", "Game"]]
+    total_df.to_csv("comb.csv", index=False)
 
-    comb_df["Arbitrage %"] = 100*(comb_df["Odds 1"] * comb_df["Odds 2"])/(comb_df["Odds 1"] + comb_df["Odds 2"]) - 100
-    comb_df["Implied Probability"] = 1/comb_df["Odds 1"] + 1/comb_df["Odds 2"]
-
-    comb_df.to_csv("comb.csv", index=False)
-
-    opp_df = comb_df[comb_df["Implied Probability"] < 1]
+    opp_df = total_df[total_df["Implied Probability"] < 1]
     arb_df = pd.DataFrame()
 
     for i in range(len(opp_df)):
