@@ -22,6 +22,14 @@ class Playup(WebScraper):
         odds = re.findall('''<div>(\d+\.\d+)<\/div>''', self.driver.page_source)
         teams = re.findall('''pb-1 text-sm md:text-base">([\w\d\. ]*) <''', self.driver.page_source)
         teams = [self.team_mapping[team] for team in teams]
+
+
+        # link = "https://www.playup.com.au/betting/sports/mixed-martial-arts/ufc"
+        # self.driver.get(link)
+        # # use regex to obtain odds
+        # odds += re.findall('''<div>(\d+\.\d+)<\/div>''', self.driver.page_source)
+        # teams += re.findall('''pb-1 text-sm md:text-base">([\w\d\. ]*) <''', self.driver.page_source)
+
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":
