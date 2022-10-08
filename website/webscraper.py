@@ -25,7 +25,7 @@ class WebScraper():
             chrome_options.add_argument('--headless')        #remove this for easy debbuing on your laptop /pc
             chrome_options.add_argument('--no-sandbox')                             
             chrome_options.add_argument('--disable-dev-shm-usage')
-            self.driver = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+            self.driver = webdriver.Chrome('chromedriver',options=chrome_options)
             self.driver.implicitly_wait(10)
 
     def game(self, x):
