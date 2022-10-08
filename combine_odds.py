@@ -23,11 +23,14 @@ if __name__ == "__main__":
             exec(f"from website.{website} import {website}")
             exec(f"scrape_obj = {website}({local})")
             try:
+                sys.stdout(f"Scraping data from {website}"))
                 logging.info(f"Scraping data from {website}")
                 scrape_obj.write_to_csv()
             except Exception as e:
                 logging.info(f"Crash scraping data from {website}")
+                sys.stdout(f"Crash scraping data from {website}")
                 logging.info(e)
+                sys.stdout(e)
 
     file_list = os.listdir('data/')
     source_list = [file[:-4] for file in file_list]
