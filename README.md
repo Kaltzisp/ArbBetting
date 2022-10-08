@@ -55,3 +55,7 @@ Gets all metadata changes from Git (new branch info):
 Look at current branch name and modified files
 
 `git status`
+
+Deleted the branch (after you merge with a pull request)
+
+`git branch -D name`
