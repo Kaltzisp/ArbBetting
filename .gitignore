@@ -16,6 +16,6 @@ logs/
 .log
 
 # Datafiles
-.csv
+*.csv
 data/
 .csv
