@@ -28,7 +28,7 @@ if __name__ == "__main__":
             except Exception as e:
                 logging.info(f"Crash scraping data from {website}")
                 logging.info(e)
-
+    
     file_list = os.listdir('data/')
     source_list = [file[:-4] for file in file_list]
     data_dict = {}
