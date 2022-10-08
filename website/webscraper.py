@@ -20,7 +20,7 @@ class WebScraper():
             options.add_experimental_option('useAutomationExtension', False)
             self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
             self.driver.implicitly_wait(10)
-        else:   
+        else:
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument('--headless')        #remove this for easy debbuing on your laptop /pc
             chrome_options.add_argument('--no-sandbox')                             
