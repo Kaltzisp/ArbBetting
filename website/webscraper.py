@@ -9,12 +9,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
 class WebScraper():
-    def __init__(self):
+    def __init__(self, local):
         self.source = None
         self.odds = []
         self.teams = []
         self.data = []
-        local = True
         if local:
             options = webdriver.ChromeOptions()
             options.add_experimental_option("excludeSwitches", ["enable-automation"])

@@ -2,8 +2,8 @@ from website.webscraper import WebScraper
 from selenium.webdriver.common.by import By
 
 class Ladbrokes(WebScraper):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, local):
+        super().__init__(local)
         self.source = "Ladbrokes"
 
     def scrape_data(self):
