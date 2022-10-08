@@ -22,7 +22,7 @@ Create folders in directory
 `logs`
 
 To generate combined odds data:  
-`python combine_odds.py`
+`python total_odds.py`
 
 
 ## Git Help

@@ -44,7 +44,7 @@ if __name__ == "__main__":
     for source_1 in data_dict:
         for source_2 in data_dict:
             df_1 = data_dict[source_1][['Team 1', 'Team 2', 'Odds 1', 'Game', 'Source 1']].copy()
-            df_2 = data_dict[source_1][['Team 1', 'Team 2', 'Odds 2', 'Game', 'Source 2']].copy()
+            df_2 = data_dict[source_2][['Team 1', 'Team 2', 'Odds 2', 'Game', 'Source 2']].copy()
             total_df = total_df.append(df_1.merge(df_2, how="left", on=['Team 1', 'Team 2', 'Game']))
     total_df.dropna(inplace=True)
 
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     for i in range(len(opp_df)):
         row = opp_df.iloc[i]
         for j in range(3):
-            sub_row = row[["Team 1", "Team 2", "Odds 1", "Odds 2", "Odds 1 Source", "Odds 2 Source", "Game"]].copy()
+            sub_row = row[["Team 1", "Team 2", "Odds 1", "Odds 2", "Source 1", "Source 2", "Game"]].copy()
             if j == 0:
                 sub_row["Amount 1"] = sub_row["Odds 2"]
                 sub_row["Amount 2"] = sub_row["Odds 1"]
