@@ -23,5 +23,5 @@ class Ladbrokes(WebScraper):
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":
-    scrape_obj = Ladbrokes()
+    scrape_obj = Ladbrokes(True)
     scrape_obj.write_to_csv()
