@@ -42,6 +42,7 @@ class WebScraper():
 
     def write_to_csv(self):
         self.scrape_data()
+        assert(len(self.data) % 2 == 0)
         data_df = pd.DataFrame({"Team 1": [sorted(self.data[i:i+2])[0][0] for i in range(0, len(self.data), 2)],
                                 "Team 2": [sorted(self.data[i:i+2])[1][0] for i in range(0, len(self.data), 2)],
                                 "Odds 1": [sorted(self.data[i:i+2])[0][1] for i in range(0, len(self.data), 2)],
