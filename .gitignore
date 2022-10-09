@@ -19,4 +19,4 @@ logs/
 *.csv
 data/
 .csv
-.xlsx
+*.xlsx
