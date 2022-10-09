@@ -50,10 +50,11 @@ class WebScraper():
 
         data_df["Source"] = self.source
 
-        game_dict = {}
-        data_df["Game"] = data_df.apply(lambda x: self.game(x, game_dict), axis=1)
         data_df["Time"] = pd.to_datetime('now').tz_localize('Australia/Sydney')
         data_df.drop_duplicates(inplace=True)
+
+        game_dict = {}
+        data_df["Game"] = data_df.apply(lambda x: self.game(x, game_dict), axis=1)
 
         data_df.to_csv(f"data/{self.source}.csv", index=None)
         self.driver.close()
