@@ -34,7 +34,7 @@ if __name__ == "__main__":
                 logging.info(f"Crash scraping data from {website}")
                 logging.info(traceback.format_exc())
             logging.info(f"{website} finished in {time.time() - start} seconds")
-    
+
     file_list = os.listdir('data/')
     source_list = [file[:-4] for file in file_list]
     data_dict = {}
