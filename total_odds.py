@@ -4,8 +4,9 @@ import os
 from os.path import dirname, basename, isfile, join
 import glob
 import datetime
-
+import traceback
 import logging
+
 logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log', encoding='utf-8', level=logging.INFO)
 
 import sys
@@ -25,9 +26,10 @@ if __name__ == "__main__":
             try:
                 logging.info(f"Scraping data from {website}")
                 scrape_obj.write_to_csv()
+                logging.info(f"Succesfully scraped from {website}")
             except Exception as e:
                 logging.info(f"Crash scraping data from {website}")
-                logging.info(e)
+                logging.info(traceback.format_exc())
     
     file_list = os.listdir('data/')
     source_list = [file[:-4] for file in file_list]
