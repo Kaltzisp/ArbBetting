@@ -6,6 +6,7 @@ import glob
 import datetime
 import traceback
 import logging
+import math
 
 logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log', encoding='utf-8', level=logging.INFO)
 
@@ -63,14 +64,21 @@ if __name__ == "__main__":
         for j in range(3):
             sub_row = row[["Team 1", "Team 2", "Odds 1", "Odds 2", "Source 1", "Source 2", "Game", "Implied Probability"]].copy()
             if j == 0:
-                sub_row["Amount 1"] = sub_row["Odds 2"]
-                sub_row["Amount 2"] = sub_row["Odds 1"]
+                amount_1 = int(sub_row["Odds 2"]*100)
+                amount_2 = int(sub_row["Odds 1"]*100)
             elif j == 1:
-                sub_row["Amount 1"] = 1
-                sub_row["Amount 2"] = sub_row["Odds 1"]-1
+                amount_1 = 100
+                amount_2 = int((sub_row["Odds 1"]-1)*100)
             elif j == 2:
-                sub_row["Amount 1"] = sub_row["Odds 2"]-1
-                sub_row["Amount 2"] = 1
+                amount_1 = int((sub_row["Odds 2"]-1)*100)
+                amount_2 = 100
+            factor = math.gcd(amount_1, amount_2)
+            sub_row["Amount 1"] = amount_1//factor
+            sub_row["Amount 2"] = amount_2//factor
+            sub_row["Amount 1 Min"] = 1/sub_row["Odds 1"]
+            sub_row["Amount 1 Max"] = 1 - (1/sub_row["Odds 2"])
+            sub_row["Amount 2 Min"] = 1/sub_row["Odds 2"]
+            sub_row["Amount 2 Max"] = 1 - (1/sub_row["Odds 1"])
             arb_df = arb_df.append(sub_row)
 
     if len(arb_df) > 0:
