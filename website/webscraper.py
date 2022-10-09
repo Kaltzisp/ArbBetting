@@ -47,5 +47,6 @@ class WebScraper():
         data_df["Game"] = data_df.apply(lambda x: self.game(x), axis=1)
         data_df["Time"] = pd.to_datetime('now').tz_localize('Australia/Sydney')
         data_df.drop_duplicates(inplace=True)
-        data_df.to_csv(f"data/{self.source}.csv", index=None)
+        #data_df.to_csv(f"data/{self.source}.csv", index=None)
+        data_df.to_csv(f"{self.source}.csv", index=None)
         self.driver.close()
