@@ -59,7 +59,7 @@ if __name__ == "__main__":
     for i in range(len(opp_df)):
         row = opp_df.iloc[i]
         for j in range(3):
-            sub_row = row[["Team 1", "Team 2", "Odds 1", "Odds 2", "Source 1", "Source 2", "Game"]].copy()
+            sub_row = row[["Team 1", "Team 2", "Odds 1", "Odds 2", "Source 1", "Source 2", "Game", "Implied Probability"]].copy()
             if j == 0:
                 sub_row["Amount 1"] = sub_row["Odds 2"]
                 sub_row["Amount 2"] = sub_row["Odds 1"]
