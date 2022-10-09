@@ -33,7 +33,7 @@ class Unibet(WebScraper):
         for team in UFCUnibetteams:
             if ',' in team:
                 Name = team.split(", ")
-                Name = Name[1] + " " + Name[0]
+                Name = Name[0]
             else: 
                 Name = team
             teams.append(Name)

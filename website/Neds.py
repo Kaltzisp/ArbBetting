@@ -15,8 +15,8 @@ class Neds(WebScraper):
 
         link = "https://www.ladbrokes.com.au/sports/mma"
         self.driver.get(link)
-        odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
-        teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
+        odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
+        teams += [i.text.split(' ')[1] for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":

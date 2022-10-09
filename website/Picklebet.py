@@ -29,7 +29,7 @@ class Picklebet(WebScraper):
         MMAPickleteams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
         for team in MMAPickleteams:
             Name = team.split(", ")
-            Name = Name[1] + " " + Name[0] 
+            Name = Name[0]
             teams.append(Name)
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 

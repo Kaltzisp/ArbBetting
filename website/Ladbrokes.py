@@ -18,8 +18,8 @@ class Ladbrokes(WebScraper):
         odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
         UpperCaseteam = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
         for team in UpperCaseteam:
-                TeamName =  team.title()
-                teams.append(TeamName)
+                TeamName = team.title()
+                teams.append(TeamName.split(" ")[1])
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":
