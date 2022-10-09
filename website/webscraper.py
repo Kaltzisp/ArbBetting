@@ -28,9 +28,13 @@ class WebScraper():
             self.driver = webdriver.Chrome('chromedriver',options=chrome_options)
             self.driver.implicitly_wait(10)
 
-    def game(self, x):
+    def game(self, x, game_dict):
         sorted_teams = sorted([x["Team 1"], x["Team 2"]])
-        return(f'{sorted_teams[0]} vs {sorted_teams[1]}')
+        game_string = f'{sorted_teams[0]} vs {sorted_teams[1]}'
+        if game_string not in game_dict:
+            game_dict[game_string] = 0
+        game_dict[game_string] += 1
+        return(f'{sorted_teams[0]} vs {sorted_teams[1]} {game_dict[game_string]}')
     
     @abstractmethod
     def scrape_data(self):
@@ -44,8 +48,11 @@ class WebScraper():
                                 "Odds 2": [sorted(self.data[i:i+2])[1][1] for i in range(0, len(self.data), 2)]})
 
         data_df["Source"] = self.source
-        data_df["Game"] = data_df.apply(lambda x: self.game(x), axis=1)
+
+        game_dict = {}
+        data_df["Game"] = data_df.apply(lambda x: self.game(x, game_dict), axis=1)
         data_df["Time"] = pd.to_datetime('now').tz_localize('Australia/Sydney')
         data_df.drop_duplicates(inplace=True)
+
         data_df.to_csv(f"data/{self.source}.csv", index=None)
         self.driver.close()
