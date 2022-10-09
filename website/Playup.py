@@ -13,7 +13,7 @@ class Playup(WebScraper):
                         '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
                         'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
                         'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX': 'DRX', 'Evil Geniuses': 'EG',
-                        'Royal Never Give Up': 'RNG', 'Fnatic': 'FNC'}
+                        'Royal Never Give Up': 'RNG', 'Fnatic': 'FNC', 'GAM Sports' : 'GAM'}
 
     def scrape_data(self):
         link = "https://www.playup.com.au/betting/sports/esports/lol-world-champs"
