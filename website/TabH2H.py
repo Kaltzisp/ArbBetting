@@ -5,12 +5,12 @@ class TabH2H(WebScraper):
     def __init__(self, local):
         super().__init__(local)
         self.source = "TabH2H"
-        self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
+        self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2': 'G2',
                 'CTBC Flying Oyster': 'CFO', 'T1 Esports': 'T1', 'EDward Gaming': 'EDG',
-                'Top Esports': 'TES', 'DAMWON Gaming': 'DK', 'GAM Esports': 'GAM',
+                'Top Esports': 'TES', 'Dwg Kia': 'DK', 'GAM Esports': 'GAM',
                 '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
-                'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
-                'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX':'DRX', 'Royal Never Give Up':'RNG',
+                'Rogue': 'RGE', 'Gen.g': 'GEN', 'Saigon Buffalo': 'SGB',
+                'LOUD': 'LLL', 'Jd Gaming': 'JDG', 'Drx':'DRX', 'Royal Never Give Up':'RNG',
                 'Evil Geniuses': 'EG', 'Fnatic': 'FNC', 'Gam': 'GAM', 'Gen.g': 'GEN','Edward Gaming': 'EDG',
                 'Royal Never Give':'RNG', 'T1':'T1', 'Ctbc Flying Oyst': 'CFO'}
 
@@ -47,9 +47,9 @@ class TabH2H(WebScraper):
             Teamlist.append(Team2)
 
         for Name in Teamlist:
-            if Name[-1].Upper():
-                Team = Name[:-2]
-            teams.append(Team)
+            if Name[-1] == Name[-1].upper():
+                Name = Name[:-1]
+            teams.append(Name)
 
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 

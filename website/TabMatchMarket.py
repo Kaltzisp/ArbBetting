@@ -1,13 +1,13 @@
 from website.webscraper import WebScraper
 from selenium.webdriver.common.by import By
 
-class TabH2H(WebScraper):
+class TabMatchMarket(WebScraper):
     def __init__(self, local):
         super().__init__(local)
-        self.source = "Picklebet"
-        self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
-                'CTBC Flying Oyster': 'CFO', 'T1 Esports': 'T1', 'EDward Gaming': 'EDG',
-                'Top Esports': 'TES', 'DAMWON Gaming': 'DK', 'GAM Esports': 'GAM',
+        self.source = "TabMatchMarket"
+        self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2': 'G2',
+                'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'EDward Gaming': 'EDG',
+                'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM': 'GAM',
                 '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
                 'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
                 'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX':'DRX', 'Royal Never Give Up':'RNG',
@@ -19,10 +19,11 @@ class TabH2H(WebScraper):
         self.driver.get(link)
         self.driver.find_element(By.XPATH, '''//*[@id="correct_score"]/h3/div/span''').click()
         odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''animate-odd''')]
-        teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''match-name-text''')]
+        odds = odds[len(odds)//2:]
+        teams = [i.text[:-4] for i in self.driver.find_elements(By.CLASS_NAME, '''proposition-title''') if len(i.text) != 0]
         teams = [self.team_mapping[team] for team in teams]
+        self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":
-    scrape_obj = TabH2H(True)
+    scrape_obj = TabMatchMarket(True)
     scrape_obj.write_to_csv()
-
