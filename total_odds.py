@@ -7,6 +7,7 @@ import datetime
 import traceback
 import logging
 import math
+import time
 
 logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log', encoding='utf-8', level=logging.INFO)
 
@@ -21,6 +22,7 @@ if __name__ == "__main__":
     modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
     website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
     for website in website_list:
+        start = time.time()
         if website != 'webscraper':
             exec(f"from website.{website} import {website}")
             exec(f"scrape_obj = {website}({local})")
@@ -31,6 +33,7 @@ if __name__ == "__main__":
             except Exception as e:
                 logging.info(f"Crash scraping data from {website}")
                 logging.info(traceback.format_exc())
+            logging.info(f"{website} finished in {time.time() - start} seconds")
     
     file_list = os.listdir('data/')
     source_list = [file[:-4] for file in file_list]
