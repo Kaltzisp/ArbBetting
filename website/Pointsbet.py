@@ -7,7 +7,7 @@ class Pointsbet(WebScraper):
         self.source = "Pointsbet"
         self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
                 'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'Edward Gaming': 'EDG',
-                'Top Esports': 'TES', 'DAMWON Gaming': 'DK', 'GAM Esports': 'GAM',
+                'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
                 '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
                 'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
                 'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX':'DRX', 'Royal Never Give Up':'RNG',
