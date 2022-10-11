@@ -12,7 +12,6 @@ class Ladbrokes(WebScraper):
         odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
         teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
 
-
         link = "https://www.ladbrokes.com.au/sports/mma"
         self.driver.get(link)
         odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
@@ -20,5 +19,5 @@ class Ladbrokes(WebScraper):
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":
-    scrape_obj = Neds(True)
+    scrape_obj = Ladbrokes(True)
     scrape_obj.write_to_csv()
