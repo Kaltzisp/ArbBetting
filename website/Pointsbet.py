@@ -11,10 +11,17 @@ class Pointsbet(WebScraper):
                 '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
                 'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
                 'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX':'DRX', 'Royal Never Give Up':'RNG',
-                'Evil Geniuses': 'EG', 'Fnatic': 'FNC'}
+                'Evil Geniuses': 'EG', 'Fnatic': 'FNC', 'Team Liquid': 'Team Liquid', 'Virtus.Pro': 'VP', 'Team Secret': 'Secret', 
+                'Xtreme Gaming': 'Xtreme Gaming'}
 
     def scrape_data(self):
-        link = "https://pointsbet.com.au/sports/e-sports/[LoL]-World-Championship"
+        # link = "https://pointsbet.com.au/sports/e-sports/[LoL]-World-Championship"
+        # self.driver.get(link)
+        # odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
+        # teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
+        # teams = [self.team_mapping[team] for team in teams]
+
+        link = "https://pointsbet.com.au/sports/e-sports/[DOTA]-The-International"
         self.driver.get(link)
         odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
         teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]

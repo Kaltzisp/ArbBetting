@@ -11,7 +11,7 @@ class Picklebet(WebScraper):
                 '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
                 'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
                 'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX':'DRX', 'Royal Never Give Up':'RNG',
-                'Evil Geniuses': 'EG', 'Fnatic': 'FNC'}
+                'Evil Geniuses': 'EG', 'Fnatic': 'FNC', 'Team Secret': 'Secret', 'Virtus.Pro': 'VP'}
 
     def scrape_data(self):
         link = "https://picklebet.com/?game=lol"
@@ -23,8 +23,11 @@ class Picklebet(WebScraper):
         teams = [self.team_mapping[team] for team in teams]
 
 
-        link = "https://picklebet.com/en-au/sports/mma/betting?page=1&tab=next"
+        link = "https://picklebet.com/?game=lol,dota2&page=1&tab=next&tour=DOTA2%3AThe%20International%202022"
         self.driver.get(link)
+        odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
+        teams += [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
+        teams = [self.team_mapping[team] for team in teams]
 
         odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
         MMAPickleteams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]

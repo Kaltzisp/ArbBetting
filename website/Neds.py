@@ -12,6 +12,13 @@ class Neds(WebScraper):
         odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
         teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
 
+        link = "https://www.neds.com.au/sports/esports/dota-2-the-international"
+        self.driver.get(link)
+        odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
+        teams += [i.text.title() for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
+        for i, team in enumerate(teams):
+            if team == "Vp":
+                teams[i] = "VP"
 
         link = "https://www.neds.com.au/sports/mma"
         self.driver.get(link)
