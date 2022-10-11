@@ -19,21 +19,21 @@ if __name__ == "__main__":
     else:
         local = True
 
-    # modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
-    # website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
-    # for website in website_list:
-    #     start = time.time()
-    #     if website != 'webscraper':
-    #         exec(f"from website.{website} import {website}")
-    #         exec(f"scrape_obj = {website}({local})")
-    #         try:
-    #             logging.info(f"Scraping data from {website}")
-    #             scrape_obj.write_to_csv()
-    #             logging.info(f"Succesfully scraped from {website}")
-    #         except Exception as e:
-    #             logging.info(f"Crash scraping data from {website}")
-    #             logging.info(traceback.format_exc())
-    #         logging.info(f"{website} finished in {time.time() - start} seconds")
+    modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
+    website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
+    for website in website_list:
+        start = time.time()
+        if website != 'webscraper':
+            exec(f"from website.{website} import {website}")
+            exec(f"scrape_obj = {website}({local})")
+            try:
+                logging.info(f"Scraping data from {website}")
+                scrape_obj.write_to_csv()
+                logging.info(f"Succesfully scraped from {website}")
+            except Exception as e:
+                logging.info(f"Crash scraping data from {website}")
+                logging.info(traceback.format_exc())
+            logging.info(f"{website} finished in {time.time() - start} seconds")
 
     file_list = os.listdir('data/')
     source_list = [file[:-4] for file in file_list]
