@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 class Neds(WebScraper):
     def __init__(self, local):
         super().__init__(local)
-        self.source = "Ladbrokes"
+        self.source = "Neds"
 
     def scrape_data(self):
         link = "https://www.neds.com.au/sports/esports/lo-l-worlds"
