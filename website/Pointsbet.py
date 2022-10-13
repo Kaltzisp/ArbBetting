@@ -15,17 +15,17 @@ class Pointsbet(WebScraper):
                 'Xtreme Gaming': 'Xtreme Gaming'}
 
     def scrape_data(self):
-        # link = "https://pointsbet.com.au/sports/e-sports/[LoL]-World-Championship"
-        # self.driver.get(link)
-        # odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
-        # teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
-        # teams = [self.team_mapping[team] for team in teams]
-
-        link = "https://pointsbet.com.au/sports/e-sports/[DOTA]-The-International"
+        link = "https://pointsbet.com.au/sports/e-sports/[LoL]-World-Championship"
         self.driver.get(link)
         odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
         teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
         teams = [self.team_mapping[team] for team in teams]
+
+        # link = "https://pointsbet.com.au/sports/e-sports/[DOTA]-The-International"
+        # self.driver.get(link)
+        # odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
+        # teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
+        # teams = [self.team_mapping[team] for team in teams]
 
         link = "https://pointsbet.com.au/sports/mma/UFC"
         self.driver.get(link)

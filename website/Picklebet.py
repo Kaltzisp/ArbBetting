@@ -17,16 +17,8 @@ class Picklebet(WebScraper):
         link = "https://picklebet.com/?game=lol"
         self.driver.get(link)
 
-        self.driver.find_element(By.XPATH, '''//*[@id="gatsby-focus-wrapper"]/div[2]/div[2]/div/main/div[1]/div/div[2]/div[2]/div[2]/div[2]/div/button[2]/span''').click()
         odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
         teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
-        teams = [self.team_mapping[team] for team in teams]
-
-
-        link = "https://picklebet.com/?game=lol,dota2&page=1&tab=next&tour=DOTA2%3AThe%20International%202022"
-        self.driver.get(link)
-        odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
-        teams += [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
         teams = [self.team_mapping[team] for team in teams]
 
         odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
