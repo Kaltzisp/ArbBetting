@@ -17,16 +17,24 @@ class Picklebet(WebScraper):
         link = "https://picklebet.com/?game=lol"
         self.driver.get(link)
 
-        odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
+        odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
         teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
+
+        for i, odd in enumerate(odds):
+            if odd != '-':
+                break
+        odds = [float(j) for j in odds[i:]]
+        teams = teams[i:]
         teams = [self.team_mapping[team] for team in teams]
 
-        odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
+        link = "https://picklebet.com/sports/mma/betting?page=1&tab=next"
+        self.driver.get(link)
         MMAPickleteams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
         for team in MMAPickleteams:
             Name = team.split(", ")
             Name = Name[0]
             teams.append(Name)
+        odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":

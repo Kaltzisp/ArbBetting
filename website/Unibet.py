@@ -21,6 +21,9 @@ class Unibet(WebScraper):
         time.sleep(3)
         odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''_8e013''')]
         teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''c539a''')]
+        if len(teams)-4 == len(odds):
+            teams = teams[2:]
+            teams = teams[:4] + teams[6:]
         teams = [self.team_mapping[team] for team in teams]
 
 
