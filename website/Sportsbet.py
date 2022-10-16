@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 class Sportsbet(WebScraper):
     def __init__(self, local):
         super().__init__(local)
-        self.source = "Sportsbet"
         self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
                         'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'Edward Gaming': 'EDG',
                         'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
