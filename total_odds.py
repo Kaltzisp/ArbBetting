@@ -90,7 +90,7 @@ if __name__ == "__main__":
     if len(arb_df) > 0: 
         arb_df["Team 1 Win Return %"] = 100*((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
         arb_df["Team 2 Win Return %"] = 100*((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
-    arb_df.sort_values(by="Implied Probability", inplace=True)
+        arb_df.sort_values(by="Implied Probability", inplace=True)
     arb_df.to_csv("arb.csv", index=False)
 
     opp_df = total_df[((total_df["Source 1"] == hedge_source) | (total_df["Source 2"] == hedge_source)) & (total_df["Source 1"] != total_df["Source 2"])].copy()
@@ -100,5 +100,5 @@ if __name__ == "__main__":
         sub_df["Hedge Amount"] = ((sub_df[f"Odds {i+1}"] - 1)*hedge_bonus + sub_df[f"Odds {i+1}"] * hedge_amount)/ sub_df[f"Odds {(i+3)%2+1}"]
         sub_df["Payout"] = sub_df[f"Odds {i + 1}"] * hedge_amount + (sub_df[f"Odds {i+1}"] - 1) * hedge_bonus - sub_df["Hedge Amount"] - hedge_amount
         hedge_df = hedge_df.append(sub_df)
-    hedge_df.sort_values(by="Payout")
+    hedge_df.sort_values(by="Payout", ascending=False, inplace=True)
     hedge_df.to_csv("hedge.csv", index=False)

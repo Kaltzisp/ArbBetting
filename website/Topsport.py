@@ -16,7 +16,7 @@ class Topsport(WebScraper):
     def scrape_data(self):
         link = "https://www.topsport.com.au/Sport/Esports/League_of_Legends_-_Worlds_2022/Matches"
         self.driver.get(link)
-        odds = [float(i) for i in re.findall('''<div>(\d+\.\d+)<\/div>''', self.driver.page_source)][:24]
+        odds = [float(i) for i in re.findall('''<div>(\d+\.\d+)<\/div>''', self.driver.page_source)][:12]
         
         teams = [i for i in re.findall('''\\t([\w\. \d]+)\\n''', self.driver.page_source) if i != 'else'][:len(odds)]
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
