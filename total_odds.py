@@ -14,11 +14,6 @@ logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d 
 import sys
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        local = bool(sys.argv[1])
-    else:
-        local = True
-
     hedge_source = "Ladbrokes"
     hedge_amount = 250
     hedge_bonus = 250
@@ -29,7 +24,7 @@ if __name__ == "__main__":
         start = time.time()
         if website != 'webscraper':
             exec(f"from website.{website} import {website}")
-            exec(f"scrape_obj = {website}({local})")
+            exec(f"scrape_obj = {website}()")
             try:
                 logging.info(f"Scraping data from {website}")
                 scrape_obj.write_to_csv()

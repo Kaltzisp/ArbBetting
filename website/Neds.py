@@ -2,8 +2,8 @@ from website.webscraper import WebScraper
 from selenium.webdriver.common.by import By
 
 class Neds(WebScraper):
-    def __init__(self, local):
-        super().__init__(local)
+    def __init__(self):
+        super().__init__()
 
     def scrape_data(self):
         link = "https://www.neds.com.au/sports/esports/lo-l-worlds"
@@ -21,5 +21,5 @@ class Neds(WebScraper):
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":
-    scrape_obj = Neds(True)
+    scrape_obj = Neds()
     scrape_obj.write_to_csv()

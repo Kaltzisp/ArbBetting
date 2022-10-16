@@ -9,24 +9,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
 class WebScraper():
-    def __init__(self, local):
+    def __init__(self):
         self.source = self.__class__.__name__
         self.odds = []
         self.teams = []
         self.data = []
-        if local:
-            options = webdriver.ChromeOptions()
-            options.add_experimental_option("excludeSwitches", ["enable-automation"])
-            options.add_experimental_option('useAutomationExtension', False)
-            self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-            self.driver.implicitly_wait(10)
-        else:
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('--headless')        #remove this for easy debbuing on your laptop /pc
-            chrome_options.add_argument('--no-sandbox')                             
-            chrome_options.add_argument('--disable-dev-shm-usage')
-            self.driver = webdriver.Chrome('chromedriver',options=chrome_options)
-            self.driver.implicitly_wait(10)
+        options = webdriver.ChromeOptions()
+        options.add_argument("--window-size=1024,768")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        self.driver.implicitly_wait(10)
 
     def game(self, x, game_dict):
         sorted_teams = sorted([x["Team 1"], x["Team 2"]])

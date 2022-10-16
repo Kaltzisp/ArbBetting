@@ -2,8 +2,8 @@ from website.webscraper import WebScraper
 from selenium.webdriver.common.by import By
 
 class Pointsbet(WebScraper):
-    def __init__(self, local):
-        super().__init__(local)
+    def __init__(self):
+        super().__init__()
         self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
                 'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'Edward Gaming': 'EDG',
                 'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
@@ -34,5 +34,5 @@ class Pointsbet(WebScraper):
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
 
 if __name__ == "__main__":
-    scrape_obj = Pointsbet(True)
+    scrape_obj = Pointsbet()
     scrape_obj.write_to_csv()
