@@ -19,9 +19,9 @@ if __name__ == "__main__":
     else:
         local = True
 
-    hedge_source = "Sportsbet"
-    hedge_amount = 0
-    hedge_bonus = 100
+    hedge_source = "Ladbrokes"
+    hedge_amount = 250
+    hedge_bonus = 250
 
     modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
     website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
