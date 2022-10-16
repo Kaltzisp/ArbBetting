@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     total_df["Arbitrage %"] = 100*(total_df["Odds 1"] * total_df["Odds 2"])/(total_df["Odds 1"] + total_df["Odds 2"]) - 100
     total_df["Implied Probability"] = 1/total_df["Odds 1"] + 1/total_df["Odds 2"]
-
+    total_df.sort_values(by='Implied Probability', inplace=True)
     total_df.to_csv("comb.csv", index=False)
 
     opp_df = total_df[total_df["Implied Probability"] < 1]
