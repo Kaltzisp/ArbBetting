@@ -10,7 +10,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 class WebScraper():
     def __init__(self, local):
-        self.source = None
+        self.source = self.__class__.__name__
         self.odds = []
         self.teams = []
         self.data = []

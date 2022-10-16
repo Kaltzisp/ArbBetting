@@ -19,6 +19,10 @@ if __name__ == "__main__":
     else:
         local = True
 
+    hedge_source = "Sportsbet"
+    hedge_amount = 0
+    hedge_bonus = 100
+
     modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
     website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
     for website in website_list:
@@ -39,7 +43,6 @@ if __name__ == "__main__":
     source_list = [file[:-4] for file in file_list]
     data_dict = {}
 
-    comb_df = pd.DataFrame()
     for i, file in enumerate(file_list):
         file_df = pd.read_csv(f'data/{file}')
         file_df['Source 1'] = file_df['Source']
@@ -84,8 +87,18 @@ if __name__ == "__main__":
             sub_row["Amount 2 Max"] = 1 - (1/sub_row["Odds 1"])
             arb_df = arb_df.append(sub_row)
 
-    if len(arb_df) > 0:
+    if len(arb_df) > 0: 
         arb_df["Team 1 Win Return %"] = 100*((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
         arb_df["Team 2 Win Return %"] = 100*((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
-
+    arb_df.sort_values(by="Implied Probability", inplace=True)
     arb_df.to_csv("arb.csv", index=False)
+
+    opp_df = total_df[((total_df["Source 1"] == hedge_source) | (total_df["Source 2"] == hedge_source)) & (total_df["Source 1"] != total_df["Source 2"])].copy()
+    hedge_df = pd.DataFrame()
+    for i in range(2):
+        sub_df = opp_df[opp_df[f"Source {i + 1}"] == hedge_source].copy()
+        sub_df["Hedge Amount"] = ((sub_df[f"Odds {i+1}"] - 1)*hedge_bonus + sub_df[f"Odds {i+1}"] * hedge_amount)/ sub_df[f"Odds {(i+3)%2+1}"]
+        sub_df["Payout"] = sub_df[f"Odds {i + 1}"] * hedge_amount + (sub_df[f"Odds {i+1}"] - 1) * hedge_bonus - sub_df["Hedge Amount"] - hedge_amount
+        hedge_df = hedge_df.append(sub_df)
+    hedge_df.sort_values(by="Payout")
+    hedge_df.to_csv("hedge.csv", index=False)

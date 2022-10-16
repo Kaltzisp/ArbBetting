@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 class TabH2H(WebScraper):
     def __init__(self, local):
         super().__init__(local)
-        self.source = "TabH2H"
         self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2': 'G2',
                 'CTBC Flying Oyster': 'CFO', 'T1 Esports': 'T1', 'EDward Gaming': 'EDG',
                 'Top Esports': 'TES', 'Dwg Kia': 'DK', 'GAM Esports': 'GAM',
