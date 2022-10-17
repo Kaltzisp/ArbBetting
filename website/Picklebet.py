@@ -1,6 +1,7 @@
 from website.webscraper import WebScraper
 from selenium.webdriver.common.by import By
-
+import logging
+import traceback
 class Picklebet(WebScraper):
     def __init__(self):
         super().__init__()
@@ -13,27 +14,51 @@ class Picklebet(WebScraper):
                 'Evil Geniuses': 'EG', 'Fnatic': 'FNC', 'Team Secret': 'Secret', 'Virtus.Pro': 'VP'}
 
     def scrape_data(self):
-        link = "https://picklebet.com/?game=lol"
-        self.driver.get(link)
-        odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
-        teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
+        total_odds = []
+        total_teams = []
 
-        for i, odd in enumerate(odds):
-            if odd != '-':
-                break
-        odds = [float(j) for j in odds[i:]]
-        teams = teams[i:]
-        teams = [self.team_mapping[team] for team in teams]
+        try:
+            link = "https://picklebet.com/?game=lol"
+            self.driver.get(link)
+            self.driver.find_element(By.XPATH, '''//*[@id="gatsby-focus-wrapper"]/div[2]/div[2]/div/main/div[1]/div/div[2]/div[2]/div[2]/div[2]/div/button[2]/span''').click()
+            odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
 
-        link = "https://picklebet.com/sports/mma/betting?page=1&tab=next"
-        self.driver.get(link)
-        MMAPickleteams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
-        for team in MMAPickleteams:
-            Name = team.split(", ")
-            Name = Name[0]
-            teams.append(Name)
-        odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
-        self.data = [(teams[i], odds[i]) for i in range(len(teams))]
+            for i, odd in enumerate(odds):
+                if odd != '-':
+                    break
+            odds = [float(j) for j in odds[i:]]
+            teams = teams[i:]
+            teams = [self.team_mapping[team] for team in teams]
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('League of Legends import failed')
+        total_odds += odds
+        total_teams += teams
+
+        try:
+            link = "https://picklebet.com/sports/mma/betting?page=1&tab=next"
+            self.driver.get(link)
+            MMAPickleteams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
+            teams = []
+            for team in MMAPickleteams:
+                Name = team.split(", ")
+                Name = Name[0]
+                teams.append(Name)
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('UFC import failed')
+        total_odds += odds
+        total_teams += teams
+
+        self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
 
 if __name__ == "__main__":
     scrape_obj = Picklebet()

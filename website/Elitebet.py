@@ -25,6 +25,7 @@ class Elitebet(WebScraper):
             odds = [float(i) for i in re.findall('''css-147k6hk">&nbsp;<span>([\d\.]*)<''', self.driver.page_source)]
             teams = re.findall('''MuiTypography-root MuiTypography-body1 MuiTypography-alignCenter MuiTypography-noWrap css-1pex9yp">([\w\d\. ]*)<''', self.driver.page_source)
             teams = [self.team_mapping[team] for team in teams]
+            assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
             teams = []
@@ -40,7 +41,7 @@ class Elitebet(WebScraper):
             odds = [float(i) for i in re.findall('''css-147k6hk">&nbsp;<span>([\d\.]*)<''', self.driver.page_source)]
             teams = re.findall('''MuiTypography-root MuiTypography-body1 MuiTypography-alignCenter MuiTypography-noWrap css-1pex9yp">([\w\d\. ]*)<''', self.driver.page_source)
             teams = [team.split(' ')[-1] for team in teams]
-            assert(odds)
+            assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
             teams = []
