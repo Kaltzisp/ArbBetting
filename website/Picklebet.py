@@ -20,7 +20,6 @@ class Picklebet(WebScraper):
         try:
             link = "https://picklebet.com/?game=lol"
             self.driver.get(link)
-            self.driver.find_element(By.XPATH, '''//*[@id="gatsby-focus-wrapper"]/div[2]/div[2]/div/main/div[1]/div/div[2]/div[2]/div[2]/div[2]/div/button[2]/span''').click()
             odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
             teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
 
@@ -36,25 +35,6 @@ class Picklebet(WebScraper):
             teams = []
             logging.info(traceback.format_exc())
             logging.info('League of Legends import failed')
-        total_odds += odds
-        total_teams += teams
-
-        try:
-            link = "https://picklebet.com/sports/mma/betting?page=1&tab=next"
-            self.driver.get(link)
-            MMAPickleteams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
-            teams = []
-            for team in MMAPickleteams:
-                Name = team.split(", ")
-                Name = Name[0]
-                teams.append(Name)
-            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.info(traceback.format_exc())
-            logging.info('UFC import failed')
         total_odds += odds
         total_teams += teams
 
