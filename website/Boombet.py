@@ -1,7 +1,8 @@
 from website.webscraper import WebScraper
 from selenium.webdriver.common.by import By
 import re
-
+import logging
+import traceback
 class Boombet(WebScraper):
     def __init__(self):
         super().__init__()
@@ -14,12 +15,37 @@ class Boombet(WebScraper):
                         'Royal Never Give Up': 'RNG', 'Fnatic': 'FNC', 'GAM Sports' : 'GAM'}
 
     def scrape_data(self):
-        link = '''https://www.boombet.com.au/sport-menu/Sport/Esports/League%20of%20Legends'''
-        self.driver.get(link)
-        odds = [float(i) for i in re.findall('''oddsValue d-block d-md-flex">([\d\.]*)<''', self.driver.page_source)]
-        teams = re.findall('''teamName d-block d-md-flex pb-1">([\w\d\. ]*)<''', self.driver.page_source)
-        teams = [self.team_mapping[team] for team in teams]
-        self.data = [(teams[i], odds[i]) for i in range(len(teams))]
+        total_odds = []
+        total_teams = []
+        try:
+            link = '''https://www.boombet.com.au/sport-menu/Sport/Esports/League%20of%20Legends'''
+            self.driver.get(link)
+            odds = [float(i) for i in re.findall('''oddsValue d-block d-md-flex">([\d\.]*)<''', self.driver.page_source)]
+            teams = re.findall('''teamName d-block d-md-flex pb-1">([\w\d\. ]*)<''', self.driver.page_source)
+            teams = [self.team_mapping[team] for team in teams]
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('League of Legends import failed')
+        total_odds += odds
+        total_teams += teams
+
+        try:
+            link = '''https://www.boombet.com.au/sport-menu/Sport/Mixed%20Martial%20Arts/UFC'''
+            self.driver.get(link)
+            odds = [float(i) for i in re.findall('''oddsValue d-block d-md-flex">([\d\.]*)<''', self.driver.page_source)]
+            teams = re.findall('''teamName d-block d-md-flex pb-1">([\w\d\.\-' ]*)<''', self.driver.page_source)
+            teams = [team.split(' ')[-1] for team in teams]
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('UFC import failed')
+        total_odds += odds
+        total_teams += teams
+
+        self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
 
 if __name__ == "__main__":
     scrape_obj = Boombet()
