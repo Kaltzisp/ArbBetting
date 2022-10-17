@@ -15,6 +15,7 @@ class Ladbrokes(WebScraper):
             self.driver.get(link)
             odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
             teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
+            assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
             teams = []
@@ -26,14 +27,14 @@ class Ladbrokes(WebScraper):
         try:
             link = "https://www.ladbrokes.com.au/sports/mma"
             self.driver.get(link)
-            odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
-            teams += [i.text.split(' ')[1] for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
-            self.data = [(teams[i], odds[i]) for i in range(len(teams))]
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
+            teams = [i.text.split(' ')[1] for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
+            assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
             teams = []
             logging.info(traceback.format_exc())
-            logging.info('League of Legends import failed')
+            logging.info('UFC import failed')
         total_odds += odds
         total_teams += teams
 

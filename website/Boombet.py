@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 import re
 import logging
 import traceback
+import time
 class Boombet(WebScraper):
     def __init__(self):
         super().__init__()
@@ -20,9 +21,11 @@ class Boombet(WebScraper):
         try:
             link = '''https://www.boombet.com.au/sport-menu/Sport/Esports/League%20of%20Legends'''
             self.driver.get(link)
+            time.sleep(1)
             odds = [float(i) for i in re.findall('''oddsValue d-block d-md-flex">([\d\.]*)<''', self.driver.page_source)]
             teams = re.findall('''teamName d-block d-md-flex pb-1">([\w\d\. ]*)<''', self.driver.page_source)
             teams = [self.team_mapping[team] for team in teams]
+            assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
             teams = []
@@ -34,9 +37,11 @@ class Boombet(WebScraper):
         try:
             link = '''https://www.boombet.com.au/sport-menu/Sport/Mixed%20Martial%20Arts/UFC'''
             self.driver.get(link)
+            time.sleep(1)
             odds = [float(i) for i in re.findall('''oddsValue d-block d-md-flex">([\d\.]*)<''', self.driver.page_source)]
             teams = re.findall('''teamName d-block d-md-flex pb-1">([\w\d\.\-' ]*)<''', self.driver.page_source)
             teams = [team.split(' ')[-1] for team in teams]
+            assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
             teams = []

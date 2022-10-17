@@ -1,6 +1,7 @@
 from website.webscraper import WebScraper
 from selenium.webdriver.common.by import By
-
+import logging
+import traceback
 class Pointsbet(WebScraper):
     def __init__(self):
         super().__init__()
@@ -14,24 +15,45 @@ class Pointsbet(WebScraper):
                 'Xtreme Gaming': 'Xtreme Gaming'}
 
     def scrape_data(self):
-        link = "https://pointsbet.com.au/sports/e-sports/[LoL]-World-Championship"
-        self.driver.get(link)
-        odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
-        teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
-        teams = [self.team_mapping[team] for team in teams]
+        total_odds = []
+        total_teams = []
+
+        try:
+            link = "https://pointsbet.com.au/sports/e-sports/[LoL]-World-Championship"
+            self.driver.get(link)
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
+            teams = [self.team_mapping[team] for team in teams]
+            assert(len(teams) == len(odds))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('League of Legends import failed')
+        total_odds += odds
+        total_teams += teams
 
         # link = "https://pointsbet.com.au/sports/e-sports/[DOTA]-The-International"
         # self.driver.get(link)
         # odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
         # teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
         # teams = [self.team_mapping[team] for team in teams]
+        try:
+            link = "https://pointsbet.com.au/sports/mma/UFC"
+            self.driver.get(link)
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
+            ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
+            teams = [name.split( )[1] for name in ufc_names]
+            assert(len(teams) == len(odds))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('UFC import failed')
+        total_odds += odds
+        total_teams += teams
 
-        link = "https://pointsbet.com.au/sports/mma/UFC"
-        self.driver.get(link)
-        odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
-        ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
-        teams += [name.split( )[1] for name in ufc_names]
-        self.data = [(teams[i], odds[i]) for i in range(len(teams))]
+        self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
 
 if __name__ == "__main__":
     scrape_obj = Pointsbet()
