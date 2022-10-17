@@ -45,7 +45,7 @@ class Elitebet(WebScraper):
             odds = []
             teams = []
             logging.info(traceback.format_exc())
-            logging.info('League of Legends import failed')
+            logging.info('UFC import failed')
         total_odds += odds
         total_teams += teams
 
