@@ -58,6 +58,39 @@ class Picklebet(WebScraper):
         total_odds += odds
         total_teams += teams
 
+        try:
+            link = "https://picklebet.com/sports/mma/betting?page=1&tab=next"
+            self.driver.get(link)
+            MMAPickleteams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
+            teams = []
+            for team in MMAPickleteams:
+                Name = team.split(", ")
+                Name = Name[0]
+                teams.append(Name)
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('UFC import failed')
+        total_odds += odds
+        total_teams += teams
+
+        try:
+            link = "https://picklebet.com/sports/basketball/betting?page=1&tab=next&tour=BASKETBALL%3ANBA"
+            self.driver.get(link)
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('NBA import failed')
+        total_odds += odds
+        total_teams += teams
+
         self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
 
 if __name__ == "__main__":

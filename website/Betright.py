@@ -49,6 +49,20 @@ class Betright(WebScraper):
         total_odds += odds
         total_teams += teams
 
+        try:    
+            link = '''https://www.betright.com.au/sports/Basketball/United-States-of-America/NBA/54'''
+            self.driver.get(link)
+            time.sleep(1)
+            odds = [float(i) for i in re.findall('''place-bet__odds ng-binding">([\d\.]*)<''', self.driver.page_source)]
+            teams = [team for team in re.findall('''zeta  headline-wrap ng-binding">([\w\d\.\-' ]*)<''', self.driver.page_source)]
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('NBA import failed')
+        total_odds += odds
+        total_teams += teams
         # n_game_elements = len([i for i in self.driver.find_elements(By.CLASS_NAME, "ng-binding") if " v " in i.text])
         # for idx in range(n_game_elements):
         #     time.sleep(1)

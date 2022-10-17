@@ -69,6 +69,27 @@ class Palmerbet(WebScraper):
         total_odds += odds
         total_teams += teams
 
+        try:
+            link = '''https://www.palmerbet.com/sports/basketball/NBA/b26e5acc-02ff-4b22-ae69-0491fbd2500e'''
+            self.driver.get(link)
+            while True:
+                time.sleep(3)
+                try:
+                    odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''ng-star-inserted''') if self.is_float(i.text)]
+                    break
+                except:
+                    pass
+            odds = odds[::3]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''team-name''')]
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('NBA import failed')
+        total_odds += odds
+        total_teams += teams
+
         self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
 
 if __name__ == "__main__":

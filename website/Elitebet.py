@@ -35,6 +35,21 @@ class Elitebet(WebScraper):
         total_teams += teams
 
         try:
+            link = '''https://www.elitebet.com.au/sports/Basketball/NBA/BASK'''
+            self.driver.get(link)
+            time.sleep(3)
+            odds = [float(i) for i in re.findall('''css-147k6hk">&nbsp;<span>([\d\.]*)<''', self.driver.page_source)]
+            teams = re.findall('''MuiTypography-root MuiTypography-body1 MuiTypography-alignCenter MuiTypography-noWrap css-1pex9yp">([\w\d\. ]*)<''', self.driver.page_source)
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('NBA import failed')
+        total_odds += odds
+        total_teams += teams
+
+        try:
             link = '''https://www.elitebet.com.au/sports/Mixed_Martial_Arts/UFC_280/MMA'''
             self.driver.get(link)
             time.sleep(3)

@@ -15,7 +15,7 @@ class WebScraper():
         self.teams = []
         self.data = []
         options = webdriver.ChromeOptions()
-        options.add_argument("--window-size=1024,768")
+        options.add_argument("--window-size=400,1080")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)

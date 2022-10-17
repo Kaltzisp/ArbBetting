@@ -35,14 +35,28 @@ class Sportsbet(WebScraper):
             link = "https://www.sportsbet.com.au/betting/ufc-mma"
             self.driver.get(link)
             odds =[float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
-            ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][4:]
+            ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][2:]
             teams = [name.split(' ')[1] for name in ufc_names]
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
             teams = []
             logging.info(traceback.format_exc())
-            logging.info('League of Legends import failed')
+            logging.info('UFC import failed')
+        total_odds += odds
+        total_teams += teams
+
+        try:
+            link = "https://www.sportsbet.com.au/betting/basketball-us"
+            self.driver.get(link)
+            odds =[float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][2:]
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('NBA import failed')
         total_odds += odds
         total_teams += teams
 

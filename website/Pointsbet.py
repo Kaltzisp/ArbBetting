@@ -2,6 +2,7 @@ from website.webscraper import WebScraper
 from selenium.webdriver.common.by import By
 import logging
 import traceback
+import re
 class Pointsbet(WebScraper):
     def __init__(self):
         super().__init__()
@@ -50,6 +51,20 @@ class Pointsbet(WebScraper):
             teams = []
             logging.info(traceback.format_exc())
             logging.info('UFC import failed')
+        total_odds += odds
+        total_teams += teams
+
+        try:
+            link = "https://pointsbet.com.au/sports/basketball/NBA"
+            self.driver.get(link)
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')][::3]
+            teams = re.findall('''feu1e1k fyraa0v f1qmefvr">([\w\.\'\- ]*)<''', self.driver.page_source)
+            assert(len(teams) == len(odds))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('NBA import failed')
         total_odds += odds
         total_teams += teams
 

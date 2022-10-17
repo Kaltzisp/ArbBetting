@@ -61,6 +61,24 @@ class Unibet(WebScraper):
         total_odds += odds
         total_teams += teams
 
+        try:
+            link = "https://www.unibet.com.au/betting/sports/filter/basketball/nba/all/matches"
+            self.driver.get(link)
+            time.sleep(3)
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''_8e013''')]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''c539a''')]
+            if len(teams)-4 == len(odds):
+                teams = teams[2:]
+                teams = teams[:4] + teams[6:]
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('NBA import failed')
+        total_odds += odds
+        total_teams += teams
+
         self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
 
 if __name__ == "__main__":
