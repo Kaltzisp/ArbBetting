@@ -8,15 +8,28 @@ import traceback
 import logging
 import math
 import time
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 
 logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log', encoding='utf-8', level=logging.INFO)
 
 import sys
 
 if __name__ == "__main__":
-    hedge_source = "Ladbrokes"
-    hedge_amount = 250
-    hedge_bonus = 250
+    hedge_source = "Boombet"
+    hedge_amount = 100
+    hedge_bonus = 100
+
+    options = webdriver.ChromeOptions()
+    options.add_argument("--window-size=400,1080")
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    driver.implicitly_wait(10)
 
     modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
     website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
@@ -24,7 +37,7 @@ if __name__ == "__main__":
         start = time.time()
         if website != 'webscraper':
             exec(f"from website.{website} import {website}")
-            exec(f"scrape_obj = {website}()")
+            exec(f"scrape_obj = {website}(driver)")
             try:
                 logging.info(f"Scraping data from {website}")
                 scrape_obj.write_to_csv()

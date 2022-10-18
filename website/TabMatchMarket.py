@@ -2,8 +2,8 @@ from website.webscraper import WebScraper
 from selenium.webdriver.common.by import By
 
 class TabMatchMarket(WebScraper):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, driver=None):
+        super().__init__(driver)
         self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2': 'G2',
                 'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'EDward Gaming': 'EDG',
                 'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM': 'GAM',

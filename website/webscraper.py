@@ -9,17 +9,19 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
 class WebScraper():
-    def __init__(self):
+    def __init__(self, driver=None):
         self.source = self.__class__.__name__
         self.odds = []
         self.teams = []
         self.data = []
-        options = webdriver.ChromeOptions()
-        options.add_argument("--window-size=400,1080")
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option('useAutomationExtension', False)
-        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-        self.driver.implicitly_wait(10)
+        if driver is None:
+            options = webdriver.ChromeOptions()
+            options.add_argument("--window-size=400,1080")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option('useAutomationExtension', False)
+            driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+            driver.implicitly_wait(10)
+        self.driver = driver
 
     def game(self, x, game_dict):
         sorted_teams = sorted([x["Team 1"], x["Team 2"]])
@@ -49,4 +51,4 @@ class WebScraper():
         game_dict = {}
         data_df["Game"] = data_df.apply(lambda x: self.game(x, game_dict), axis=1)
         data_df.to_csv(f"data/{self.source}.csv", index=None)
-        self.driver.close()
+

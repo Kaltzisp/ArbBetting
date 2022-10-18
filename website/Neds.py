@@ -2,8 +2,8 @@ from website.webscraper import WebScraper
 from selenium.webdriver.common.by import By
 
 class Neds(WebScraper):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, driver=None):
+        super().__init__(driver)
 
     def scrape_data(self):
         link = "https://www.neds.com.au/sports/esports/lo-l-worlds"

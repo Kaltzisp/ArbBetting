@@ -4,8 +4,8 @@ import re
 import logging
 import traceback
 class Ladbrokes(WebScraper):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, driver=None):
+        super().__init__(driver)
 
     def scrape_data(self):
         total_odds = []
