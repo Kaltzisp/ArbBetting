@@ -21,8 +21,9 @@ import sys
 
 if __name__ == "__main__":
     hedge_source = "Rivalry"
-    hedge_amount = 0
-    hedge_bonus = 100
+    hedge_amount = 200
+    bonus_amount = 100
+    bonus_source = "Rivalry"
 
     # options = webdriver.ChromeOptions()
     # options.add_argument("--window-size=400,1080")
@@ -101,12 +102,22 @@ if __name__ == "__main__":
         arb_df.sort_values(by="Implied Probability", inplace=True)
     arb_df.to_csv("arb.csv", index=False)
 
+    opp_df = total_df[((total_df["Source 1"] == bonus_source) | (total_df["Source 2"] == bonus_source)) & (total_df["Source 1"] != total_df["Source 2"])].copy()
+    bonus_df = pd.DataFrame()
+    for i in range(2):
+        sub_df = opp_df[opp_df[f"Source {i + 1}"] == hedge_source].copy()
+        sub_df["Hedge Amount"] = ((sub_df[f"Odds {i+1}"] - 1)*bonus_amount)/ sub_df[f"Odds {(i+3)%2+1}"]
+        sub_df["Payout"] = (sub_df[f"Odds {i+1}"] - 1) * bonus_amount - sub_df["Hedge Amount"]
+        bonus_df = bonus_df.append(sub_df)
+    bonus_df.sort_values(by="Payout", ascending=False, inplace=True)
+    bonus_df.to_csv("bonus.csv", index=False)
+
     opp_df = total_df[((total_df["Source 1"] == hedge_source) | (total_df["Source 2"] == hedge_source)) & (total_df["Source 1"] != total_df["Source 2"])].copy()
     hedge_df = pd.DataFrame()
     for i in range(2):
         sub_df = opp_df[opp_df[f"Source {i + 1}"] == hedge_source].copy()
-        sub_df["Hedge Amount"] = ((sub_df[f"Odds {i+1}"] - 1)*hedge_bonus + sub_df[f"Odds {i+1}"] * hedge_amount)/ sub_df[f"Odds {(i+3)%2+1}"]
-        sub_df["Payout"] = sub_df[f"Odds {i + 1}"] * hedge_amount + (sub_df[f"Odds {i+1}"] - 1) * hedge_bonus - sub_df["Hedge Amount"] - hedge_amount
+        sub_df["Hedge Amount"] = (sub_df[f"Odds {i+1}"] * hedge_amount)/ sub_df[f"Odds {(i+3)%2+1}"]
+        sub_df["Payout"] = sub_df[f"Odds {i + 1}"] * hedge_amount - sub_df["Hedge Amount"] - hedge_amount
         hedge_df = hedge_df.append(sub_df)
     hedge_df.sort_values(by="Payout", ascending=False, inplace=True)
     hedge_df.to_csv("hedge.csv", index=False)
