@@ -20,17 +20,17 @@ logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d 
 import sys
 
 if __name__ == "__main__":
-    hedge_source = "Boombet"
-    hedge_amount = 100
+    hedge_source = "Rivalry"
+    hedge_amount = 0
     hedge_bonus = 100
 
-    options = webdriver.ChromeOptions()
-    options.add_argument("--window-size=400,1080")
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-    driver.implicitly_wait(10)
-
+    # options = webdriver.ChromeOptions()
+    # options.add_argument("--window-size=400,1080")
+    # options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    # options.add_experimental_option('useAutomationExtension', False)
+    # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    # driver.implicitly_wait(10)
+    driver=None
     modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
     website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
     for website in website_list:
