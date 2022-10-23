@@ -14,6 +14,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from src import utils
+
+# Setting driver to none.
+driver = None
+
+# Loading webscrapers
+modules = utils.load_modules()
+modules[0](driver)
+time.sleep(15)
+quit()
 
 logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log', encoding='utf-8', level=logging.INFO)
 
@@ -31,6 +41,8 @@ if __name__ == "__main__":
     # options.add_experimental_option('useAutomationExtension', False)
     # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     # driver.implicitly_wait(10)
+
+    
     driver=None
     modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
     website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]

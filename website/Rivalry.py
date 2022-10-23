@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from website.webscraper import WebScraper
+from webscraper import WebScraper
 import re
 import logging
 import traceback

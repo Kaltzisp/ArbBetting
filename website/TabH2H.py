@@ -1,4 +1,4 @@
-from website.webscraper import WebScraper
+from webscraper import WebScraper
 from selenium.webdriver.common.by import By
 import logging
 import traceback
@@ -24,6 +24,7 @@ class TabH2H(WebScraper):
                             'Toronto': 'Toronto Raptors',
                             'Cleveland': 'Cleveland Cavaliers',
                             'Brooklyn': 'Brooklyn Nets',
+                            
                             'New York': 'New York Knicks',
                             'Atlanta': 'Atlanta Hawks',
                             'Houston': 'Houston Rockets',

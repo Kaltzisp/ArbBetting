@@ -1,4 +1,4 @@
-from website.webscraper import WebScraper
+from webscraper import WebScraper
 from selenium.webdriver.common.by import By
 import re
 import time
