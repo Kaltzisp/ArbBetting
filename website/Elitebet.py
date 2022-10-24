@@ -8,7 +8,7 @@ class Elitebet(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
         self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
-                        'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'Edward Gaming': 'EDG',
+                        'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'EDward Gaming': 'EDG',
                         'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
                         '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
                         'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',

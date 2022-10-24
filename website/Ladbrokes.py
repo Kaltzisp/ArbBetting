@@ -24,6 +24,22 @@ class Ladbrokes(WebScraper):
         total_odds += odds
         total_teams += teams
 
+        total_odds = []
+        total_teams = []
+        try:
+            link = "https://www.ladbrokes.com.au/sports/esports/dota-2-the-international"
+            self.driver.get(link)
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.info(traceback.format_exc())
+            logging.info('Dota import failed')
+        total_odds += odds
+        total_teams += teams
+
         try:
             link = "https://www.ladbrokes.com.au/sports/mma"
             self.driver.get(link)

@@ -23,7 +23,7 @@ if __name__ == "__main__":
     hedge_source = "Rivalry"
     hedge_amount = 200
     bonus_amount = 100
-    bonus_source = "Rivalry"
+    bonus_source = "TabH2H"
 
     # options = webdriver.ChromeOptions()
     # options.add_argument("--window-size=400,1080")
@@ -31,6 +31,7 @@ if __name__ == "__main__":
     # options.add_experimental_option('useAutomationExtension', False)
     # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     # driver.implicitly_wait(10)
+
     driver=None
     modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
     website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
@@ -105,7 +106,7 @@ if __name__ == "__main__":
     opp_df = total_df[((total_df["Source 1"] == bonus_source) | (total_df["Source 2"] == bonus_source)) & (total_df["Source 1"] != total_df["Source 2"])].copy()
     bonus_df = pd.DataFrame()
     for i in range(2):
-        sub_df = opp_df[opp_df[f"Source {i + 1}"] == hedge_source].copy()
+        sub_df = opp_df[opp_df[f"Source {i + 1}"] == bonus_source].copy()
         sub_df["Hedge Amount"] = ((sub_df[f"Odds {i+1}"] - 1)*bonus_amount)/ sub_df[f"Odds {(i+3)%2+1}"]
         sub_df["Payout"] = (sub_df[f"Odds {i+1}"] - 1) * bonus_amount - sub_df["Hedge Amount"]
         bonus_df = bonus_df.append(sub_df)
