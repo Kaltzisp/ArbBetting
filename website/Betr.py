@@ -33,7 +33,7 @@ class Betr(WebScraper):
             time.sleep(1)
 
             odds = [float(i) for i in re.findall('''span>([\d\.]+)<''', self.driver.page_source)]
-            teams = [team.split(' ')[-1] for team in re.findall('''OddsButton_priceType__ROL\+V">([\w\d\. ]*)<''', self.driver.page_source)]
+            teams = [team.split(' ')[-1] for team in re.findall('''OddsButton_priceType__ROL\+V">([\w\d\.\- ]*)<''', self.driver.page_source)]
 
             assert(len(odds) == len(teams))
         except Exception as e:
