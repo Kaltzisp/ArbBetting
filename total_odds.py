@@ -1,29 +1,23 @@
-import pandas as pd
-import numpy as np
+# Imports.
 import os
-from os.path import dirname, basename, isfile, join
-import glob
-import datetime
-import traceback
-import logging
 import math
 import time
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+import logging
+import datetime
+import pandas as pd
+from src import utils
+
 
 logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log', encoding='utf-8', level=logging.INFO)
-
-import sys
 
 if __name__ == "__main__":
     hedge_source = "Rivalry"
     hedge_amount = 200
     bonus_amount = 100
     bonus_source = "TabH2H"
+
+    # Setting selenium driver.
+    driver = None
 
     # options = webdriver.ChromeOptions()
     # options.add_argument("--window-size=400,1080")
@@ -32,22 +26,19 @@ if __name__ == "__main__":
     # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     # driver.implicitly_wait(10)
 
-    driver=None
-    modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
-    website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
-    for website in website_list:
+    # Running webscraper modules.
+    modules = utils.load_modules()
+    for module in modules:
         start = time.time()
-        if website != 'webscraper':
-            exec(f"from website.{website} import {website}")
-            exec(f"scrape_obj = {website}(driver)")
-            try:
-                logging.info(f"Scraping data from {website}")
-                scrape_obj.write_to_csv()
-                logging.info(f"Succesfully scraped from {website}")
-            except Exception as e:
-                logging.info(f"Crash scraping data from {website}")
-                logging.info(traceback.format_exc())
-            logging.info(f"{website} finished in {time.time() - start} seconds")
+        scrape_obj = module(driver)
+        try:
+            logging.info(f"{module.__name__}: Attempting webscrape")
+            scrape_obj.write_to_csv()
+            logging.info(f"{module.__name__}: Scraped successfully")
+        except Exception as e:
+            logging.info(f"{module.__name__}: Scraping failed")
+            logging.exception(e)
+        logging.info(f"{module.__name__} scraped in {time.time() - start} secs")
 
     file_list = os.listdir('data/')
     source_list = [file[:-4] for file in file_list]
@@ -67,8 +58,8 @@ if __name__ == "__main__":
             total_df = total_df.append(df_1.merge(df_2, how="left", on=['Team 1', 'Team 2', 'Game']))
     total_df.dropna(inplace=True)
 
-    total_df["Arbitrage %"] = 100*(total_df["Odds 1"] * total_df["Odds 2"])/(total_df["Odds 1"] + total_df["Odds 2"]) - 100
-    total_df["Implied Probability"] = 1/total_df["Odds 1"] + 1/total_df["Odds 2"]
+    total_df["Arbitrage %"] = 100 * (total_df["Odds 1"] * total_df["Odds 2"]) / (total_df["Odds 1"] + total_df["Odds 2"]) - 100
+    total_df["Implied Probability"] = 1 / total_df["Odds 1"] + 1 / total_df["Odds 2"]
     total_df.sort_values(by='Implied Probability', inplace=True)
     total_df.to_csv("comb.csv", index=False)
 
@@ -80,26 +71,26 @@ if __name__ == "__main__":
         for j in range(3):
             sub_row = row[["Team 1", "Team 2", "Odds 1", "Odds 2", "Source 1", "Source 2", "Game", "Implied Probability"]].copy()
             if j == 0:
-                amount_1 = round(sub_row["Odds 2"]*100)
-                amount_2 = round(sub_row["Odds 1"]*100)
+                amount_1 = round(sub_row["Odds 2"] * 100)
+                amount_2 = round(sub_row["Odds 1"] * 100)
             elif j == 1:
                 amount_1 = 100
-                amount_2 = round((sub_row["Odds 1"]-1)*100)
+                amount_2 = round((sub_row["Odds 1"] - 1) * 100)
             elif j == 2:
-                amount_1 = round((sub_row["Odds 2"]-1)*100)
+                amount_1 = round((sub_row["Odds 2"] - 1) * 100)
                 amount_2 = 100
             factor = math.gcd(amount_1, amount_2)
-            sub_row["Amount 1"] = amount_1//factor
-            sub_row["Amount 2"] = amount_2//factor
-            sub_row["Amount 1 Min"] = 1/sub_row["Odds 1"]
-            sub_row["Amount 1 Max"] = 1 - (1/sub_row["Odds 2"])
-            sub_row["Amount 2 Min"] = 1/sub_row["Odds 2"]
-            sub_row["Amount 2 Max"] = 1 - (1/sub_row["Odds 1"])
+            sub_row["Amount 1"] = amount_1 // factor
+            sub_row["Amount 2"] = amount_2 // factor
+            sub_row["Amount 1 Min"] = 1 / sub_row["Odds 1"]
+            sub_row["Amount 1 Max"] = 1 - (1 / sub_row["Odds 2"])
+            sub_row["Amount 2 Min"] = 1 / sub_row["Odds 2"]
+            sub_row["Amount 2 Max"] = 1 - (1 / sub_row["Odds 1"])
             arb_df = arb_df.append(sub_row)
 
-    if len(arb_df) > 0: 
-        arb_df["Team 1 Win Return %"] = 100*((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
-        arb_df["Team 2 Win Return %"] = 100*((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
+    if len(arb_df) > 0:
+        arb_df["Team 1 Win Return %"] = 100 * ((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
+        arb_df["Team 2 Win Return %"] = 100 * ((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
         arb_df.sort_values(by="Implied Probability", inplace=True)
     arb_df.to_csv("arb.csv", index=False)
 
@@ -107,7 +98,7 @@ if __name__ == "__main__":
     bonus_df = pd.DataFrame()
     for i in range(2):
         sub_df = opp_df[opp_df[f"Source {i + 1}"] == bonus_source].copy()
-        sub_df["Hedge Amount"] = ((sub_df[f"Odds {i+1}"] - 1)*bonus_amount)/ sub_df[f"Odds {(i+3)%2+1}"]
+        sub_df["Hedge Amount"] = ((sub_df[f"Odds {i+1}"] - 1) * bonus_amount) / sub_df[f"Odds {(i+3)%2+1}"]
         sub_df["Payout"] = (sub_df[f"Odds {i+1}"] - 1) * bonus_amount - sub_df["Hedge Amount"]
         bonus_df = bonus_df.append(sub_df)
     bonus_df.sort_values(by="Payout", ascending=False, inplace=True)
@@ -117,7 +108,7 @@ if __name__ == "__main__":
     hedge_df = pd.DataFrame()
     for i in range(2):
         sub_df = opp_df[opp_df[f"Source {i + 1}"] == hedge_source].copy()
-        sub_df["Hedge Amount"] = (sub_df[f"Odds {i+1}"] * hedge_amount)/ sub_df[f"Odds {(i+3)%2+1}"]
+        sub_df["Hedge Amount"] = (sub_df[f"Odds {i+1}"] * hedge_amount) / sub_df[f"Odds {(i+3)%2+1}"]
         sub_df["Payout"] = sub_df[f"Odds {i + 1}"] * hedge_amount - sub_df["Hedge Amount"] - hedge_amount
         hedge_df = hedge_df.append(sub_df)
     hedge_df.sort_values(by="Payout", ascending=False, inplace=True)

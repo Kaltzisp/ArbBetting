@@ -1,9 +1,9 @@
-from website.webscraper import WebScraper
-from selenium.webdriver.common.by import By
+from src.WebScraper import WebScraper
 import re
 import time
 import logging
-import traceback
+
+
 class Betr(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
@@ -12,7 +12,7 @@ class Betr(WebScraper):
         total_odds = []
         total_teams = []
 
-        try:    
+        try:
             link = '''https://betr.com.au/sportsbook#/sport/13/competition/1000649/1003042'''
             self.driver.get(link)
             time.sleep(1)
@@ -22,12 +22,12 @@ class Betr(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('NBA import failed')
         total_odds += odds
         total_teams += teams
 
-        try:    
+        try:
             link = '''https://betr.com.au/sportsbook#/sport/9/competition/1000226/1000520'''
             self.driver.get(link)
             time.sleep(1)
@@ -39,12 +39,13 @@ class Betr(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('MMA import failed')
         total_odds += odds
         total_teams += teams
 
         self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
+
 
 if __name__ == "__main__":
     scrape_obj = Betr()

@@ -1,9 +1,8 @@
-from website.webscraper import WebScraper
+from src.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
-import re
 import logging
-import traceback
 import time
+
 
 class Betdeluxe(WebScraper):
     def __init__(self, driver=None):
@@ -25,17 +24,18 @@ class Betdeluxe(WebScraper):
             time.sleep(1)
             odds = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if self.is_float(i.text)][::3]
             odds = [float(i) for i in odds]
-            teams = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if ((not self.is_float(i.text))  & (i.text != ''))]
+            teams = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if ((not self.is_float(i.text)) & (i.text != ''))]
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('NBA import failed')
         total_odds += odds
         total_teams += teams
 
         self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
+
 
 if __name__ == "__main__":
     scrape_obj = Betdeluxe()
