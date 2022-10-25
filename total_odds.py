@@ -15,9 +15,12 @@ if __name__ == "__main__":
     hedge_amount = 200
     bonus_amount = 100
     bonus_source = "TabH2H"
+<<<<<<< HEAD
 
     # Setting selenium driver.
     driver = None
+=======
+>>>>>>> master
 
     # options = webdriver.ChromeOptions()
     # options.add_argument("--window-size=400,1080")
@@ -26,9 +29,16 @@ if __name__ == "__main__":
     # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     # driver.implicitly_wait(10)
 
+<<<<<<< HEAD
     # Running webscraper modules.
     modules = utils.load_modules()
     for module in modules:
+=======
+    driver=None
+    modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
+    website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
+    for website in website_list:
+>>>>>>> master
         start = time.time()
         scrape_obj = module(driver)
         try:
