@@ -1,12 +1,8 @@
 from abc import abstractmethod
-import time
 import pandas as pd
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+
 
 class WebScraper():
     def __init__(self, driver=None):
@@ -30,7 +26,7 @@ class WebScraper():
             game_dict[game_string] = 0
         game_dict[game_string] += 1
         return(f'{sorted_teams[0]} vs {sorted_teams[1]} {game_dict[game_string]}')
-    
+
     @abstractmethod
     def scrape_data(self):
         pass
@@ -38,10 +34,10 @@ class WebScraper():
     def write_to_csv(self):
         self.scrape_data()
         assert(len(self.data) % 2 == 0)
-        data_df = pd.DataFrame({"Team 1": [sorted(self.data[i:i+2])[0][0] for i in range(0, len(self.data), 2)],
-                                "Team 2": [sorted(self.data[i:i+2])[1][0] for i in range(0, len(self.data), 2)],
-                                "Odds 1": [sorted(self.data[i:i+2])[0][1] for i in range(0, len(self.data), 2)],
-                                "Odds 2": [sorted(self.data[i:i+2])[1][1] for i in range(0, len(self.data), 2)]})
+        data_df = pd.DataFrame({"Team 1": [sorted(self.data[i:i + 2])[0][0] for i in range(0, len(self.data), 2)],
+                                "Team 2": [sorted(self.data[i:i + 2])[1][0] for i in range(0, len(self.data), 2)],
+                                "Odds 1": [sorted(self.data[i:i + 2])[0][1] for i in range(0, len(self.data), 2)],
+                                "Odds 2": [sorted(self.data[i:i + 2])[1][1] for i in range(0, len(self.data), 2)]})
 
         data_df["Source"] = self.source
 
@@ -51,4 +47,3 @@ class WebScraper():
         game_dict = {}
         data_df["Game"] = data_df.apply(lambda x: self.game(x, game_dict), axis=1)
         data_df.to_csv(f"data/{self.source}.csv", index=None)
-
