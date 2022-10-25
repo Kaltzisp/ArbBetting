@@ -1,18 +1,20 @@
 from selenium.webdriver.common.by import By
-from webscraper import WebScraper
-import re
+from src import WebScraper
 import logging
-import traceback
+
+
 class Rivalry(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
-        self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
-                        'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'EDward Gaming': 'EDG',
-                        'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
-                        '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
-                        'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
-                        'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX': 'DRX', 'Evil Geniuses': 'EG',
-                        'Royal Never Give Up': 'RNG', 'Fnatic': 'FNC', 'GAM Sports' : 'GAM'}
+        self.team_mapping = {
+            'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
+            'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'EDward Gaming': 'EDG',
+            'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
+            '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
+            'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
+            'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX': 'DRX', 'Evil Geniuses': 'EG',
+            'Royal Never Give Up': 'RNG', 'Fnatic': 'FNC', 'GAM Sports': 'GAM'
+        }
 
     def scrape_data(self):
         total_odds = []
@@ -27,7 +29,7 @@ class Rivalry(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('League of Legends import failed')
         total_odds += odds
         total_teams += teams
@@ -42,7 +44,7 @@ class Rivalry(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('UFC import failed')
         total_odds += odds
         total_teams += teams
@@ -56,12 +58,13 @@ class Rivalry(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('NBA import failed')
         total_odds += odds
         total_teams += teams
 
         self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
+
 
 if __name__ == "__main__":
     scrape_obj = Rivalry()

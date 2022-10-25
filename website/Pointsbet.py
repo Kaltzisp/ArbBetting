@@ -1,20 +1,23 @@
 
-from webscraper import WebScraper
+from src import WebScraper
 from selenium.webdriver.common.by import By
 import logging
-import traceback
 import re
+
+
 class Pointsbet(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
-        self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
-                'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'Edward Gaming': 'EDG',
-                'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
-                '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
-                'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
-                'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX':'DRX', 'Royal Never Give Up':'RNG',
-                'Evil Geniuses': 'EG', 'Fnatic': 'FNC', 'Team Liquid': 'Team Liquid', 'Virtus.Pro': 'VP', 'Team Secret': 'Secret', 
-                'Xtreme Gaming': 'Xtreme Gaming'}
+        self.team_mapping = {
+            'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
+            'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'Edward Gaming': 'EDG',
+            'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
+            '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
+            'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
+            'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX': 'DRX', 'Royal Never Give Up': 'RNG',
+            'Evil Geniuses': 'EG', 'Fnatic': 'FNC', 'Team Liquid': 'Team Liquid', 'Virtus.Pro': 'VP', 'Team Secret': 'Secret',
+            'Xtreme Gaming': 'Xtreme Gaming'
+        }
 
     def scrape_data(self):
         total_odds = []
@@ -30,7 +33,7 @@ class Pointsbet(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('League of Legends import failed')
         total_odds += odds
         total_teams += teams
@@ -45,12 +48,12 @@ class Pointsbet(WebScraper):
             self.driver.get(link)
             odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
             ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
-            teams = [name.split( )[1] for name in ufc_names]
+            teams = [name.split()[1] for name in ufc_names]
             assert(len(teams) == len(odds))
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('UFC import failed')
         total_odds += odds
         total_teams += teams
@@ -64,12 +67,13 @@ class Pointsbet(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('NBA import failed')
         total_odds += odds
         total_teams += teams
 
         self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
+
 
 if __name__ == "__main__":
     scrape_obj = Pointsbet()

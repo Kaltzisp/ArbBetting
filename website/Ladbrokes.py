@@ -1,8 +1,8 @@
-from webscraper import WebScraper
+from src import WebScraper
 from selenium.webdriver.common.by import By
-import re
 import logging
-import traceback
+
+
 class Ladbrokes(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
@@ -19,7 +19,7 @@ class Ladbrokes(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('League of Legends import failed')
         total_odds += odds
         total_teams += teams
@@ -33,7 +33,7 @@ class Ladbrokes(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('UFC import failed')
         total_odds += odds
         total_teams += teams
@@ -47,7 +47,7 @@ class Ladbrokes(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('NBA import failed')
         total_odds += odds
         total_teams += teams
@@ -69,6 +69,7 @@ class Ladbrokes(WebScraper):
         #     teams += [i.text + ' First Inhib' for i in self.driver.find_elements(By.CLASS_NAME, '''market-two-col__entrant-name''') if i.text != ''][:2]
         #     teams += [i.text + ' First Blood' for i in self.driver.find_elements(By.CLASS_NAME, '''market-two-col__entrant-name''') if i.text != ''][2:4]
         #     self.driver.back()
+
 
 if __name__ == "__main__":
     scrape_obj = Ladbrokes()
