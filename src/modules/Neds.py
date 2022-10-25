@@ -1,5 +1,6 @@
-from website.webscraper import WebScraper
+from src.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
+
 
 class Neds(WebScraper):
     def __init__(self, driver=None):
@@ -16,9 +17,10 @@ class Neds(WebScraper):
         odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
         UpperCaseteam = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
         for team in UpperCaseteam:
-                TeamName = team.title()
-                teams.append(TeamName.split(" ")[1])
+            TeamName = team.title()
+            teams.append(TeamName.split(" ")[1])
         self.data = [(teams[i], odds[i]) for i in range(len(teams))]
+
 
 if __name__ == "__main__":
     scrape_obj = Neds()

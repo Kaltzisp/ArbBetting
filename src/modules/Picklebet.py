@@ -1,23 +1,20 @@
-from website.webscraper import WebScraper
+from src.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
 import logging
-import traceback
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+
+
 class Picklebet(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
-        self.team_mapping = {'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
-                'CTBC Flying Oyster': 'CFO', 'T1 Esports': 'T1', 'EDward Gaming': 'EDG',
-                'Top Esports': 'TES', 'DAMWON Gaming': 'DK', 'GAM Esports': 'GAM',
-                '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
-                'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
-                'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX':'DRX', 'Royal Never Give Up':'RNG',
-                'Evil Geniuses': 'EG', 'Fnatic': 'FNC', 'Team Secret': 'Secret', 'Virtus.Pro': 'VP'}
+        self.team_mapping = {
+            'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
+            'CTBC Flying Oyster': 'CFO', 'T1 Esports': 'T1', 'EDward Gaming': 'EDG',
+            'Top Esports': 'TES', 'DAMWON Gaming': 'DK', 'GAM Esports': 'GAM',
+            '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
+            'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
+            'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX': 'DRX', 'Royal Never Give Up': 'RNG',
+            'Evil Geniuses': 'EG', 'Fnatic': 'FNC', 'Team Secret': 'Secret', 'Virtus.Pro': 'VP'
+        }
 
     def scrape_data(self):
         total_odds = []
@@ -38,7 +35,7 @@ class Picklebet(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('League of Legends import failed')
         total_odds += odds
         total_teams += teams
@@ -57,7 +54,7 @@ class Picklebet(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('Dota import failed')
         total_odds += odds
         total_teams += teams
@@ -76,7 +73,7 @@ class Picklebet(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('UFC import failed')
         total_odds += odds
         total_teams += teams
@@ -90,12 +87,13 @@ class Picklebet(WebScraper):
         except Exception as e:
             odds = []
             teams = []
-            logging.info(traceback.format_exc())
+            logging.exception(e)
             logging.info('NBA import failed')
         total_odds += odds
         total_teams += teams
 
         self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
+
 
 if __name__ == "__main__":
     scrape_obj = Picklebet()
