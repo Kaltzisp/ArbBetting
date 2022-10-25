@@ -30,7 +30,6 @@ class Picklebet(WebScraper):
                 if odd != '-':
                     break
             odds = [float(j) for j in odds[i:]]
-            teams = teams[i:]
             teams = [self.team_mapping[team] for team in teams]
             assert(len(odds) == len(teams))
         except Exception as e:
@@ -38,6 +37,25 @@ class Picklebet(WebScraper):
             teams = []
             logging.exception(e)
             logging.info('League of Legends import failed')
+        total_odds += odds
+        total_teams += teams
+
+        try:
+            link = "https://picklebet.com/?game=dota2&page=1&tab=next&tour=DOTA2%3AThe%20International%202022"
+            self.driver.get(link)
+            odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
+
+            for i, odd in enumerate(odds):
+                if odd != '-':
+                    break
+            odds = [float(j) for j in odds[i:]]
+            assert(len(odds) == len(teams))
+        except Exception as e:
+            odds = []
+            teams = []
+            logging.exception(e)
+            logging.info('Dota import failed')
         total_odds += odds
         total_teams += teams
 
