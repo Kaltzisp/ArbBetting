@@ -1,5 +1,5 @@
+from src.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
-from src import WebScraper
 import logging
 
 

@@ -1,4 +1,4 @@
-from src import WebScraper
+from src.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
 
 

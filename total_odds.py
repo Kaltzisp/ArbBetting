@@ -58,8 +58,8 @@ if __name__ == "__main__":
             total_df = total_df.append(df_1.merge(df_2, how="left", on=['Team 1', 'Team 2', 'Game']))
     total_df.dropna(inplace=True)
 
-    total_df["Arbitrage %"] = 100*(total_df["Odds 1"] * total_df["Odds 2"])/(total_df["Odds 1"] + total_df["Odds 2"]) - 100
-    total_df["Implied Probability"] = 1/total_df["Odds 1"] + 1/total_df["Odds 2"]
+    total_df["Arbitrage %"] = 100 * (total_df["Odds 1"] * total_df["Odds 2"]) / (total_df["Odds 1"] + total_df["Odds 2"]) - 100
+    total_df["Implied Probability"] = 1 / total_df["Odds 1"] + 1 / total_df["Odds 2"]
     total_df.sort_values(by='Implied Probability', inplace=True)
     total_df.to_csv("comb.csv", index=False)
 
@@ -71,26 +71,26 @@ if __name__ == "__main__":
         for j in range(3):
             sub_row = row[["Team 1", "Team 2", "Odds 1", "Odds 2", "Source 1", "Source 2", "Game", "Implied Probability"]].copy()
             if j == 0:
-                amount_1 = round(sub_row["Odds 2"]*100)
-                amount_2 = round(sub_row["Odds 1"]*100)
+                amount_1 = round(sub_row["Odds 2"] * 100)
+                amount_2 = round(sub_row["Odds 1"] * 100)
             elif j == 1:
                 amount_1 = 100
-                amount_2 = round((sub_row["Odds 1"]-1)*100)
+                amount_2 = round((sub_row["Odds 1"] - 1) * 100)
             elif j == 2:
-                amount_1 = round((sub_row["Odds 2"]-1)*100)
+                amount_1 = round((sub_row["Odds 2"] - 1) * 100)
                 amount_2 = 100
             factor = math.gcd(amount_1, amount_2)
-            sub_row["Amount 1"] = amount_1//factor
-            sub_row["Amount 2"] = amount_2//factor
-            sub_row["Amount 1 Min"] = 1/sub_row["Odds 1"]
-            sub_row["Amount 1 Max"] = 1 - (1/sub_row["Odds 2"])
-            sub_row["Amount 2 Min"] = 1/sub_row["Odds 2"]
-            sub_row["Amount 2 Max"] = 1 - (1/sub_row["Odds 1"])
+            sub_row["Amount 1"] = amount_1 // factor
+            sub_row["Amount 2"] = amount_2 // factor
+            sub_row["Amount 1 Min"] = 1 / sub_row["Odds 1"]
+            sub_row["Amount 1 Max"] = 1 - (1 / sub_row["Odds 2"])
+            sub_row["Amount 2 Min"] = 1 / sub_row["Odds 2"]
+            sub_row["Amount 2 Max"] = 1 - (1 / sub_row["Odds 1"])
             arb_df = arb_df.append(sub_row)
 
-    if len(arb_df) > 0: 
-        arb_df["Team 1 Win Return %"] = 100*((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
-        arb_df["Team 2 Win Return %"] = 100*((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
+    if len(arb_df) > 0:
+        arb_df["Team 1 Win Return %"] = 100 * ((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
+        arb_df["Team 2 Win Return %"] = 100 * ((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
         arb_df.sort_values(by="Implied Probability", inplace=True)
     arb_df.to_csv("arb.csv", index=False)
 
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     bonus_df = pd.DataFrame()
     for i in range(2):
         sub_df = opp_df[opp_df[f"Source {i + 1}"] == hedge_source].copy()
-        sub_df["Hedge Amount"] = ((sub_df[f"Odds {i+1}"] - 1)*bonus_amount)/ sub_df[f"Odds {(i+3)%2+1}"]
+        sub_df["Hedge Amount"] = ((sub_df[f"Odds {i+1}"] - 1) * bonus_amount) / sub_df[f"Odds {(i+3)%2+1}"]
         sub_df["Payout"] = (sub_df[f"Odds {i+1}"] - 1) * bonus_amount - sub_df["Hedge Amount"]
         bonus_df = bonus_df.append(sub_df)
     bonus_df.sort_values(by="Payout", ascending=False, inplace=True)
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     hedge_df = pd.DataFrame()
     for i in range(2):
         sub_df = opp_df[opp_df[f"Source {i + 1}"] == hedge_source].copy()
-        sub_df["Hedge Amount"] = (sub_df[f"Odds {i+1}"] * hedge_amount)/ sub_df[f"Odds {(i+3)%2+1}"]
+        sub_df["Hedge Amount"] = (sub_df[f"Odds {i+1}"] * hedge_amount) / sub_df[f"Odds {(i+3)%2+1}"]
         sub_df["Payout"] = sub_df[f"Odds {i + 1}"] * hedge_amount - sub_df["Hedge Amount"] - hedge_amount
         hedge_df = hedge_df.append(sub_df)
     hedge_df.sort_values(by="Payout", ascending=False, inplace=True)

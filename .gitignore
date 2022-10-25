@@ -2,6 +2,9 @@
 __pycache__/
 .mypy_cache/
 
+# PEP
+.flake8
+
 # Environments
 env/
 

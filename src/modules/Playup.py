@@ -1,4 +1,4 @@
-from src import WebScraper
+from src.WebScraper import WebScraper
 import time
 import re
 import logging

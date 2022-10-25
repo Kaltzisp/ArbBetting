@@ -1,10 +1,10 @@
-
-from src import WebScraper
+from src.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
+import time
 import logging
 
 
-class Sportsbet(WebScraper):
+class Unibet(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
         self.team_mapping = {
@@ -21,10 +21,15 @@ class Sportsbet(WebScraper):
         total_odds = []
         total_teams = []
         try:
-            link = "https://www.sportsbet.com.au/betting/e-sports/lol-world-championship"
+            link = "https://www.unibet.com.au/betting/sports/filter/esports/league_of_legends/world_championship/all/matches"
             self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
-            teams = [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size12_fq5j3k2 normal_fgzdi7m caption_f4zed5e']''')]
+            self.driver.find_element(By.XPATH, '''//*[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]''').click()
+            time.sleep(3)
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''_8e013''')]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''c539a''')]
+            if len(teams) - 4 == len(odds):
+                teams = teams[2:]
+                teams = teams[:4] + teams[6:]
             teams = [self.team_mapping[team] for team in teams]
             assert(len(odds) == len(teams))
         except Exception as e:
@@ -36,15 +41,20 @@ class Sportsbet(WebScraper):
         total_teams += teams
 
         try:
-            link = "https://www.sportsbet.com.au/betting/ufc-mma"
+            link = "https://www.unibet.com.au/betting/sports/filter/ufc_mma/all/matches"
+            teams = []
             self.driver.get(link)
-            try:
-                self.driver.find_element(By.XPATH, '''/html/body/div[3]/div/div/div/div/div[3]/div/button/div/span''').click()
-            except Exception as e:
-                logging.exception(e)
-            odds = [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
-            ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][2:]
-            teams = [name.split(' ')[1] for name in ufc_names]
+            time.sleep(3)
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''_8e013''')]
+            UFCUnibetteams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''c539a''')]
+
+            for team in UFCUnibetteams:
+                if ',' in team:
+                    Name = team.split(", ")
+                    Name = Name[0]
+                else:
+                    Name = team
+                teams.append(Name)
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
@@ -55,10 +65,14 @@ class Sportsbet(WebScraper):
         total_teams += teams
 
         try:
-            link = "https://www.sportsbet.com.au/betting/basketball-us"
+            link = "https://www.unibet.com.au/betting/sports/filter/basketball/nba/all/matches"
             self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][2:]
+            time.sleep(3)
+            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''_8e013''')]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''c539a''')]
+            if len(teams) - 4 == len(odds):
+                teams = teams[2:]
+                teams = teams[:4] + teams[6:]
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
@@ -72,5 +86,5 @@ class Sportsbet(WebScraper):
 
 
 if __name__ == "__main__":
-    scrape_obj = Sportsbet()
+    scrape_obj = Unibet()
     scrape_obj.write_to_csv()
