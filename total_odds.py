@@ -1,39 +1,23 @@
-import pandas as pd
-import numpy as np
+# Imports.
 import os
-from os.path import dirname, basename, isfile, join
-import glob
-import datetime
-import traceback
-import logging
 import math
 import time
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+import logging
+import datetime
+import pandas as pd
 from src import utils
 
-# Setting driver to none.
-driver = None
-
-# Loading webscrapers
-modules = utils.load_modules()
-modules[0](driver)
-time.sleep(15)
-quit()
 
 logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log', encoding='utf-8', level=logging.INFO)
-
-import sys
 
 if __name__ == "__main__":
     hedge_source = "Rivalry"
     hedge_amount = 200
     bonus_amount = 100
     bonus_source = "Rivalry"
+
+    # Setting selenium driver.
+    driver = None
 
     # options = webdriver.ChromeOptions()
     # options.add_argument("--window-size=400,1080")
@@ -42,23 +26,19 @@ if __name__ == "__main__":
     # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     # driver.implicitly_wait(10)
 
-    
-    driver=None
-    modules = glob.glob(join(dirname(__file__) + '''\\website''', "*.py"))
-    website_list = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
-    for website in website_list:
+    # Running webscraper modules.
+    modules = utils.load_modules()
+    for module in modules:
         start = time.time()
-        if website != 'webscraper':
-            exec(f"from website.{website} import {website}")
-            exec(f"scrape_obj = {website}(driver)")
-            try:
-                logging.info(f"Scraping data from {website}")
-                scrape_obj.write_to_csv()
-                logging.info(f"Succesfully scraped from {website}")
-            except Exception as e:
-                logging.info(f"Crash scraping data from {website}")
-                logging.info(traceback.format_exc())
-            logging.info(f"{website} finished in {time.time() - start} seconds")
+        scrape_obj = module(driver)
+        try:
+            logging.info(f"{module.__name__}: Attempting webscrape")
+            scrape_obj.write_to_csv()
+            logging.info(f"{module.__name__}: Scraped successfully")
+        except Exception as e:
+            logging.info(f"{module.__name__}: Scraping failed")
+            logging.exception(e)
+        logging.info(f"{module.__name__} scraped in {time.time() - start} secs")
 
     file_list = os.listdir('data/')
     source_list = [file[:-4] for file in file_list]
