@@ -36,7 +36,8 @@ class Betfairlay(WebScraper):
             for i, odd in enumerate(odds):
                 if odd == '':
                     odds[i] = 1000
-            odds = [(float(odd)/(float(odd)-1))*0.95 for (i, odd) in enumerate(odds) if i % 2 == 1]
+            odds = [(float(odd)/(float(odd)-1)) for (i, odd) in enumerate(odds) if i % 2 == 1]
+            odds = [1+(float(odd)-1)*0.95 for odd in odds]
             unsorted_teams = [self.team_mapping[i.text] for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
             teams = []
             for i in range(0, len(unsorted_teams), 2):
@@ -58,7 +59,8 @@ class Betfairlay(WebScraper):
             for i, odd in enumerate(odds):
                 if odd == '':
                     odds[i] = 1000
-            odds = [(float(odd)/(float(odd)-1))*0.95 for (i, odd) in enumerate(odds) if i % 2 == 1]
+            odds = [(float(odd)/(float(odd)-1)) for (i, odd) in enumerate(odds) if i % 2 == 1]
+            odds = [1+(float(odd)-1)*0.95 for odd in odds]
             unsorted_teams = [i.text.split(' ')[-1] for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
             teams = []
             for i in range(0, len(unsorted_teams), 2):
@@ -80,7 +82,8 @@ class Betfairlay(WebScraper):
             for i, odd in enumerate(odds):
                 if odd == '':
                     odds[i] = 1000
-            odds = [(float(odd)/(float(odd)-1))*0.95 for (i, odd) in enumerate(odds) if i % 2 == 1]
+            odds = [(float(odd)/(float(odd)-1)) for (i, odd) in enumerate(odds) if i % 2 == 1]
+            odds = [1+(float(odd)-1)*0.95 for odd in odds]
             unsorted_teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
             teams = []
             for i in range(0, len(unsorted_teams), 2):

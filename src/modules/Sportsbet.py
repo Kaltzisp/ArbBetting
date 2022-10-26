@@ -22,7 +22,13 @@ class Sportsbet(WebScraper):
         try:
             link = "https://www.sportsbet.com.au/betting/e-sports/lol-world-championship"
             self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
+            raw_odds = [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
+            odds = []
+            for odd in raw_odds:
+                if odd == 'SUSP':
+                    odds.append(1)
+                else:
+                    odds.append(float(odd))
             teams = [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size12_fq5j3k2 normal_fgzdi7m caption_f4zed5e']''')]
             teams = [self.team_mapping[team] for team in teams]
             assert(len(odds) == len(teams))
@@ -37,7 +43,13 @@ class Sportsbet(WebScraper):
         try:
             link = "https://www.sportsbet.com.au/betting/ufc-mma"
             self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
+            raw_odds = [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
+            odds = []
+            for odd in raw_odds:
+                if odd == 'SUSP':
+                    odds.append(1)
+                else:
+                    odds.append(float(odd))
             ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][2:]
             teams = [name.split(' ')[1] for name in ufc_names]
             assert(len(odds) == len(teams))
@@ -52,7 +64,13 @@ class Sportsbet(WebScraper):
         try:
             link = "https://www.sportsbet.com.au/betting/basketball-us"
             self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
+            raw_odds = [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
+            odds = []
+            for odd in raw_odds:
+                if odd == 'SUSP':
+                    odds.append(1)
+                else:
+                    odds.append(float(odd))
             teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][2:]
             assert(len(odds) == len(teams))
         except Exception as e:

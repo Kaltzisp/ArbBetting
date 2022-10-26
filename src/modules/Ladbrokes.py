@@ -59,6 +59,9 @@ class Ladbrokes(WebScraper):
             self.driver.get(link)
             odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
             teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
+            lines = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayLine''') if i.text != '']
+            odds = odds[:len(odds)-len(lines)]
+            teams = teams[:len(teams)-len(lines)]
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []

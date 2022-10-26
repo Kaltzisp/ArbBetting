@@ -36,7 +36,7 @@ class Betfairback(WebScraper):
             for i, odd in enumerate(odds):
                 if odd == '':
                     odds[i] = 0
-            odds = [float(odd)*0.95 for (i, odd) in enumerate(odds) if i % 2 == 0]
+            odds = [1+(float(odd)-1)*0.95 for (i, odd) in enumerate(odds) if i % 2 == 0]
             teams = [self.team_mapping[i.text] for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
             assert(len(odds) == len(teams))
         except Exception as e:
@@ -55,7 +55,7 @@ class Betfairback(WebScraper):
             for i, odd in enumerate(odds):
                 if odd == '':
                     odds[i] = 1
-            odds = [float(odd)*0.95 for (i, odd) in enumerate(odds) if i % 2 == 0]
+            odds = [1+(float(odd)-1)*0.95 for (i, odd) in enumerate(odds) if i % 2 == 0]
             teams = [i.text.split(' ')[-1] for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
             assert(len(odds) == len(teams))
         except Exception as e:
@@ -74,7 +74,7 @@ class Betfairback(WebScraper):
             for i, odd in enumerate(odds):
                 if odd == '':
                     odds[i] = 1
-            odds = [float(odd)*0.95 for (i, odd) in enumerate(odds) if i % 2 == 0]
+            odds = [1+(float(odd)-1)*0.95 for (i, odd) in enumerate(odds) if i % 2 == 0]
             teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
             assert(len(odds) == len(teams))
         except Exception as e:
