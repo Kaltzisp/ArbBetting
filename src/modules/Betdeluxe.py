@@ -21,7 +21,7 @@ class Betdeluxe(WebScraper):
         try:
             link = "https://www.betdeluxe.com.au/sports/basketball/nba-1000059"
             self.driver.get(link)
-            time.sleep(1)
+            time.sleep(3)
             odds = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if self.is_float(i.text)][::3]
             odds = [float(i) for i in odds]
             teams = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if ((not self.is_float(i.text)) & (i.text != ''))]

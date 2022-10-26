@@ -12,7 +12,7 @@ class Palmerbet(WebScraper):
             'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'Edward Gaming': 'EDG',
             'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
             '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
-            'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
+            'Rogue': 'RGE', 'Gen.G Esports': 'GEN', 'Saigon Buffalo': 'SGB',
             'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX': 'DRX', 'Evil Geniuses': 'EG',
             'Royal Never Give Up': 'RNG', 'Fnatic': 'FNC'
         }
@@ -38,8 +38,8 @@ class Palmerbet(WebScraper):
                     break
                 except Exception as e:
                     logging.exception(e)
-            odds = odds[::3]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''team-name''')]
+            odds = odds[::2]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''title''')][:len(odds)]
             teams = [self.team_mapping[team] for team in teams]
             assert(len(odds) == len(teams))
         except Exception as e:
@@ -61,7 +61,7 @@ class Palmerbet(WebScraper):
                 except Exception as e:
                     logging.exception(e)
             odds = ufc_odds[::3]
-            ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''team-name''')]
+            ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''team-name''')][:len(odds)]
             teams = [name.split(",")[0] for name in ufc_names]
             assert(len(odds) == len(teams))
         except Exception as e:
@@ -83,7 +83,7 @@ class Palmerbet(WebScraper):
                 except Exception as e:
                     logging.exception(e)
             odds = odds[::3]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''team-name''')]
+            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''team-name''')][:len(odds)]
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []

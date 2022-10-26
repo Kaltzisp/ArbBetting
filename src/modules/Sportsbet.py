@@ -37,10 +37,6 @@ class Sportsbet(WebScraper):
         try:
             link = "https://www.sportsbet.com.au/betting/ufc-mma"
             self.driver.get(link)
-            try:
-                self.driver.find_element(By.XPATH, '''/html/body/div[3]/div/div/div/div/div[3]/div/button/div/span''').click()
-            except Exception as e:
-                logging.exception(e)
             odds = [float(i.text) for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
             ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][2:]
             teams = [name.split(' ')[1] for name in ufc_names]

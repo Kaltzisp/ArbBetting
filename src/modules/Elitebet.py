@@ -52,7 +52,7 @@ class Elitebet(WebScraper):
         total_teams += teams
 
         try:
-            link = '''https://www.elitebet.com.au/sports/Mixed_Martial_Arts/UFC_280/MMA'''
+            link = '''https://www.elitebet.com.au/sports/Mixed_Martial_Arts/MMA'''
             self.driver.get(link)
             time.sleep(3)
             odds = [float(i) for i in re.findall('''css-147k6hk">&nbsp;<span>([\d\.]*)<''', self.driver.page_source)]

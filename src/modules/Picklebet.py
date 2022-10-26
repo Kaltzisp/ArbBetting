@@ -21,11 +21,10 @@ class Picklebet(WebScraper):
         total_teams = []
 
         try:
-            link = "https://picklebet.com/?game=lol"
+            link = "https://picklebet.com/?game=lol&page=1&tab=next&tour=LOL%3AWorld%20Championship%202022"
             self.driver.get(link)
             odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
             teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
-
             for i, odd in enumerate(odds):
                 if odd != '-':
                     break
