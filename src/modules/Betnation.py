@@ -2,9 +2,9 @@ from src.WebScraper import WebScraper
 import re
 import time
 import logging
+from selenium.webdriver.common.by import By
 
-
-class Betr(WebScraper):
+class Betnation(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
 
@@ -13,11 +13,12 @@ class Betr(WebScraper):
         total_teams = []
 
         try:
-            link = '''https://betr.com.au/sportsbook#/sport/13/competition/1000649/1003042'''
+            link = '''https://betnation.com.au/sports/basketball/nba-1000003'''
             self.driver.get(link)
             time.sleep(1)
-            odds = [float(i) for i in re.findall('''span>([\d\.]+)<''', self.driver.page_source)]
-            teams = re.findall('''OddsButton_priceType__ROL\+V">([\w\d\. ]*)<''', self.driver.page_source)
+            data = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if i.text != '']
+            odds = [float(i) for i in data[1::4]]
+            teams = [i for i in data[::4]]
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
@@ -28,13 +29,12 @@ class Betr(WebScraper):
         total_teams += teams
 
         try:
-            link = '''https://betr.com.au/sportsbook#/sport/9/competition/1000226/1000520'''
+            link = '''https://betnation.com.au/sports/martial-arts-ufc/ultimate-fighting-championship-1000311'''
             self.driver.get(link)
             time.sleep(1)
-
-            odds = [float(i) for i in re.findall('''span>([\d\.]+)<''', self.driver.page_source)]
-            teams = [team.split(' ')[-1] for team in re.findall('''OddsButton_priceType__ROL\+V">([\w\d\.\- ]*)<''', self.driver.page_source)]
-
+            data = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if i.text != '']
+            odds = [float(i) for i in data[1::4]]
+            teams = [i.split(', ')[0] for i in data[::4]]
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
@@ -47,5 +47,5 @@ class Betr(WebScraper):
 
 
 if __name__ == "__main__":
-    scrape_obj = Betr()
+    scrape_obj = Betnation()
     scrape_obj.write_to_csv()

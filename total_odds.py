@@ -11,10 +11,10 @@ from src import utils
 logging.basicConfig(filename=f'logs/{datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")}.log', encoding='utf-8', level=logging.INFO)
 
 if __name__ == "__main__":
-    hedge_source = "Rivalry"
-    hedge_amount = 200
-    bonus_amount = 100
-    bonus_source = "TabH2H"
+    hedge_source = "Unibet"
+    hedge_amount = 30
+    bonus_amount = 200
+    bonus_source = "Sportsbet"
 
     # Setting selenium driver.
     driver = None
