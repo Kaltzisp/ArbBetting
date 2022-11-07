@@ -1,3 +1,6 @@
+import re
+import time
+import logging
 from abc import abstractmethod
 import pandas as pd
 from selenium import webdriver
@@ -7,6 +10,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 class WebScraper():
     def __init__(self, driver=None):
         self.source = self.__class__.__name__
+        self.total_odds = []
+        self.total_teams = []
         self.odds = []
         self.teams = []
         self.data = []
@@ -19,6 +24,12 @@ class WebScraper():
             driver.implicitly_wait(10)
         self.driver = driver
 
+    @abstractmethod
+    def scrape_data(self):
+        pass
+
+    # Add abstract methods get_odds() get_teams()
+
     def game(self, x, game_dict):
         sorted_teams = sorted([x["Team 1"], x["Team 2"]])
         game_string = f'{sorted_teams[0]} vs {sorted_teams[1]}'
@@ -27,12 +38,21 @@ class WebScraper():
         game_dict[game_string] += 1
         return(f'{sorted_teams[0]} vs {sorted_teams[1]} {game_dict[game_string]}')
 
-    def set_url(self, url):
-        self.driver.get(url)
+    def find(self, pattern):
+        return re.findall(pattern, self.driver.page_source)
 
-    @abstractmethod
-    def scrape_data(self):
-        pass
+    def scrape(self, url, sleep_duration=0):
+        try:
+            self.driver.get(url)
+            time.sleep(sleep_duration)
+            odds = self.get_odds()
+            teams = self.get_teams()
+            assert(len(odds) == len(teams))
+            self.total_odds += odds
+            self.total_teams += teams
+        except Exception as e:
+            logging.exception(e)
+            logging.info(url)
 
     def write_to_csv(self):
         self.scrape_data()
