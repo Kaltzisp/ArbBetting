@@ -4,7 +4,7 @@ import time
 import logging
 import datetime
 import pandas as pd
-from src.webscraper import utils
+from src import utils
 
 now = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 logging.basicConfig(filename=f'src/webscraper/logs/{now}.log', encoding='utf-8', level=logging.INFO)
