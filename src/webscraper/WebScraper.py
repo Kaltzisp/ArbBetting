@@ -28,7 +28,7 @@ class WebScraper():
     def scrape_data(self):
         pass
 
-    # Add abstract methods get_odds() get_teams()
+    # Add abstract methods get_odds() get_teams().
 
     def game(self, x, game_dict):
         sorted_teams = sorted([x["Team 1"], x["Team 2"]])
@@ -38,14 +38,24 @@ class WebScraper():
         game_dict[game_string] += 1
         return(f'{sorted_teams[0]} vs {sorted_teams[1]} {game_dict[game_string]}')
 
+    # Performs a regex search on the web driver html.
     def find(self, pattern):
         return re.findall(pattern, self.driver.page_source)
 
-    def scrape(self, url, sleep_duration=0, surnames_only=False):
+    # Sleeps web driver until odds are loaded.
+    def await_odds(self, max_time):
+        odds = self.get_odds()
+        while len(odds) == 0 and max_time > 0:
+            time.sleep(0.5)
+            max_time -= 0.5
+            odds = self.get_odds()
+        return odds
+
+    # Scrape function using get_odds and get_teams.
+    def scrape(self, url, surnames_only=False):
         try:
             self.driver.get(url)
-            time.sleep(sleep_duration)
-            odds = self.get_odds()
+            odds = self.await_odds(10)
             teams = self.get_teams()
             if surnames_only:
                 teams = [i.split(" ")[-1] for i in teams]
