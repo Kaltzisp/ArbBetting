@@ -41,12 +41,14 @@ class WebScraper():
     def find(self, pattern):
         return re.findall(pattern, self.driver.page_source)
 
-    def scrape(self, url, sleep_duration=0):
+    def scrape(self, url, sleep_duration=0, surnames_only=False):
         try:
             self.driver.get(url)
             time.sleep(sleep_duration)
             odds = self.get_odds()
             teams = self.get_teams()
+            if surnames_only:
+                teams = [i.split(" ")[-1] for i in teams]
             assert(len(odds) == len(teams))
             self.total_odds += odds
             self.total_teams += teams
