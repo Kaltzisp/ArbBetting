@@ -30,8 +30,7 @@ class WebScraper():
     def scrape_data(self):
         pass
 
-    # Add abstract methods get_odds() get_teams().
-
+    # Get match data.
     def game(self, x, game_dict):
         sorted_teams = sorted([x["Team 1"], x["Team 2"]])
         game_string = f'{sorted_teams[0]} vs {sorted_teams[1]}'
@@ -44,20 +43,21 @@ class WebScraper():
     def find(self, pattern):
         return re.findall(pattern, self.driver.page_source)
 
-    # Sleeps web driver until odds are loaded.
-    def await_odds(self, max_time):
-        odds = self.get_odds()
-        while len(odds) == 0 and max_time > 0:
-            time.sleep(0.5)
-            max_time -= 0.5
+    # Sleeps web driver until odds are loaded, or until no_market message is found.
+    def await_odds(self, timeout=10):
+        while timeout > 0:
             odds = self.get_odds()
+            time.sleep(0.5)
+            timeout -= 0.5
+            if odds or self.find(self.no_markets):
+                break
         return odds
 
     # Scrape function using get_odds and get_teams.
     def scrape(self, url, surnames_only=False):
         try:
             self.driver.get(url)
-            odds = self.await_odds(10)
+            odds = self.await_odds()
             teams = self.get_teams()
             if surnames_only:
                 teams = [i.split(" ")[-1] for i in teams]
@@ -68,6 +68,7 @@ class WebScraper():
             logging.exception(e)
             logging.info(url)
 
+    # Write odds to csv file.
     def write_to_csv(self):
         self.scrape_data()
         assert(len(self.data) % 2 == 0)
