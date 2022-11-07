@@ -1,4 +1,4 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
 import logging
 
@@ -19,44 +19,6 @@ class Picklebet(WebScraper):
     def scrape_data(self):
         total_odds = []
         total_teams = []
-
-        try:
-            link = "https://picklebet.com/?game=lol&page=1&tab=next&tour=LOL%3AWorld%20Championship%202022"
-            self.driver.get(link)
-            odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
-            for i, odd in enumerate(odds):
-                if odd != '-':
-                    break
-            odds = [float(j) for j in odds[i:]]
-            teams = [self.team_mapping[team] for team in teams]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('League of Legends import failed')
-        total_odds += odds
-        total_teams += teams
-
-        try:
-            link = "https://picklebet.com/?game=dota2&page=1&tab=next&tour=DOTA2%3AThe%20International%202022"
-            self.driver.get(link)
-            odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--odds--onB1v''')]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''Outcome-module--name--DgQM8''')]
-
-            for i, odd in enumerate(odds):
-                if odd != '-':
-                    break
-            odds = [float(j) for j in odds[i:]]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('Dota import failed')
-        total_odds += odds
-        total_teams += teams
 
         try:
             link = "https://picklebet.com/sports/mma/betting?page=1&tab=next"

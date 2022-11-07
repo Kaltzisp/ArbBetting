@@ -1,9 +1,9 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
 import logging
 
 
-class TabH2H(WebScraper):
+class Tab(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
         self.team_mapping = {
@@ -51,49 +51,19 @@ class TabH2H(WebScraper):
         }
 
     def scrape_data(self):
-        # link = "https://www.tab.com.au/sports/betting/Esports/competitions/League%20of%20Legends/tournaments/LoL%20-%20World%20Championships"
-        # self.driver.get(link)
-        # odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''animate-odd''')]
-        # NameVsName = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''match-name-text''')]
-
-        # teams = []
-
-        # for Name in NameVsName:
-        #     TeamName = Name.split(" v ")
-        #     Team1 = TeamName[0]
-        #     Team2 = TeamName[1]
-        #     teams.append(Team1)
-        #     teams.append(Team2)
-
-        # teams = [self.team_mapping[team] for team in teams]
-
-        # link = "https://www.tab.com.au/sports/betting/UFC"
-        # self.driver.get(link)
-        # odds += [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''animate-odd''')]
-
-        # NameVsName = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''match-name-text''')]
-
-        # Teamlist = []
-
-        # for Name in NameVsName:
-        #     TeamName = Name.split(" v ")
-        #     Team1 = TeamName[0]
-        #     Team2 = TeamName[1]
-        #     Teamlist.append(Team1)
-        #     Teamlist.append(Team2)
-
-        # for Name in Teamlist:
-        #     if Name[-1] == Name[-1].upper():
-        #         Name = Name[:-1]
-        #     teams.append(Name)
-
         total_teams = []
         total_odds = []
 
         try:
             link = "https://www.tab.com.au/sports/betting/Basketball/competitions/NBA"
             self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''animate-odd''')]
+            raw_odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''animate-odd''')]
+            odds = []
+            for odd in raw_odds:
+                if odd == "SUSP":
+                    odds.append(0)
+                else:
+                    odds.append(float(odd))
             odds = [odds[i] for i in range(len(odds)) if i % 4 in [1, 2]]
             NameVsName = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''match-name-text''')]
             teams = []
@@ -118,5 +88,5 @@ class TabH2H(WebScraper):
 
 
 if __name__ == "__main__":
-    scrape_obj = TabH2H()
+    scrape_obj = Tab()
     scrape_obj.write_to_csv()

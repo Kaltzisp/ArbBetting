@@ -49,4 +49,4 @@ class WebScraper():
 
         game_dict = {}
         data_df["Game"] = data_df.apply(lambda x: self.game(x, game_dict), axis=1)
-        data_df.to_csv(f"data/{self.source}.csv", index=None)
+        data_df.to_csv(f"src/webscraper/data/{self.source}.csv", index=None)

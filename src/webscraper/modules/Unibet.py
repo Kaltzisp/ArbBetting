@@ -1,4 +1,4 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
 import time
 import logging
@@ -20,25 +20,6 @@ class Unibet(WebScraper):
     def scrape_data(self):
         total_odds = []
         total_teams = []
-        try:
-            link = "https://www.unibet.com.au/betting/sports/filter/esports/league_of_legends/world_championship/all/matches"
-            self.driver.get(link)
-            self.driver.find_element(By.XPATH, '''//*[@id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]''').click()
-            time.sleep(3)
-            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''_8e013''')]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''c539a''')]
-            if len(teams) - 4 == len(odds):
-                teams = teams[2:]
-                teams = teams[:4] + teams[6:]
-            teams = [self.team_mapping[team] for team in teams]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('League of Legends import failed')
-        total_odds += odds
-        total_teams += teams
 
         try:
             link = "https://www.unibet.com.au/betting/sports/filter/ufc_mma/all/matches"

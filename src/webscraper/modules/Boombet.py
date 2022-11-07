@@ -1,4 +1,4 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 import re
 import logging
 import time
@@ -20,21 +20,6 @@ class Boombet(WebScraper):
     def scrape_data(self):
         total_odds = []
         total_teams = []
-        try:
-            link = '''https://www.boombet.com.au/sport-menu/Sport/Esports/League%20of%20Legends'''
-            self.driver.get(link)
-            time.sleep(1)
-            odds = [float(i) for i in re.findall('''oddsValue d-block d-md-flex">([\d\.]*)<''', self.driver.page_source)]
-            teams = re.findall('''teamName d-block d-md-flex pb-1">([\w\d\. ]*)<''', self.driver.page_source)
-            teams = [self.team_mapping[team] for team in teams]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('League of Legends import failed')
-        total_odds += odds
-        total_teams += teams
 
         try:
             link = '''https://www.boombet.com.au/sport-menu/Sport/Mixed%20Martial%20Arts/UFC'''

@@ -1,4 +1,4 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
 import logging
 
@@ -19,26 +19,6 @@ class Sportsbet(WebScraper):
     def scrape_data(self):
         total_odds = []
         total_teams = []
-        try:
-            link = "https://www.sportsbet.com.au/betting/e-sports/lol-world-championship"
-            self.driver.get(link)
-            raw_odds = [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size14_f7opyze bold_f1au7gae priceTextSize_frw9zm9']''')]
-            odds = []
-            for odd in raw_odds:
-                if odd == 'SUSP':
-                    odds.append(1)
-                else:
-                    odds.append(float(odd))
-            teams = [i.text for i in self.driver.find_elements(By.XPATH, '''//span[@class='size12_fq5j3k2 normal_fgzdi7m caption_f4zed5e']''')]
-            teams = [self.team_mapping[team] for team in teams]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('League of Legends import failed')
-        total_odds += odds
-        total_teams += teams
 
         try:
             link = "https://www.sportsbet.com.au/betting/ufc-mma"
@@ -47,7 +27,7 @@ class Sportsbet(WebScraper):
             odds = []
             for odd in raw_odds:
                 if odd == 'SUSP':
-                    odds.append(1)
+                    odds.append(0)
                 else:
                     odds.append(float(odd))
             ufc_names = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][2:]
@@ -68,7 +48,7 @@ class Sportsbet(WebScraper):
             odds = []
             for odd in raw_odds:
                 if odd == 'SUSP':
-                    odds.append(1)
+                    odds.append(0)
                 else:
                     odds.append(float(odd))
             teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''size12_fq5j3k2''')][2:]

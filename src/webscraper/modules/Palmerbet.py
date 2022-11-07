@@ -1,4 +1,4 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
 import time
 import logging
@@ -27,28 +27,6 @@ class Palmerbet(WebScraper):
     def scrape_data(self):
         total_odds = []
         total_teams = []
-
-        try:
-            link = "https://www.palmerbet.com/sports/esports/LoL%20-%20World%20Championship/a5150c01-0a8e-41d5-b2b6-f6638c7fcbb1"
-            self.driver.get(link)
-            while True:
-                time.sleep(3)
-                try:
-                    odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''ng-star-inserted''') if self.is_float(i.text)]
-                    break
-                except Exception as e:
-                    logging.exception(e)
-            odds = odds[::2]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''title''')][:len(odds)]
-            teams = [self.team_mapping[team] for team in teams]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('League of Legends import failed')
-        total_odds += odds
-        total_teams += teams
 
         try:
             link = "https://www.palmerbet.com/sports/martial-arts/Ultimate%20Fighting%20Championship/7ee8e39f-6bec-45c1-b484-28023ce0dfce"

@@ -1,9 +1,10 @@
-from src.WebScraper import WebScraper
-from selenium.webdriver.common.by import By
+from src.webscraper.WebScraper import WebScraper
+import re
+import time
 import logging
 
 
-class Rivalry(WebScraper):
+class Elitebet(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
         self.team_mapping = {
@@ -19,26 +20,28 @@ class Rivalry(WebScraper):
     def scrape_data(self):
         total_odds = []
         total_teams = []
+
         try:
-            link = '''https://www.rivalry.com/au/esports/league-of-legends-betting/2753-world-championship'''
+            link = '''https://www.elitebet.com.au/sports/Basketball/NBA/BASK'''
             self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''outcome-odds''')]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''outcome-name''')]
-            teams = [self.team_mapping[team] for team in teams]
+            time.sleep(3)
+            odds = [float(i) for i in re.findall('''css-147k6hk">&nbsp;<span>([\d\.]*)<''', self.driver.page_source)]
+            teams = re.findall('''MuiTypography-root MuiTypography-body1 MuiTypography-alignCenter MuiTypography-noWrap css-1pex9yp">([\w\d\. ]*)<''', self.driver.page_source)
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
             teams = []
             logging.exception(e)
-            logging.info('League of Legends import failed')
+            logging.info('NBA import failed')
         total_odds += odds
         total_teams += teams
 
         try:
-            link = '''https://www.rivalry.com/au/sports/mma-betting'''
+            link = '''https://www.elitebet.com.au/sports/Mixed_Martial_Arts/MMA'''
             self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''outcome-odds''')]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''outcome-name''')]
+            time.sleep(3)
+            odds = [float(i) for i in re.findall('''css-147k6hk">&nbsp;<span>([\d\.]*)<''', self.driver.page_source)]
+            teams = re.findall('''MuiTypography-root MuiTypography-body1 MuiTypography-alignCenter MuiTypography-noWrap css-1pex9yp">([\w\d\. ]*)<''', self.driver.page_source)
             teams = [team.split(' ')[-1] for team in teams]
             assert(len(odds) == len(teams))
         except Exception as e:
@@ -49,23 +52,9 @@ class Rivalry(WebScraper):
         total_odds += odds
         total_teams += teams
 
-        try:
-            link = '''https://www.rivalry.com/au/sports/basketball-betting/3378-nba'''
-            self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''outcome-odds''')]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''outcome-name''')]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('NBA import failed')
-        total_odds += odds
-        total_teams += teams
-
         self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
 
 
 if __name__ == "__main__":
-    scrape_obj = Rivalry()
+    scrape_obj = Elitebet()
     scrape_obj.write_to_csv()

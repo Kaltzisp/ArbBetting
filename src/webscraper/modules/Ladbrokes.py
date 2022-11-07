@@ -1,4 +1,4 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
 import logging
 
@@ -10,35 +10,6 @@ class Ladbrokes(WebScraper):
     def scrape_data(self):
         total_odds = []
         total_teams = []
-        try:
-            link = "https://www.ladbrokes.com.au/sports/esports/lo-l-worlds"
-            self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('League of Legends import failed')
-        total_odds += odds
-        total_teams += teams
-
-        total_odds = []
-        total_teams = []
-        try:
-            link = "https://www.ladbrokes.com.au/sports/esports/dota-2-the-international"
-            self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''price-button-odds''')]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''displayTitle''')]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('Dota import failed')
-        total_odds += odds
-        total_teams += teams
 
         try:
             link = "https://www.ladbrokes.com.au/sports/mma"

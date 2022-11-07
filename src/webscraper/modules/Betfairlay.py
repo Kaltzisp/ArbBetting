@@ -1,10 +1,10 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
 import logging
 import time
 
 
-class Betfairback(WebScraper):
+class Betfairlay(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
         self.team_mapping = {
@@ -28,24 +28,6 @@ class Betfairback(WebScraper):
     def scrape_data(self):
         total_odds = []
         total_teams = []
-        try:
-            link = "https://www.betfair.com.au/exchange/plus/e-sports/competition/10280189"
-            self.driver.get(link)
-            time.sleep(5)
-            odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''bet-button-price''') if (self.is_float(i.text) or i.text == '')]
-            for i, odd in enumerate(odds):
-                if odd == '':
-                    odds[i] = 0
-            odds = [1+(float(odd)-1)*0.95 for (i, odd) in enumerate(odds) if i % 2 == 0]
-            teams = [self.team_mapping[i.text] for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('League import failed')
-        total_odds += odds
-        total_teams += teams
 
         try:
             link = "https://www.betfair.com.au/exchange/plus/en/mixed-martial-arts-betting-26420387"
@@ -54,9 +36,13 @@ class Betfairback(WebScraper):
             odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''bet-button-price''') if (self.is_float(i.text) or i.text == '')]
             for i, odd in enumerate(odds):
                 if odd == '':
-                    odds[i] = 1
-            odds = [1+(float(odd)-1)*0.95 for (i, odd) in enumerate(odds) if i % 2 == 0]
-            teams = [i.text.split(' ')[-1] for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
+                    odds[i] = 1000
+            odds = [(float(odd)/(float(odd)-1)) for (i, odd) in enumerate(odds) if i % 2 == 1]
+            odds = [1+(float(odd)-1)*0.95 for odd in odds]
+            unsorted_teams = [i.text.split(' ')[-1] for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
+            teams = []
+            for i in range(0, len(unsorted_teams), 2):
+                teams += unsorted_teams[i:i+2][::-1]
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
@@ -73,9 +59,13 @@ class Betfairback(WebScraper):
             odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''bet-button-price''') if (self.is_float(i.text) or i.text == '')]
             for i, odd in enumerate(odds):
                 if odd == '':
-                    odds[i] = 1
-            odds = [1+(float(odd)-1)*0.95 for (i, odd) in enumerate(odds) if i % 2 == 0]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
+                    odds[i] = 1000
+            odds = [(float(odd)/(float(odd)-1)) for (i, odd) in enumerate(odds) if i % 2 == 1]
+            odds = [1+(float(odd)-1)*0.95 for odd in odds]
+            unsorted_teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
+            teams = []
+            for i in range(0, len(unsorted_teams), 2):
+                teams += unsorted_teams[i:i+2][::-1]
             assert(len(odds) == len(teams))
         except Exception as e:
             odds = []
@@ -89,5 +79,5 @@ class Betfairback(WebScraper):
 
 
 if __name__ == "__main__":
-    scrape_obj = Betfairback()
+    scrape_obj = Betfairlay()
     scrape_obj.write_to_csv()

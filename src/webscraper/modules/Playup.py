@@ -1,4 +1,4 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 import time
 import re
 import logging
@@ -20,21 +20,6 @@ class Playup(WebScraper):
     def scrape_data(self):
         total_odds = []
         total_teams = []
-
-        try:
-            link = "https://www.playup.com.au/betting/sports/esports/lol-world-champs"
-            self.driver.get(link)
-            odds = re.findall('''<div>(\d+\.\d+)<\/div>''', self.driver.page_source)
-            teams = re.findall('''pb-1 text-sm md:text-base">([\w\d\. ]*) <''', self.driver.page_source)
-            teams = [self.team_mapping[team] for team in teams]
-            assert(len(teams) == len(odds))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('League of Legends import failed')
-        total_odds += odds
-        total_teams += teams
 
         try:
             link = "https://www.playup.com.au/betting/sports/mixed-martial-arts/ufc"

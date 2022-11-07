@@ -1,4 +1,4 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 from selenium.webdriver.common.by import By
 import logging
 import re
@@ -22,26 +22,6 @@ class Pointsbet(WebScraper):
         total_odds = []
         total_teams = []
 
-        try:
-            link = "https://pointsbet.com.au/sports/e-sports/[LoL]-World-Championship"
-            self.driver.get(link)
-            odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
-            teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
-            teams = [self.team_mapping[team] for team in teams]
-            assert(len(teams) == len(odds))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('League of Legends import failed')
-        total_odds += odds
-        total_teams += teams
-
-        # link = "https://pointsbet.com.au/sports/e-sports/[DOTA]-The-International"
-        # self.driver.get(link)
-        # odds = [float(i.text) for i in self.driver.find_elements(By.CLASS_NAME, '''fheif50''')]
-        # teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''f5rl2hl''')]
-        # teams = [self.team_mapping[team] for team in teams]
         try:
             link = "https://pointsbet.com.au/sports/mma/UFC"
             self.driver.get(link)

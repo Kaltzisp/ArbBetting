@@ -1,4 +1,4 @@
-from src.WebScraper import WebScraper
+from src.webscraper.WebScraper import WebScraper
 import re
 import time
 import logging
@@ -20,21 +20,6 @@ class Betright(WebScraper):
     def scrape_data(self):
         total_odds = []
         total_teams = []
-
-        try:
-            link = '''https://www.betright.com.au/sports/Esports/League-of-Legends/World-Championship/14468'''
-            self.driver.get(link)
-            time.sleep(1)
-            odds = [float(i) for i in re.findall('''place-bet__odds ng-binding">([\d\.]*)<''', self.driver.page_source)]
-            teams = [self.team_mapping[team] for team in re.findall('''zeta  headline-wrap ng-binding">([\w\d\. ]*)<''', self.driver.page_source)]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('League of Legends import failed')
-        total_odds += odds
-        total_teams += teams
 
         try:
             link = '''https://www.betright.com.au/sports/Martial-Arts/128'''
