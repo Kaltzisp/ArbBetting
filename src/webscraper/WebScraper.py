@@ -3,6 +3,7 @@ import time
 import logging
 from abc import abstractmethod
 import pandas as pd
+from datetime import datetime
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -19,6 +20,7 @@ class WebScraper():
             options = webdriver.ChromeOptions()
             options.add_argument("--window-size=400,1080")
             options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("excludeSwitches", ["enable-logging"])
             options.add_experimental_option('useAutomationExtension', False)
             driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
             driver.implicitly_wait(10)
@@ -76,7 +78,7 @@ class WebScraper():
 
         data_df["Source"] = self.source
 
-        data_df["Time"] = pd.to_datetime('now').tz_localize('Australia/Sydney')
+        data_df["Time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         data_df.drop_duplicates(inplace=True)
 
         game_dict = {}
