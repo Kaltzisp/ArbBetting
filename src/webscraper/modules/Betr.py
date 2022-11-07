@@ -12,7 +12,7 @@ class Betr(WebScraper):
         return self.find(r"OddsButton_priceType__ROL\+V\">([\w|\-| ]+)<")
 
     def scrape_data(self):
-        self.scrape("https://betr.com.au/sportsbook#/sport/9/competition/1000226/1000520")
+        self.scrape("https://betr.com.au/sportsbook#/sport/9/competition/1000226/1000520", surnames_only=True)
         self.scrape("https://betr.com.au/sportsbook#/sport/11/competition/1000965/1006008", sleep_duration=1)
         self.scrape("https://betr.com.au/sportsbook#/sport/13/competition/1000649/1003042", sleep_duration=1)
         self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
