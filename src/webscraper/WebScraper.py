@@ -49,18 +49,23 @@ class WebScraper():
             odds = self.get_odds()
             time.sleep(0.5)
             timeout -= 0.5
-            if odds or self.find(self.no_markets):
+            if odds:
+                break
+            if self.find(self.no_markets):
+                time.sleep(0.5)
+                odds = self.get_odds()
                 break
         return odds
 
     # Scrape function using get_odds and get_teams.
-    def scrape(self, url, surnames_only=False):
+    def scrape(self, url, name_index=None):
         try:
             self.driver.get(url)
             odds = self.await_odds()
             teams = self.get_teams()
-            if surnames_only:
-                teams = [i.split(" ")[-1] for i in teams]
+            if name_index is not None:
+                teams = [team.split(" ")[name_index] for team in teams]
+            teams = [re.sub(",", "", team) for team in teams]
             assert(len(odds) == len(teams))
             self.total_odds += odds
             self.total_teams += teams
