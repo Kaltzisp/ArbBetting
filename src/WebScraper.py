@@ -1,3 +1,4 @@
+import re
 from abc import abstractmethod
 import pandas as pd
 from selenium import webdriver
@@ -29,6 +30,9 @@ class WebScraper():
 
     def set_url(self, url):
         self.driver.get(url)
+
+    def match(self, pattern):
+        return re.findall(pattern, self.driver.page_source)
 
     @abstractmethod
     def scrape_data(self):
