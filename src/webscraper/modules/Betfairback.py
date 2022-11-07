@@ -20,10 +20,11 @@ class Betfairback(WebScraper):
 
     def scrape_data(self):
         self.scrape("https://www.betfair.com.au/exchange/plus/basketball/competition/10547864")
-        self.scrape("https://www.betfair.com.au/exchange/plus/mixed-martial-arts/competition/10581356", surnames_only=True)
-        self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12487677", surnames_only=True)
-        self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12537966", surnames_only=True)
-        self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12537720", surnames_only=True)
+        self.scrape("https://www.betfair.com.au/exchange/plus/american-football/competition/12282733")
+        self.scrape("https://www.betfair.com.au/exchange/plus/mixed-martial-arts/competition/10581356", name_index=-1)
+        self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12487677", name_index=-1)
+        self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12537966", name_index=-1)
+        self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12537720", name_index=-1)
         self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
