@@ -27,6 +27,9 @@ class WebScraper():
         game_dict[game_string] += 1
         return(f'{sorted_teams[0]} vs {sorted_teams[1]} {game_dict[game_string]}')
 
+    def set_url(self, url):
+        self.driver.get(url)
+
     @abstractmethod
     def scrape_data(self):
         pass
