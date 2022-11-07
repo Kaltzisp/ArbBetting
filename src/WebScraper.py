@@ -31,7 +31,7 @@ class WebScraper():
     def set_url(self, url):
         self.driver.get(url)
 
-    def match(self, pattern):
+    def find(self, pattern):
         return re.findall(pattern, self.driver.page_source)
 
     @abstractmethod
