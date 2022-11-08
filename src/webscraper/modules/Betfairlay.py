@@ -12,8 +12,9 @@ class Betfairlay(WebScraper):
         for i, odd in enumerate(odds):
             if odd == "":
                 odds[i] = 1000
-        odds = [1 + (odd - 1) * 0.95 for odd in odds]
-        return odds[1::2]
+        odds = odds[1::2]
+        # Need to reverse odd orders as we are lay betting.
+        return [odds[i - 2 * (i % 2) + 1] for i, odd in enumerate(odds)]
 
     def get_teams(self):
         return self.find(rf"<li class=\"name\" title=\"{TEAM_NAME}\">")

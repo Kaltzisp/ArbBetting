@@ -12,7 +12,6 @@ class Betfairback(WebScraper):
         for i, odd in enumerate(odds):
             if odd == "":
                 odds[i] = 1
-        odds = [1 + (odd - 1) * 0.95 for odd in odds]
         return odds[::2]
 
     def get_teams(self):
