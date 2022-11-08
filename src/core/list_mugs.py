@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 
-def main(mug_source="Betrmug", mug_amount=100):
+def main(mug_source="Betr", mug_amount=100):
     total_df = pd.read_csv("table_comb.csv")
 
     game_dict = {}
