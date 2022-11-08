@@ -31,16 +31,17 @@ def combine_odds():
         "Time_y": "Time 2",
     })
 
-    # Calculating % arbitrage.
+    # Calculating probability and arbitrage.
+    odds_df["Implied Probability"] = 1 / odds_df["Odds 1"] + 1 / odds_df["Odds 2"]
     odds_df["Arbitrage %"] = 100 * ((odds_df["Odds 1"] * odds_df["Odds 2"]) / (odds_df["Odds 1"] + odds_df["Odds 2"]) - 1)
 
     # Saving odds.
     odds_df.sort_values(by="Arbitrage %", ascending=False, inplace=True)
-    odds_df.to_csv("df_comb.csv", index=False)
+    odds_df.to_csv("table_comb.csv", index=False)
 
     # Saving arbs.
-    arb_df = odds_df[odds_df["Arbitrage %"] > 0]
-    arb_df.to_csv("df_arb.csv", index=False)
+    # arb_df = odds_df[odds_df["Arbitrage %"] > 0]
+    # arb_df.to_csv("df_arb.csv", index=False)
 
 
 if __name__ == "__main__":

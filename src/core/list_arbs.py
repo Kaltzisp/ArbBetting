@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def main():
-    total_df = pd.read_csv("comb.csv")
+    total_df = pd.read_csv("table_comb.csv")
 
     opp_df = total_df[total_df["Implied Probability"] < 1]
     arb_df = pd.DataFrame()
@@ -35,7 +35,7 @@ def main():
         arb_df["Team 1 Win Return %"] = 100 * ((arb_df["Odds 1"] * arb_df["Amount 1"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
         arb_df["Team 2 Win Return %"] = 100 * ((arb_df["Odds 2"] * arb_df["Amount 2"]) / (arb_df["Amount 1"] + arb_df["Amount 2"]) - 1)
         arb_df.sort_values(by="Implied Probability", inplace=True)
-    arb_df.to_csv("arb.csv", index=False)
+    arb_df.to_csv("table_arb.csv", index=False)
 
 
 if __name__ == "__main__":

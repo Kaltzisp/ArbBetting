@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 
 
-def main(mug_source="Tab", mug_amount=100):
-    total_df = pd.read_csv("comb.csv")
+def main(mug_source="Betrmug", mug_amount=100):
+    total_df = pd.read_csv("table_comb.csv")
 
     game_dict = {}
 
@@ -14,8 +14,8 @@ def main(mug_source="Tab", mug_amount=100):
     uncomb_df = total_df[total_df["Source 1"] == total_df["Source 2"]]
     for game in uncomb_df["Game"].unique():
         game_df = uncomb_df[uncomb_df["Game"] == game].copy()
-        game_df["Value 1"] = game_df["Odds 1"]/max(game_df["Odds 1"])
-        game_df["Value 2"] = game_df["Odds 2"]/max(game_df["Odds 2"])
+        game_df["Value 1"] = game_df["Odds 1"] / max(game_df["Odds 1"])
+        game_df["Value 2"] = game_df["Odds 2"] / max(game_df["Odds 2"])
         for i in range(len(game_df)):
             row = game_df.iloc[i]
             game_dict[(row["Source 1"], row["Team 1"])] = row["Value 1"]
