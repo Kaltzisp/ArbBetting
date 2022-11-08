@@ -1,5 +1,5 @@
 from src.webscraper.WebScraper import WebScraper
-from src.utils import TEAM_ODDS, TEAM_NAME
+from src.core.utils import TEAM_ODDS, TEAM_NAME
 
 
 class Betfairback(WebScraper):
@@ -12,8 +12,8 @@ class Betfairback(WebScraper):
         for i, odd in enumerate(odds):
             if odd == "":
                 odds[i] = 1
-        odds = [1 + (odd - 1) * 0.95 for odd in odds]
-        return odds[::2]
+        sorted_odds = odds[::2]
+        return [1 + 0.95 * (odd - 1) for odd in sorted_odds]
 
     def get_teams(self):
         return self.find(rf"<li class=\"name\" title=\"{TEAM_NAME}\">")

@@ -1,10 +1,11 @@
-from src.webscraper import total_odds
-from src.arb import arb
-from src.bonus import bonus
-from src.mug import mug
+from src.core.scrape_odds import scrape_odds
+from src.core.combine_odds import combine_odds
+from src.core import list_arbs, list_bonuses, list_mugs
+
 
 if __name__ == "__main__":
-    total_odds.main()
-    arb.main()
-    bonus.main(bonus_amount=100, bonus_source="Betright")
-    mug.main()
+    scrape_odds()
+    combine_odds()
+    list_arbs.main()
+    list_bonuses.main(bonus_amount=100, bonus_source="Betr")
+    list_mugs.main()

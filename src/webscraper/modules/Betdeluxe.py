@@ -1,5 +1,5 @@
 from src.webscraper.WebScraper import WebScraper
-from src.utils import TEAM_ODDS, TEAM_NAME
+from src.core.utils import TEAM_ODDS, TEAM_NAME
 
 
 class Betdeluxe(WebScraper):
@@ -11,12 +11,12 @@ class Betdeluxe(WebScraper):
         return [float(i) for i in self.find(rf"transform=\"none\">{TEAM_ODDS}<\/div>")]
 
     def get_teams(self):
-        return self.find(rf"id=\"multiBet\" transform=\"none\">{TEAM_NAME}<\/div>")
+        return self.find(rf"SelectionTitleText-.*?id=\"multiBet\" transform=\"none\">{TEAM_NAME}<\/div>")
 
     def scrape_data(self):
         self.scrape("https://www.betdeluxe.com.au/sports/basketball/nba-1000059")
         self.scrape("https://www.betdeluxe.com.au/sports/american-football/nfl-1000026")
-        self.scrape("https://www.betdeluxe.com.au/sports/boxing/professional-boxing-1000112", name_index=0, timeout=10)
+        self.scrape("https://www.betdeluxe.com.au/sports/boxing/professional-boxing-1000112", name_index=0, timeout=20)
         self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
