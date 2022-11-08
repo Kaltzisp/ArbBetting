@@ -38,7 +38,7 @@ def main(mug_source="Betrmug", mug_amount=100):
 
     mug_df["Value"] = mug_df.apply(lambda x: get_value(x), axis=1)
     mug_df.sort_values(by="Payout", ascending=False, inplace=True)
-    mug_df.to_csv("mug.csv", index=False)
+    mug_df.to_csv("table_mug.csv", index=False)
 
 
 if __name__ == "__main__":
