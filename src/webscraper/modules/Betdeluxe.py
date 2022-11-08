@@ -1,5 +1,5 @@
 from src.webscraper.WebScraper import WebScraper
-from src.utils import TEAM_ODDS, TEAM_NAME
+from src.core.utils import TEAM_ODDS, TEAM_NAME
 
 
 class Betdeluxe(WebScraper):
