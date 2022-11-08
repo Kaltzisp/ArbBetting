@@ -24,14 +24,22 @@ def combine_odds():
             odds_df = pd.concat([odds_df, cross])
             odds_df.dropna(inplace=True)
 
-    odds_df["Arbitrage %"] = 100 * ((odds_df["Odds 1"] * odds_df["Odds 2"]) / (odds_df["Odds 1"] + odds_df["Odds 2"]) - 1)
-    odds_df.sort_values(by="Arbitrage %", ascending=False, inplace=True)
     odds_df = odds_df.rename(columns={
         "Source_x": "Source 1",
         "Source_y": "Source 2",
         "Time_x": "Time 1",
         "Time_y": "Time 2",
     })
+
+    # Calculating % arbitrage.
+    odds_df.loc[odds_df["Source 1"] == "Betfairlay", "Odds 1"] = 1 + 0.95 / (odds_df.loc[odds_df["Source 1"] == "Betfairlay", "Odds 1"] - 1)
+    odds_df.loc[odds_df["Source 2"] == "Betfairlay", "Odds 2"] = 1 + 0.95 / (odds_df.loc[odds_df["Source 2"] == "Betfairlay", "Odds 2"] - 1)
+    odds_df.loc[odds_df["Source 1"] == "Betfairback", "Odds 1"] = 1 + 0.95 * (odds_df.loc[odds_df["Source 1"] == "Betfairback", "Odds 1"] - 1)
+    odds_df.loc[odds_df["Source 2"] == "Betfairback", "Odds 2"] = 1 + 0.95 * (odds_df.loc[odds_df["Source 2"] == "Betfairback", "Odds 2"] - 1)
+    odds_df["Arbitrage %"] = 100 * ((odds_df["Odds 1"] * odds_df["Odds 2"]) / (odds_df["Odds 1"] + odds_df["Odds 2"]) - 1)
+
+    # Saving odds.
+    odds_df.sort_values(by="Arbitrage %", ascending=False, inplace=True)
     odds_df.to_csv("df_comb.csv", index=False)
 
     # Saving arbs.
