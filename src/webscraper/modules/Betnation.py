@@ -1,49 +1,24 @@
 from src.webscraper.WebScraper import WebScraper
-import re
-import time
-import logging
-from selenium.webdriver.common.by import By
+from src.utils import TEAM_ODDS, TEAM_NAME
+
 
 class Betnation(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
+        self.no_markets = r"<h1>N\/A<\/h1>"
+
+    def get_odds(self):
+        return [float(i) for i in self.find(rf"transform=\"none\">{TEAM_ODDS}<\/div>")]
+
+    def get_teams(self):
+        return self.find(rf"SelectionTitleText-.*?id=\"multiBet\" transform=\"none\">{TEAM_NAME}<\/div>")
 
     def scrape_data(self):
-        total_odds = []
-        total_teams = []
-
-        try:
-            link = '''https://betnation.com.au/sports/basketball/nba-1000003'''
-            self.driver.get(link)
-            time.sleep(1)
-            data = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if i.text != '']
-            odds = [float(i) for i in data[1::4]]
-            teams = [i for i in data[::4]]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('NBA import failed')
-        total_odds += odds
-        total_teams += teams
-
-        try:
-            link = '''https://betnation.com.au/sports/martial-arts-ufc/ultimate-fighting-championship-1000311'''
-            self.driver.get(link)
-            time.sleep(1)
-            data = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if i.text != '']
-            odds = [float(i) for i in data[1::4]]
-            teams = [i.split(', ')[0] for i in data[::4]]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('MMA import failed')
-        total_odds += odds
-        total_teams += teams
-        self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
+        self.scrape("https://betnation.com.au/sports/basketball/nba-1000003")
+        self.scrape("https://betnation.com.au/sports/american-football/nfl-1000325")
+        self.scrape("https://betnation.com.au/sports/martial-arts-ufc/ultimate-fighting-championship-1000311")
+        self.scrape("https://betnation.com.au/sports/tennis/open-de-roanne-auvergne-rhone-alpes-1000792", name_index=0)
+        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":
