@@ -17,10 +17,10 @@ def combine_odds():
     for source_1 in odds_data:
         for source_2 in odds_data:
             df = odds_data[source_1]
-            df_1 = df[["Team 1", "Team 2", "Source", "Odds 1", "Time"]]
+            df_1 = df[["Game", "Team 1", "Team 2", "Source", "Odds 1", "Time"]]
             df = odds_data[source_2]
-            df_2 = df[["Team 1", "Team 2", "Source", "Odds 2", "Time"]]
-            cross = df_1.merge(df_2, how="outer", on=["Team 1", "Team 2"])
+            df_2 = df[["Game", "Team 1", "Team 2", "Source", "Odds 2", "Time"]]
+            cross = df_1.merge(df_2, how="outer", on=["Game", "Team 1", "Team 2"])
             odds_df = pd.concat([odds_df, cross])
             odds_df.dropna(inplace=True)
 
@@ -32,10 +32,6 @@ def combine_odds():
     })
 
     # Calculating % arbitrage.
-    odds_df.loc[odds_df["Source 1"] == "Betfairlay", "Odds 1"] = 1 + 0.95 / (odds_df.loc[odds_df["Source 1"] == "Betfairlay", "Odds 1"] - 1)
-    odds_df.loc[odds_df["Source 2"] == "Betfairlay", "Odds 2"] = 1 + 0.95 / (odds_df.loc[odds_df["Source 2"] == "Betfairlay", "Odds 2"] - 1)
-    odds_df.loc[odds_df["Source 1"] == "Betfairback", "Odds 1"] = 1 + 0.95 * (odds_df.loc[odds_df["Source 1"] == "Betfairback", "Odds 1"] - 1)
-    odds_df.loc[odds_df["Source 2"] == "Betfairback", "Odds 2"] = 1 + 0.95 * (odds_df.loc[odds_df["Source 2"] == "Betfairback", "Odds 2"] - 1)
     odds_df["Arbitrage %"] = 100 * ((odds_df["Odds 1"] * odds_df["Odds 2"]) / (odds_df["Odds 1"] + odds_df["Odds 2"]) - 1)
 
     # Saving odds.
