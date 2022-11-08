@@ -1,81 +1,31 @@
 from src.webscraper.WebScraper import WebScraper
-from selenium.webdriver.common.by import By
-import logging
-import time
+from src.utils import TEAM_ODDS, TEAM_NAME
 
 
 class Betfairlay(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
-        self.team_mapping = {
-            'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
-            'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'Edward Gaming': 'EDG',
-            'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
-            '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
-            'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
-            'LOUD': 'LLL', 'Jd Gaming': 'JDG', 'DRX': 'DRX', 'Royal Never Give Up': 'RNG',
-            'Evil Geniuses': 'EG', 'Fnatic': 'FNC', 'Team Liquid': 'Team Liquid', 'Virtus.Pro': 'VP', 'Team Secret': 'Secret',
-            'Xtreme Gaming': 'Xtreme Gaming'
-        }
+        self.no_markets = r"There are no events to be displayed"
 
-    def is_float(self, element) -> bool:
-        try:
-            float(element)
-            return True
-        except ValueError:
-            return False
+    def get_odds(self):
+        odds = [float(i) for i in self.find(rf"<span class=\"bet-button-price\">{TEAM_ODDS}<\/span>")]
+        for i, odd in enumerate(odds):
+            if odd == "":
+                odds[i] = 1000
+        odds = [1 + (odd - 1) * 0.95 for odd in odds]
+        return odds[1::2]
+
+    def get_teams(self):
+        return self.find(rf"<li class=\"name\" title=\"{TEAM_NAME}\">")
 
     def scrape_data(self):
-        total_odds = []
-        total_teams = []
-
-        try:
-            link = "https://www.betfair.com.au/exchange/plus/en/mixed-martial-arts-betting-26420387"
-            self.driver.get(link)
-            time.sleep(5)
-            odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''bet-button-price''') if (self.is_float(i.text) or i.text == '')]
-            for i, odd in enumerate(odds):
-                if odd == '':
-                    odds[i] = 1000
-            odds = [(float(odd)/(float(odd)-1)) for (i, odd) in enumerate(odds) if i % 2 == 1]
-            odds = [1+(float(odd)-1)*0.95 for odd in odds]
-            unsorted_teams = [i.text.split(' ')[-1] for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
-            teams = []
-            for i in range(0, len(unsorted_teams), 2):
-                teams += unsorted_teams[i:i+2][::-1]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('MMA import failed')
-        total_odds += odds
-        total_teams += teams
-
-        try:
-            link = "https://www.betfair.com.au/exchange/plus/basketball/competition/10547864"
-            self.driver.get(link)
-            time.sleep(5)
-            odds = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''bet-button-price''') if (self.is_float(i.text) or i.text == '')]
-            for i, odd in enumerate(odds):
-                if odd == '':
-                    odds[i] = 1000
-            odds = [(float(odd)/(float(odd)-1)) for (i, odd) in enumerate(odds) if i % 2 == 1]
-            odds = [1+(float(odd)-1)*0.95 for odd in odds]
-            unsorted_teams = [i.text for i in self.driver.find_elements(By.CLASS_NAME, '''name''')]
-            teams = []
-            for i in range(0, len(unsorted_teams), 2):
-                teams += unsorted_teams[i:i+2][::-1]
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('NBA import failed')
-        total_odds += odds
-        total_teams += teams
-
-        self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
+        self.scrape("https://www.betfair.com.au/exchange/plus/basketball/competition/10547864")
+        self.scrape("https://www.betfair.com.au/exchange/plus/american-football/competition/12282733")
+        self.scrape("https://www.betfair.com.au/exchange/plus/mixed-martial-arts/competition/10581356", name_index=-1)
+        self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12487677", name_index=-1)
+        self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12537966", name_index=-1)
+        self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12537720", name_index=-1)
+        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":
