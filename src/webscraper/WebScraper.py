@@ -44,7 +44,7 @@ class WebScraper():
         return re.findall(pattern, self.driver.page_source)
 
     # Sleeps web driver until odds are loaded, or until no_market message is found.
-    def await_odds(self, timeout=10):
+    def await_odds(self, timeout):
         while timeout > 0:
             odds = self.get_odds()
             time.sleep(0.5)
@@ -58,10 +58,10 @@ class WebScraper():
         return odds
 
     # Scrape function using get_odds and get_teams.
-    def scrape(self, url, name_index=None):
+    def scrape(self, url, name_index=None, timeout=5):
         try:
             self.driver.get(url)
-            odds = self.await_odds()
+            odds = self.await_odds(timeout)
             teams = self.get_teams()
             if name_index is not None:
                 teams = [team.split(" ")[name_index] for team in teams]
