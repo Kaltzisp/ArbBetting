@@ -1,11 +1,6 @@
 # Imports.
 import os
-import logging
-import datetime
 import pandas as pd
-
-now = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
-logging.basicConfig(filename=f'src/webscraper/logs/{now}.log', encoding='utf-8', level=logging.INFO)
 
 
 def combine_odds():
