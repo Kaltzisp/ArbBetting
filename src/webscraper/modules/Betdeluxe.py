@@ -1,44 +1,23 @@
 from src.webscraper.WebScraper import WebScraper
-from selenium.webdriver.common.by import By
-import logging
-import time
+from src.utils import TEAM_ODDS, TEAM_NAME
 
 
 class Betdeluxe(WebScraper):
     def __init__(self, driver=None):
         super().__init__(driver)
+        self.no_markets = r"<h1>N\/A<\/h1>"
 
-    def is_float(self, element) -> bool:
-        try:
-            float(element)
-            return True
-        except ValueError:
-            return False
+    def get_odds(self):
+        return [float(i) for i in self.find(rf"transform=\"none\">{TEAM_ODDS}<\/div>")]
+
+    def get_teams(self):
+        return self.find(rf"id=\"multiBet\" transform=\"none\">{TEAM_NAME}<\/div>")
 
     def scrape_data(self):
-        total_odds = []
-        total_teams = []
-        try:
-            link = "https://www.betdeluxe.com.au/sports/basketball/nba-1000059"
-            self.driver.get(link)
-            while True:
-                try:
-                    odds = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if self.is_float(i.text)][::3]
-                    odds = [float(i) for i in odds]
-                    teams = [i.text for i in self.driver.find_elements(By.ID, '''multiBet''') if ((not self.is_float(i.text)) & (i.text != ''))]
-                    break
-                except Exception as e:
-                    time.sleep(2)
-            assert(len(odds) == len(teams))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('NBA import failed')
-        total_odds += odds
-        total_teams += teams
-
-        self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
+        self.scrape("https://www.betdeluxe.com.au/sports/basketball/nba-1000059")
+        self.scrape("https://www.betdeluxe.com.au/sports/american-football/nfl-1000026")
+        self.scrape("https://www.betdeluxe.com.au/sports/boxing/professional-boxing-1000112", name_index=0, timeout=10)
+        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":
