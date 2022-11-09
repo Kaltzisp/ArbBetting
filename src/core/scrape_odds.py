@@ -10,7 +10,7 @@ now = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 logging.basicConfig(filename=f'src/webscraper/logs/{now}.log', encoding='utf-8', level=logging.INFO)
 
 
-def scrape_odds():
+def scrape_odds(hidden=False):
     # Setting selenium driver.
     driver = None
 
@@ -22,7 +22,7 @@ def scrape_odds():
     # Running webscraper modules.
     for module in modules:
         start = time.time()
-        scrape_obj = module(driver)
+        scrape_obj = module(driver, hidden)
         try:
             logging.info(f"{module.__name__}: Attempting webscrape")
             scrape_obj.write_to_csv()

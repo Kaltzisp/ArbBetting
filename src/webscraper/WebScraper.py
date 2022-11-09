@@ -9,7 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 class WebScraper():
-    def __init__(self, driver=None):
+    def __init__(self, driver, hidden):
         self.source = self.__class__.__name__
         self.total_odds = []
         self.total_teams = []
@@ -18,7 +18,10 @@ class WebScraper():
         self.data = []
         if driver is None:
             options = webdriver.ChromeOptions()
-            options.add_argument("--window-size=400,1080")
+            if hidden:
+                options.add_argument("--headless")
+            else:
+                options.add_argument("--window-size=400,1080")
             options.add_experimental_option("excludeSwitches", ["enable-automation"])
             options.add_experimental_option("excludeSwitches", ["enable-logging"])
             options.add_experimental_option('useAutomationExtension', False)

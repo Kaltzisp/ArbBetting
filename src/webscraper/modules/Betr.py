@@ -3,8 +3,8 @@ from src.core.utils import TEAM_ODDS, TEAM_NAME
 
 
 class Betr(WebScraper):
-    def __init__(self, driver=None):
-        super().__init__(driver)
+    def __init__(self, driver, hidden):
+        super().__init__(driver, hidden)
         self.no_markets = r"No open markets available"
 
     def get_odds(self):

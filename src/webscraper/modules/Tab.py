@@ -4,8 +4,8 @@ import logging
 
 
 class Tab(WebScraper):
-    def __init__(self, driver=None):
-        super().__init__(driver)
+    def __init__(self, driver, hidden):
+        super().__init__(driver, hidden)
         self.team_mapping = {
             'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2': 'G2',
             'CTBC Flying Oyster': 'CFO', 'T1 Esports': 'T1', 'EDward Gaming': 'EDG',
