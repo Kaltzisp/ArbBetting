@@ -1,6 +1,7 @@
 from src.webscraper.WebScraper import WebScraper
 from src.core.utils import TEAM_ODDS, TEAM_NAME
 
+
 class Sportsbet(WebScraper):
     def __init__(self, driver=None, hidden=False):
         super().__init__(driver, hidden)
