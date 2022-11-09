@@ -25,6 +25,7 @@ class Betfairback(WebScraper):
         self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12487677", name_index=-1)
         self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12537966", name_index=-1)
         self.scrape("https://www.betfair.com.au/exchange/plus/tennis/competition/12537720", name_index=-1)
+        self.scrape("https://www.betfair.com.au/exchange/plus/ice-hockey/competition/12300973")
         self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
