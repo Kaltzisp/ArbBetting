@@ -1,57 +1,22 @@
 from src.webscraper.WebScraper import WebScraper
-import time
-import re
-import logging
+from src.core.utils import TEAM_ODDS, TEAM_NAME
 
 
 class Playup(WebScraper):
     def __init__(self, driver=None, hidden=False):
         super().__init__(driver, hidden)
-        self.team_mapping = {
-            'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',
-            'CTBC Flying Oyster': 'CFO', 'T1': 'T1', 'Edward Gaming': 'EDG',
-            'Top Esports': 'TES', 'DWG KIA': 'DK', 'GAM Esports': 'GAM',
-            '100 Thieves': '100', 'Cloud9': 'C9', 'JD Gaming': 'JDG',
-            'Rogue': 'RGE', 'Gen.G': 'GEN', 'Saigon Buffalo': 'SGB',
-            'LOUD': 'LLL', 'JD Gaming': 'JDG', 'DRX': 'DRX', 'Evil Geniuses': 'EG',
-            'Royal Never Give Up': 'RNG', 'Fnatic': 'FNC', 'GAM Sports': 'GAM'
-        }
+        self.no_markets = r"There are currently no active markets."
+
+    def get_odds(self):
+        return [float(i) for i in self.find(rf"<div>{TEAM_ODDS}<\/div>")]
+
+    def get_teams(self):
+        return self.find(rf"md:text-base\">{TEAM_NAME} <\/div>")
 
     def scrape_data(self):
-        total_odds = []
-        total_teams = []
-
-        try:
-            link = "https://www.playup.com.au/betting/sports/mixed-martial-arts/ufc"
-            self.driver.get(link)
-            time.sleep(3)
-            odds = re.findall('''<div>(\d+\.\d+)<\/div>''', self.driver.page_source)
-            teams = [name.split(' ')[1] for name in re.findall('''pb-1 text-sm md:text-base">([\w\.\'\- ]*) <''', self.driver.page_source)]
-            assert(len(teams) == len(odds))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('UFC import failed')
-        total_odds += odds
-        total_teams += teams
-
-        try:
-            link = "https://www.playup.com.au/betting/sports/basketball/nba"
-            self.driver.get(link)
-            time.sleep(3)
-            odds = [float(i) for i in re.findall('''<div>(\d+\.\d+)<\/div>''', self.driver.page_source)]
-            teams = re.findall('''pb-1 text-sm md:text-base">([\w\.\'\- ]*) <''', self.driver.page_source)
-            assert(len(teams) == len(odds))
-        except Exception as e:
-            odds = []
-            teams = []
-            logging.exception(e)
-            logging.info('NBA import failed')
-        total_odds += odds
-        total_teams += teams
-
-        self.data = [(total_teams[i], total_odds[i]) for i in range(len(total_teams))]
+        self.scrape("https://www.playup.com.au/betting/sports/mixed-martial-arts/ufc", name_index=-1)
+        self.scrape("https://www.playup.com.au/betting/sports/basketball/nba")
+        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":
