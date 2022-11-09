@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 import time
 
 class Topsport(WebScraper):
-    def __init__(self, driver, hidden):
+    def __init__(self, driver=None, hidden=False):
         super().__init__(driver, hidden)
         self.team_mapping = {
             'MAD Lions': "MAD", 'DetonatioN FM': 'DFM', 'G2 Esports': 'G2',

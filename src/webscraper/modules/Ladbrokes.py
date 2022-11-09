@@ -4,7 +4,7 @@ import logging
 
 
 class Ladbrokes(WebScraper):
-    def __init__(self, driver, hidden):
+    def __init__(self, driver=None, hidden=False):
         super().__init__(driver, hidden)
 
     def scrape_data(self):

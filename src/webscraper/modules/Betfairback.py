@@ -3,7 +3,7 @@ from src.core.utils import TEAM_ODDS, TEAM_NAME
 
 
 class Betfairback(WebScraper):
-    def __init__(self, driver, hidden):
+    def __init__(self, driver=None, hidden=False):
         super().__init__(driver, hidden)
         self.no_markets = r"There are no events to be displayed"
 
