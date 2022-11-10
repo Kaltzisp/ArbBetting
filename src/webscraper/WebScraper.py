@@ -57,7 +57,7 @@ class WebScraper():
             if self.find(self.no_markets):
                 time.sleep(0.5)
                 odds = self.get_odds()
-                break
+                # break
         return odds
 
     # Scrape function using get_odds and get_teams.
@@ -69,12 +69,15 @@ class WebScraper():
             if name_index is not None:
                 teams = [team.split(" ")[name_index] for team in teams]
             teams = [re.sub(",", "", team) for team in teams]
-            assert(len(odds) == len(teams))
+            assert len(odds) == len(teams), "Scraping encountered errors."
+            assert len(odds) > 0, "No odds found"
             self.total_odds += odds
             self.total_teams += teams
         except Exception as e:
             logging.exception(e)
             logging.info(url)
+            print("Import failed from " + url)
+            print(e)
 
     # Write odds to csv file.
     def write_to_csv(self):

@@ -16,6 +16,10 @@ class Sportsbet(WebScraper):
     def scrape_data(self):
         self.scrape("https://www.sportsbet.com.au/betting/ufc-mma", name_index=-1)
         self.scrape("https://www.sportsbet.com.au/betting/basketball-us")
+        self.scrape("https://www.sportsbet.com.au/betting/tennis/atp-bratislava-challenger", name_index=-1)
+        self.scrape("https://www.sportsbet.com.au/betting/tennis/atp-roanne-challenger", name_index=-1)
+        self.scrape("https://www.sportsbet.com.au/betting/tennis/wta-colina-125k", name_index=-1)
+        self.scrape("https://www.sportsbet.com.au/betting/ice-hockey-us")
         self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
