@@ -14,7 +14,7 @@ class Bluebet(WebScraper):
         return self.find(rf"Typography-noWrap\">{TEAM_NAME}<\/h2>")
 
     def scrape_data(self):
-        self.scrape("https://www.bluebet.com.au/sports/Rugby-League/102/World/World-Cup-2022-Matches/40028")
+        self.scrape("https://www.bluebet.com.au/sports/Rugby-Union/105/World/Rugby-Union-Internationals/38823")
         self.scrape("https://www.bluebet.com.au/sports/Basketball/107/United-States-of-America/NBA-Matches/39251")
         self.scrape("https://www.bluebet.com.au/sports/American-Football/108/United-States-of-America/NFL-Matches/37249")
         self.scrape("https://www.bluebet.com.au/sports/Tennis/104/France/Open-International-De-Tennis-De-Roanne/114907", name_index=-1)

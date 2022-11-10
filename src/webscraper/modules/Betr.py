@@ -14,6 +14,7 @@ class Betr(WebScraper):
         return self.find(rf"OddsButton_priceType__ROL\+V\">{TEAM_NAME}<")
 
     def scrape_data(self):
+        self.scrape("https://betr.com.au/sportsbook#/sport/6/competition/1000894/1005021")
         self.scrape("https://betr.com.au/sportsbook#/sport/9/competition/1000226/1000520", name_index=-1)
         self.scrape("https://betr.com.au/sportsbook#/sport/11/competition/1000965/1006008", name_index=-1)
         self.scrape("https://betr.com.au/sportsbook#/sport/11/competition/1000974/1006033", name_index=-1)
