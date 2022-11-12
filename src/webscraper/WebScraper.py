@@ -1,32 +1,29 @@
 import re
 import time
-import logging
 from abc import abstractmethod
 import pandas as pd
 from datetime import datetime
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from src.core.utils import log
 
 
 class WebScraper():
     def __init__(self, driver, hidden):
         self.source = self.__class__.__name__
+        self.data = []
         self.total_odds = []
         self.total_teams = []
-        self.odds = []
-        self.teams = []
-        self.data = []
         if driver is None:
-            options = webdriver.ChromeOptions()
+            driver_options = webdriver.ChromeOptions()
             if hidden:
-                options.add_argument("--headless")
+                driver_options.add_argument("--headless")
+                log.info(f"{self.source}: Running WebScraper...")
             else:
-                options.add_argument("--window-size=400,1080")
-            options.add_experimental_option("excludeSwitches", ["enable-automation"])
-            options.add_experimental_option("excludeSwitches", ["enable-logging"])
-            options.add_experimental_option('useAutomationExtension', False)
-            driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-            driver.implicitly_wait(10)
+                driver_options.add_argument("--window-size=400,1080")
+            driver_options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
+            driver_options.add_experimental_option('useAutomationExtension', False)
+            driver = webdriver.Chrome(ChromeDriverManager().install(), options=driver_options)
         self.driver = driver
 
     @abstractmethod
@@ -48,36 +45,28 @@ class WebScraper():
 
     # Sleeps web driver until odds are loaded, or until no_market message is found.
     def await_odds(self, timeout):
-        while timeout > 0:
-            odds = self.get_odds()
-            time.sleep(0.5)
+        odds = self.get_odds()
+        while len(odds) == 0 and timeout > 0:
             timeout -= 0.5
-            if odds:
-                break
-            if self.find(self.no_markets):
-                time.sleep(0.5)
-                odds = self.get_odds()
-                # break
+            time.sleep(0.5)
+            odds = self.get_odds()
         return odds
 
     # Scrape function using get_odds and get_teams.
-    def scrape(self, url, name_index=None, timeout=5):
-        try:
-            self.driver.get(url)
-            odds = self.await_odds(timeout)
-            teams = self.get_teams()
-            if name_index is not None:
-                teams = [team.split(" ")[name_index] for team in teams]
+    def scrape(self, url, name_index=None, timein=0, timeout=5):
+        self.driver.get(url)
+        odds = self.await_odds(timeout)
+        teams = self.get_teams()
+        if name_index is not None:
+            teams = [team.split(" ")[name_index] for team in teams]
             teams = [re.sub(",", "", team) for team in teams]
-            assert len(odds) == len(teams), "Scraping encountered errors."
-            assert len(odds) > 0, "No odds found"
+        if len(odds) == 0:
+            log.error(f"{self.source}: No odds found.\n{url}")
+        elif len(odds) != len(teams):
+            log.error(f"{self.source}: Scraping failed.\n{url}")
+        else:
             self.total_odds += odds
             self.total_teams += teams
-        except Exception as e:
-            logging.exception(e)
-            logging.info(url)
-            print("Import failed from " + url)
-            print(e)
 
     # Write odds to csv file.
     def write_to_csv(self):
