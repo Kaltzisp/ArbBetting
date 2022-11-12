@@ -70,6 +70,7 @@ class WebScraper():
                 teams = [team.split(" ")[name_index] for team in teams]
             teams = [re.sub(",", "", team) for team in teams]
             assert len(odds) == len(teams), "Scraping encountered errors."
+            assert len(odds) % 2 == 0, "Uneven odds/teams"
             assert len(odds) > 0, "No odds found"
             self.total_odds += odds
             self.total_teams += teams
@@ -82,7 +83,6 @@ class WebScraper():
     # Write odds to csv file.
     def write_to_csv(self):
         self.scrape_data()
-        assert(len(self.data) % 2 == 0)
         data_df = pd.DataFrame({"Team 1": [sorted(self.data[i:i + 2])[0][0] for i in range(0, len(self.data), 2)],
                                 "Team 2": [sorted(self.data[i:i + 2])[1][0] for i in range(0, len(self.data), 2)],
                                 "Odds 1": [sorted(self.data[i:i + 2])[0][1] for i in range(0, len(self.data), 2)],
