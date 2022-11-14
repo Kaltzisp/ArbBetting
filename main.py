@@ -7,5 +7,5 @@ if __name__ == "__main__":
     scrape_odds(hidden=True)
     combine_odds()
     list_arbs.main()
-    list_bonuses.main(bonus_source="Bluebet", bonus_amount=100)
-    list_mugs.main(mug_source="Betr", mug_amount=100)
+    list_bonuses.main(bonus_source="Betr", bonus_amount=300)
+    list_mugs.main(mug_source="Rivalry", mug_amount=100)

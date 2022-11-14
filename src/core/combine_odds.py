@@ -20,9 +20,12 @@ def combine_odds():
             df_1 = df[["Game", "Team 1", "Team 2", "Source", "Odds 1", "Time"]]
             df = odds_data[source_2]
             df_2 = df[["Game", "Team 1", "Team 2", "Source", "Odds 2", "Time"]]
-            cross = df_1.merge(df_2, how="outer", on=["Game", "Team 1", "Team 2"])
-            odds_df = pd.concat([odds_df, cross])
-            odds_df.dropna(inplace=True)
+            try:
+                cross = df_1.merge(df_2, how="outer", on=["Game", "Team 1", "Team 2"])
+                odds_df = pd.concat([odds_df, cross])
+                odds_df.dropna(inplace=True)
+            except:
+                pass
 
     odds_df = odds_df.rename(columns={
         "Source_x": "Source 1",
