@@ -64,7 +64,7 @@ class WebScraper():
             log.error(f"{self.source}: No odds found.\n{url}")
         elif len(odds) != len(teams):
             log.error(f"{self.source}: Scraping failed.\n{url}")
-        elif len(odds) % 2 == 0:
+        elif len(odds) % 2 != 0:
             log.error(f"{self.source}: Uneven number of odds.\n{url}")
         else:
             self.total_odds += odds
