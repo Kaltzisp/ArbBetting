@@ -68,6 +68,17 @@ class WebScraper():
             self.total_odds += odds
             self.total_teams += teams
 
+    def scrape_all(self, comps_url, url, name_index=None, timein=0, timeout=5):
+        self.driver.get(comps_url)
+        competitions = self.get_comps()
+        while len(competitions) == 0 and timeout > 0:
+            timeout -= 0.5
+            time.sleep(0.5)
+            competitions = self.get_comps()
+        for comp in competitions:
+            comp = url.replace("%URL%", comp)
+            self.scrape(comp, name_index, timein, timeout)
+
     # Write odds to csv file.
     def write_to_csv(self):
         self.scrape_data()

@@ -13,12 +13,17 @@ class Betr(WebScraper):
     def get_teams(self):
         return self.find(rf"OddsButton_priceType__ROL\+V\">{TEAM_NAME}<")
 
+    def get_comps(self):
+        return self.find(r"href=\"#\/(sport\/[0-9]+\/competition\/[0-9]+\/[0-9]+)")
+
     def scrape_data(self):
+        self.scrape_all(
+            comps_url="https://betr.com.au/sportsbook#/sport/11/all",
+            url="https://betr.com.au/sportsbook#/%URL%",
+            name_index=-1
+        )
         self.scrape("https://betr.com.au/sportsbook#/sport/6/competition/1000894/1005021")
         self.scrape("https://betr.com.au/sportsbook#/sport/9/competition/1000226/1000520", name_index=-1)
-        self.scrape("https://betr.com.au/sportsbook#/sport/11/competition/1000965/1006008", name_index=-1)
-        self.scrape("https://betr.com.au/sportsbook#/sport/11/competition/1000974/1006033", name_index=-1)
-        self.scrape("https://betr.com.au/sportsbook#/sport/11/competition/1000964/1006007", name_index=-1)
         self.scrape("https://betr.com.au/sportsbook#/sport/12/competition/1000492/1001891")
         self.scrape("https://betr.com.au/sportsbook#/sport/13/competition/1000649/1003042")
         self.scrape("https://betr.com.au/sportsbook#/sport/23/competition/1000227/1000521", name_index=-1)
