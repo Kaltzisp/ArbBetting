@@ -17,9 +17,9 @@ def combine_odds():
     for source_1 in odds_data:
         for source_2 in odds_data:
             df = odds_data[source_1]
-            df_1 = df[["Game", "Team 1", "Team 2", "Source", "Odds 1", "Time"]]
+            df_1 = df[["Game", "Team 1", "Team 2", "Source", "Odds 1", "Link", "Time"]]
             df = odds_data[source_2]
-            df_2 = df[["Game", "Team 1", "Team 2", "Source", "Odds 2", "Time"]]
+            df_2 = df[["Game", "Team 1", "Team 2", "Source", "Odds 2", "Link", "Time"]]
             try:
                 cross = df_1.merge(df_2, how="outer", on=["Game", "Team 1", "Team 2"])
                 odds_df = pd.concat([odds_df, cross])
@@ -32,6 +32,8 @@ def combine_odds():
         "Source_y": "Source 2",
         "Time_x": "Time 1",
         "Time_y": "Time 2",
+        "Link_x": "Link 1",
+        "Link_y": "Link 2"
     })
 
     # Calculating probability and arbitrage.

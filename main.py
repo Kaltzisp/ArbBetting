@@ -4,8 +4,8 @@ from src.core import list_arbs, list_bonuses, list_mugs
 
 
 if __name__ == "__main__":
-    scrape_odds(hidden=False)
-    combine_odds()
+    # scrape_odds(hidden=False)
+    # combine_odds()
     list_arbs.main()
     list_bonuses.main(bonus_source="Betr", bonus_amount=328.50)
     list_mugs.main(mug_source="Rivalry", mug_amount=100)

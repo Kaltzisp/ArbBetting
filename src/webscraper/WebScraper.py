@@ -12,7 +12,7 @@ import numpy as np
 class WebScraper():
     def __init__(self, driver, hidden):
         self.source = self.__class__.__name__
-        self.data_dict = {'Team 1': [], 'Team 2': [], 'Odds 1': [], 'Odds 2': [], 'Link 1': [], 'Link 2': []}
+        self.data_dict = {'Team 1': [], 'Team 2': [], 'Odds 1': [], 'Odds 2': [], 'Link': []}
         self.total_odds = []
         self.total_teams = []
         if driver is None:
@@ -71,8 +71,7 @@ class WebScraper():
         else:
             self.total_odds += odds
             self.total_teams += teams
-            self.data_dict['Link 1'] += [url] * (len(odds) // 2)
-            self.data_dict['Link 2'] += [url] * (len(odds) // 2)
+            self.data_dict['Link'] += [url] * (len(odds) // 2)
 
     def scrape_all(self, comps_url, url, name_index=None, timein=0, timeout=5):
         self.driver.get(comps_url)
