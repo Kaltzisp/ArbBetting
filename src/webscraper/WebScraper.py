@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from src.core.utils import log
+from src.core.utils import log, TEAM_MAPPING
 
 
 class WebScraper():
@@ -89,6 +89,14 @@ class WebScraper():
                                 "Team 2": [sorted(self.data[i:i + 2])[1][0] for i in range(0, len(self.data), 2)],
                                 "Odds 1": [sorted(self.data[i:i + 2])[0][1] for i in range(0, len(self.data), 2)],
                                 "Odds 2": [sorted(self.data[i:i + 2])[1][1] for i in range(0, len(self.data), 2)]})
+
+        def apply_team_mapping(x):
+            if x in TEAM_MAPPING:
+                return TEAM_MAPPING[x]
+            return x
+        
+        data_df["Team 1"] = data_df["Team 1"].apply(lambda x: apply_team_mapping(x))
+        data_df["Team 2"] = data_df["Team 2"].apply(lambda x: apply_team_mapping(x))
 
         data_df["Source"] = self.source
 
