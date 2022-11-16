@@ -10,13 +10,13 @@ def main(source="Betr", amount=50):
     opp_df = opp_df[opp_df["NBA?"]].reset_index(drop=True)
     opp_df["Lay 1"] = opp_df["Odds 2"]/(opp_df["Odds 2"] - 1)
     opp_df["Lay 2"] = opp_df["Odds 1"]/(opp_df["Odds 1"] - 1)
-    opp_df["Probability 1"] = (1/opp_df["Lay 1"])
-    opp_df["Probability 2"] = (1/opp_df["Lay 2"])
+    opp_df["Probability 1"] = (1/opp_df["Lay 1"] + 1/opp_df["Odds 1"])/2
+    opp_df["Probability 2"] = (1/opp_df["Lay 2"] + 1/opp_df["Odds 2"])/2
     
     games_list = list(combinations([i for i in range(len(opp_df))], 3))
     multi_dict = {"Leg 1": [], "Leg 2": [], "Leg 3": [], "Odds 1": [], "Odds 2": [], "Odds 3": [], "Probability 1": [], "Probability 2": [], "Probability 3": []}
     for games in games_list:
-        rows = [opp_df.iloc[i] for i in range(3)]
+        rows = [opp_df.iloc[i] for i in games]
         for teams in list(product([1, 2], repeat=3)):
             for i, team in enumerate(teams):
                 multi_dict[f"Leg {i+1}"].append(rows[i][f"Team {team}"])
