@@ -16,7 +16,6 @@ class Boombet(WebScraper):
     def scrape_data(self):
         self.scrape("https://www.boombet.com.au/sport-menu/Sport/Mixed%20Martial%20Arts/UFC", name_index=-1)
         self.scrape("https://www.boombet.com.au/sport-menu/Sport/Basketball/US%20NBA%20Regular%20Season-22")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

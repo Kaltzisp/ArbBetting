@@ -16,7 +16,6 @@ class Rivalry(WebScraper):
     def scrape_data(self):
         self.scrape("https://www.rivalry.com/au/sports/mma-betting", name_index=-1)
         self.scrape("https://www.rivalry.com/au/sports/basketball-betting/3378-nba")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

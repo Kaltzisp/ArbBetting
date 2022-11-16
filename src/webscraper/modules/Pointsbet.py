@@ -17,8 +17,7 @@ class Pointsbet(WebScraper):
         self.scrape("https://pointsbet.com.au/sports/mma/UFC", name_index=-1)
         self.scrape("https://pointsbet.com.au/sports/basketball/NBA")
         self.scrape("https://pointsbet.com.au/sports/tennis/WTA-Colina-125K", name_index=-1)
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
-
+        
 
 if __name__ == "__main__":
     scrape_obj = Pointsbet()

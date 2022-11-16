@@ -33,7 +33,6 @@ class Betfairlay(WebScraper):
         self.scrape("https://www.betfair.com.au/exchange/plus/american-football/competition/12282733")
         self.scrape("https://www.betfair.com.au/exchange/plus/mixed-martial-arts/competition/10581356", name_index=-1)
         self.scrape("https://www.betfair.com.au/exchange/plus/ice-hockey/competition/12300973")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

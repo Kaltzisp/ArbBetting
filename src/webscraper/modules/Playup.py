@@ -16,8 +16,7 @@ class Playup(WebScraper):
     def scrape_data(self):
         self.scrape("https://www.playup.com.au/betting/sports/mixed-martial-arts/ufc", name_index=-1)
         self.scrape("https://www.playup.com.au/betting/sports/basketball/nba")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
-
+        
 
 if __name__ == "__main__":
     scrape_obj = Playup()

@@ -16,7 +16,6 @@ class Elitebet(WebScraper):
     def scrape_data(self):
         self.scrape("https://www.elitebet.com.au/sports/Basketball/NBA/BASK")
         self.scrape("https://www.elitebet.com.au/sports/Mixed_Martial_Arts/MMA", name_index=-1)
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

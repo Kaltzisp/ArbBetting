@@ -22,7 +22,6 @@ class Ladbrokes(WebScraper):
         self.scrape("https://www.ladbrokes.com.au/sports/tennis/bratislava-challenger", name_index=-1)
         self.scrape("https://www.ladbrokes.com.au/sports/tennis/roanne-challenger", name_index=-1)
         self.scrape("https://www.ladbrokes.com.au/sports/ice-hockey/usa/nhl")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

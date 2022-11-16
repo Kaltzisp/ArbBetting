@@ -29,7 +29,6 @@ class Betr(WebScraper):
         self.scrape("https://betr.com.au/sportsbook#/sport/13/competition/1000649/1003042")
         self.scrape("https://betr.com.au/sportsbook#/sport/23/competition/1000227/1000521", name_index=-1)
         self.scrape("https://betr.com.au/sportsbook#/sport/1006/competition/1000623/1002652")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

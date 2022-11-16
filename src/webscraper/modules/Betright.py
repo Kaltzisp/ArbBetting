@@ -16,7 +16,6 @@ class Betright(WebScraper):
     def scrape_data(self):
         self.scrape("https://www.betright.com.au/sports/Martial-Arts/128", name_index=-1)
         self.scrape("https://www.betright.com.au/sports/Basketball/United-States-of-America/NBA/54")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

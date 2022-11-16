@@ -17,7 +17,7 @@ class Betr(HorseWebScraper):
 
     def scrape_data(self):
         self.scrape("https://betr.com.au/racebook#/racing/2022-11-12/meeting/1006247/race/1076563")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
+
 
 
 if __name__ == "__main__":
