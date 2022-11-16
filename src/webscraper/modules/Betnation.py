@@ -18,7 +18,6 @@ class Betnation(WebScraper):
         self.scrape("https://betnation.com.au/sports/american-football/nfl-1000325")
         self.scrape("https://betnation.com.au/sports/martial-arts-ufc/ultimate-fighting-championship-1000311")
         self.scrape("https://betnation.com.au/sports/tennis/open-de-roanne-auvergne-rhone-alpes-1000792", name_index=0)
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

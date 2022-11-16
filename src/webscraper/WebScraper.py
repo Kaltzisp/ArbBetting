@@ -6,12 +6,13 @@ from datetime import datetime
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from src.core.utils import log, TEAM_MAPPING
+import numpy as np
 
 
 class WebScraper():
     def __init__(self, driver, hidden):
         self.source = self.__class__.__name__
-        self.data = []
+        self.data_dict = {'Team 1': [], 'Team 2': [], 'Odds 1': [], 'Odds 2': [], 'Link': []}
         self.total_odds = []
         self.total_teams = []
         if driver is None:
@@ -70,6 +71,7 @@ class WebScraper():
         else:
             self.total_odds += odds
             self.total_teams += teams
+            self.data_dict['Link'] += [url] * (len(odds) // 2)
 
     def scrape_all(self, comps_url, url, name_index=None, timein=0, timeout=5):
         self.driver.get(comps_url)
@@ -85,18 +87,25 @@ class WebScraper():
     # Write odds to csv file.
     def write_to_csv(self):
         self.scrape_data()
-        data_df = pd.DataFrame({"Team 1": [sorted(self.data[i:i + 2])[0][0] for i in range(0, len(self.data), 2)],
-                                "Team 2": [sorted(self.data[i:i + 2])[1][0] for i in range(0, len(self.data), 2)],
-                                "Odds 1": [sorted(self.data[i:i + 2])[0][1] for i in range(0, len(self.data), 2)],
-                                "Odds 2": [sorted(self.data[i:i + 2])[1][1] for i in range(0, len(self.data), 2)]})
 
-        def apply_team_mapping(x):
-            if x in TEAM_MAPPING:
-                return TEAM_MAPPING[x]
-            return x
-        
-        data_df["Team 1"] = data_df["Team 1"].apply(lambda x: apply_team_mapping(x))
-        data_df["Team 2"] = data_df["Team 2"].apply(lambda x: apply_team_mapping(x))
+        self.data_dict["Team 1"] += self.total_teams[::2]
+        self.data_dict["Team 2"] += self.total_teams[1::2]
+        self.data_dict["Odds 1"] += self.total_odds[::2]
+        self.data_dict["Odds 2"] += self.total_odds[1::2]
+        data_df = pd.DataFrame(self.data_dict)
+
+        data_df["Team 1"] = data_df["Team 1"].replace(TEAM_MAPPING)
+        data_df["Team 2"] = data_df["Team 2"].replace(TEAM_MAPPING)
+
+        data_df["Team 1 Temp"] = data_df[["Team 1", "Team 2"]].min(axis=1)
+        data_df["Team 2 Temp"] = data_df[["Team 1", "Team 2"]].max(axis=1)
+        data_df["Odds 1 Temp"] = np.where(data_df["Team 1 Temp"] == data_df["Team 1"], data_df["Odds 1"], data_df["Odds 2"])
+        data_df["Odds 2 Temp"] = np.where(data_df["Team 2 Temp"] == data_df["Team 2"], data_df["Odds 2"], data_df["Odds 1"])
+        data_df["Team 1"] = data_df["Team 1 Temp"]
+        data_df["Team 2"] = data_df["Team 2 Temp"]
+        data_df["Odds 1"] = data_df["Odds 1 Temp"]
+        data_df["Odds 2"] = data_df["Odds 2 Temp"]
+        data_df.drop(columns=["Team 1 Temp", "Team 2 Temp", "Odds 1 Temp", "Odds 2 Temp"], inplace=True)
 
         data_df["Source"] = self.source
 

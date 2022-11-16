@@ -16,8 +16,7 @@ class Picklebet(WebScraper):
     def scrape_data(self):
         self.scrape("https://picklebet.com/sports/mma/betting/?page=1&tab=next", name_index=0)
         self.scrape("https://picklebet.com/sports/basketball/betting?page=1&tab=next&tour=BASKETBALL%3ANBA")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
-
+        
 
 if __name__ == "__main__":
     scrape_obj = Picklebet()

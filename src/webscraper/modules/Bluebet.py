@@ -20,7 +20,6 @@ class Bluebet(WebScraper):
         self.scrape("https://www.bluebet.com.au/sports/Tennis/104/France/Open-International-De-Tennis-De-Roanne/114907", name_index=-1)
         self.scrape("https://www.bluebet.com.au/sports/Tennis/104/Slovakia/Peugeot-Slovak-Open-2/114896", name_index=-1)
         self.scrape("https://www.bluebet.com.au/sports/Ice-Hockey/111")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

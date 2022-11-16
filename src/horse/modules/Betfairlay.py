@@ -20,7 +20,6 @@ class Betfairlay(HorseWebScraper):
 
     def scrape_data(self):
         self.scrape("https://www.betfair.com.au/exchange/plus/horse-racing/market/1.206304769")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

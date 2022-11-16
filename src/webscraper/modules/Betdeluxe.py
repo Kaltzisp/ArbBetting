@@ -17,7 +17,6 @@ class Betdeluxe(WebScraper):
         self.scrape("https://www.betdeluxe.com.au/sports/basketball/nba-1000059")
         self.scrape("https://www.betdeluxe.com.au/sports/american-football/nfl-1000026")
         self.scrape("https://www.betdeluxe.com.au/sports/boxing/professional-boxing-1000112", name_index=0, timeout=20)
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

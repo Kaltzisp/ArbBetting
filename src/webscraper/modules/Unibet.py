@@ -19,7 +19,6 @@ class Unibet(WebScraper):
         self.scrape("https://www.unibet.com.au/betting/sports/filter/tennis/challenger/bratislava/all/matches", name_index=0)
         self.scrape("https://www.unibet.com.au/betting/sports/filter/tennis/wta/colina/all/matches", name_index=0)
         self.scrape("https://www.unibet.com.au/betting/sports/filter/ufc_mma/ufc/all/matches", name_index=0)
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

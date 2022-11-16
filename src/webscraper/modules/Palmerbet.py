@@ -16,7 +16,6 @@ class Palmerbet(WebScraper):
     def scrape_data(self):
         self.scrape("https://www.palmerbet.com/sports/martial-arts/Ultimate%20Fighting%20Championship/7ee8e39f-6bec-45c1-b484-28023ce0dfce", name_index=0)
         self.scrape("https://www.palmerbet.com/sports/basketball/NBA/b26e5acc-02ff-4b22-ae69-0491fbd2500e")
-        self.data = [(self.total_teams[i], self.total_odds[i]) for i in range(len(self.total_teams))]
 
 
 if __name__ == "__main__":

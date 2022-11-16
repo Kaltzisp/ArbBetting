@@ -12,7 +12,7 @@ def main():
     for i in range(len(opp_df)):
         row = opp_df.iloc[i]
         for j in range(3):
-            sub_row = row[["Team 1", "Team 2", "Odds 1", "Odds 2", "Source 1", "Source 2", "Time 1", "Time 2", "Game", "Implied Probability"]].copy()
+            sub_row = row[["Team 1", "Team 2", "Odds 1", "Odds 2", "Source 1", "Source 2", "Link 1", "Link 2", "Time 1", "Time 2", "Game", "Implied Probability"]].copy()
             if j == 0:
                 amount_1 = round(sub_row["Odds 2"] * 100)
                 amount_2 = round(sub_row["Odds 1"] * 100)
