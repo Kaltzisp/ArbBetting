@@ -23,6 +23,8 @@ Update conda environment:
 
 To generate odds data and calculate arbs:  
 
+`conda activate arbet`
+
 `python main.py`
 
 
