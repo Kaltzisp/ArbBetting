@@ -1,61 +1,49 @@
 # ArbBetting
 
-Python based arbitrage finder for betting.
+Python based arbitrage finder for Australian betting.
 
 ## Setup
 
-Download and use VSCode and Anaconda:
+We recommend installing VSCode and Miniconda for use as IDE and environment manager:
 
-https://code.visualstudio.com/
+- https://code.visualstudio.com/
+- https://docs.conda.io/en/latest/miniconda.html
 
-https://www.anaconda.com/products/distribution
+### You can set up your conda environment as follows:
 
-Create new conda environment:  
-`conda create --name your_env python`
+Create new conda environment named "arbet":
+`conda env create -f environment.yml`
 
-Install dependencies from environment.yml:  
-`conda activate your_env`  
-`conda env update --file environment.yml --prune`
+Update conda environment:
+`conda activate arbet`
+`conda env update -f environment.yml --prune`
 
-Create folders in directory
-`data`
-`logs`
-
-To generate combined odds data:  
+To generate odds data and calculate arbs:  
 `python main.py`
 
 
 ## Git Help
 
-Creates your own branch from your current branch:
+Creates a new local branch, copying the current working branch:
+`git branch branch_name`
 
-`git branch name`
-
-
-Changes your current branch:
-
-`git checkout name`
+Changes your local working branch:
+`git checkout branch_name`
 
 Pulls changes from master into your own branch:
-
 `git pull origin master`
 
-Push changes from local onto your branch:
-
-`git add .`
-
-`git commit -m "message"`
-
+Push changes from local branch to corresponding remote branch:
+`git add files_to_commit`
+`git commit -m "commit_message"`
 `git push`
 
-Gets all metadata changes from Git (new branch info):
-
+Gets  metadata changes from Git (new branch info):
 `git fetch`
 
-Look at current branch name and modified files
-
+Shows current working branch and modified files:
 `git status`
 
-Deleted the branch (after you merge with a pull request)
+Deletes local branch (after you merge to master with a pull request):
+`git branch -D branch_name`
 
-`git branch -D name`
