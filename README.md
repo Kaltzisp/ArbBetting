@@ -54,7 +54,7 @@ Push changes from local branch to corresponding remote branch:
 
 Gets  metadata changes from Git (new branch info):
 
-`git fetch`
+`git fetch --prune`
 
 Shows current working branch and modified files:
 
