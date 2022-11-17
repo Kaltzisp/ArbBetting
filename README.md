@@ -1,6 +1,6 @@
 # ArbBetting
 
-Python based arbitrage finder for Australian betting.
+Python based arbitrage finder for betting on Australian bookmakers.
 
 ## Setup
 
