@@ -21,14 +21,14 @@ Update conda environment:
 
 `conda env update -f environment.yml --prune`
 
-To generate odds data and calculate arbs:  
+## To generate odds data and calculate arbs:
 
 `conda activate arbet`
 
 `python main.py`
 
 
-## Git Help
+## Git Help:
 
 Creates a new local branch, copying the current working branch:
 
