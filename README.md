@@ -2,6 +2,7 @@
 
 Python based arbitrage finder for betting on Australian bookmakers.
 
+
 ## Setup
 
 We recommend installing VSCode and Miniconda for use as IDE and environment manager:
