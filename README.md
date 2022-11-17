@@ -2,8 +2,6 @@
 
 Python based arbitrage finder for betting on Australian bookmakers.
 
----
-
 
 ## Setup
 
