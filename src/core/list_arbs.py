@@ -8,7 +8,7 @@ def main(short=False):
 
     if short:
         arb_df = total_df[total_df["Arbitrage %"] > 0]
-        arb_df = arb_df[["Source 1", "Source 2", "Odds 1", "Team 1", "Team 2", "Odds 2", "Arbitrage %", "Link 1", "Link 2"]]
+        arb_df = arb_df[["Source 1", "Team 1", "Odds 1", "Source 2", "Team 2", "Odds 2", "Link 1", "Link 2", "Arbitrage %"]]
         arb_df.to_csv("table_arb.csv", index=False)
     else:
         opp_df = total_df[total_df["Implied Probability"] < 1]
