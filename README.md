@@ -2,6 +2,8 @@
 
 Python based arbitrage finder for betting on Australian bookmakers.
 
+---
+
 
 ## Setup
 
@@ -9,6 +11,7 @@ We recommend installing VSCode and Miniconda for use as IDE and environment mana
 
 - https://code.visualstudio.com/
 - https://docs.conda.io/en/latest/miniconda.html
+
 
 ### You can set up your conda environment as follows:
 
