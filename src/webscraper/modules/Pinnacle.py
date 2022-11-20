@@ -8,10 +8,10 @@ class Pinnacle(WebScraper):
         self.no_markets = r"There are currently no active markets."
 
     def get_odds(self):
-        return [float(i) for i in self.find(rf"style_price__15SlF\">{TEAM_ODDS}<\/span>")]
+        return [float(i) for i in self.find(rf"style_price__[\w]+\">{TEAM_ODDS}<\/span>")]
 
     def get_teams(self):
-        return self.find(rf"ellipsis event-row-participant style_participant__H8-ku\">{TEAM_NAME}<\/span>")
+        return self.find(rf"ellipsis event-row-participant style_participant__[\w-]+\">{TEAM_NAME}<\/span>")
 
     def scrape_data(self):
         self.scrape("https://www.pinnacle.com/en/basketball/nba/matchups/#period:0:moneyline")
