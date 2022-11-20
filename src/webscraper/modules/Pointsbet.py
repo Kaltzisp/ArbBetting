@@ -16,7 +16,14 @@ class Pointsbet(WebScraper):
     def scrape_data(self):
         self.scrape("https://pointsbet.com.au/sports/mma/UFC", name_index=-1)
         self.scrape("https://pointsbet.com.au/sports/basketball/NBA")
-        self.scrape("https://pointsbet.com.au/sports/tennis/WTA-Colina-125K", name_index=-1)
+        self.scrape("https://pointsbet.com.au/sports/american-football/NFL")
+        self.scrape("https://pointsbet.com.au/sports/tennis/ATP-Turin", name_index=-1)
+        self.scrape("https://pointsbet.com.au/sports/tennis/ATP-Sao-Leopoldo-Challenger", name_index=-1)
+        self.scrape("https://pointsbet.com.au/sports/tennis/ATP-Helsinki-Challenger", name_index=-1)
+        self.scrape("https://pointsbet.com.au/sports/tennis/ATP-Champaign-Challenger", name_index=-1)
+        self.scrape("https://pointsbet.com.au/sports/tennis/ATP-Yokkaichi-Challenger", name_index=-1)
+        self.scrape("https://pointsbet.com.au/sports/tennis/Copa-Faulcombridge-Qualification", name_index=-1)
+        self.scrape("https://pointsbet.com.au/sports/tennis/ATP-Andria-Challenger-Qualifiers", name_index=-1)
         
 
 if __name__ == "__main__":
