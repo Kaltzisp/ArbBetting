@@ -18,7 +18,8 @@ class Tab(WebScraper):
         return teams
 
     def scrape_data(self):
-        self.scrape("https://www.tab.com.au/sports/betting/Basketball/competitions/NBA")
+        # self.scrape("https://www.tab.com.au/sports/betting/Basketball/competitions/NBA")
+        self.scrape("https://www.tab.com.au/sports/betting/Soccer/competitions/2022%20World%20Cup%20Matches")
 
 
 if __name__ == "__main__":

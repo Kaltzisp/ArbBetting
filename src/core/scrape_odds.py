@@ -13,13 +13,15 @@ if not path.isdir('src/webscraper/logs'):
     mkdir('src/webscraper/logs')
 logging.basicConfig(filename=f'src/webscraper/logs/{now}.log', encoding='utf-8', level=logging.INFO)
 
-def scrape_odds(hidden=False):
+
+def scrape_odds(hidden=False, site_list=None):
     # Setting selenium driver.
     driver = None
 
     # Getting module list.
     site_paths = glob(path.join("src", "webscraper", "modules", "*.py"))
-    site_list = [path.basename(site_path)[0:-3] for site_path in site_paths]
+    if site_list is None:
+        site_list = [path.basename(site_path)[0:-3] for site_path in site_paths]
     modules = [getattr(import_module("src.webscraper.modules." + module), module) for module in site_list]
 
     # Clearing data files
