@@ -55,14 +55,14 @@ class WebScraper():
         return odds
 
     # Scrape function using get_odds and get_teams.
-    def scrape(self, url, name_index=None, timein=0.5, timeout=5):
+    def scrape(self, url, name_index=None, timein=0.5, timeout=5, silent=False):
         self.driver.get(url)
         odds = self.await_odds(timein, timeout)
         teams = self.get_teams()
         if name_index is not None:
             teams = [team.split(" ")[name_index] for team in teams]
             teams = [re.sub(",", "", team) for team in teams]
-        if len(odds) == 0:
+        if len(odds) == 0 and not silent:
             log.error(f"{self.source}: No odds found.\n{url}")
         elif len(odds) != len(teams):
             log.error(f"{self.source}: Scraping failed.\n{url}")
@@ -82,7 +82,7 @@ class WebScraper():
             competitions = self.get_comps()
         for comp in competitions:
             comp = url.replace("%URL%", comp)
-            self.scrape(comp, name_index, timein, timeout)
+            self.scrape(comp, name_index, timein, timeout, silent=True)
 
     # Write odds to csv file.
     def write_to_csv(self):
