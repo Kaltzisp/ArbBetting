@@ -14,9 +14,6 @@ class Ladbrokes(WebScraper):
         return self.find(rf"<span class=\"displayTitle\">{TEAM_NAME}<\/span>")
 
     def scrape_data(self):
-        self.scrape("https://www.ladbrokes.com.au/sports/rugby-union/international-matches")
-        self.scrape("https://www.ladbrokes.com.au/sports/mma/ufc-fight-night-spivak-vs-lewis", name_index=-1)
-        self.scrape("https://www.ladbrokes.com.au/sports/mma/ufc-282-teixeira-vs-prochazka", name_index=-1)
         self.scrape("https://www.ladbrokes.com.au/sports/basketball/usa/nba")
         self.scrape("https://www.ladbrokes.com.au/sports/ice-hockey/usa/nhl")
 

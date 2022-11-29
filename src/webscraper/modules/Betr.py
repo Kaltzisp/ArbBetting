@@ -23,7 +23,6 @@ class Betr(WebScraper):
             timein=1,
             name_index=-1
         )
-        self.scrape("https://betr.com.au/sportsbook#/sport/6/competition/1000894/1005021")
         self.scrape("https://betr.com.au/sportsbook#/sport/9/competition/1000226/1000520", name_index=-1)
         self.scrape("https://betr.com.au/sportsbook#/sport/12/competition/1000492/1001891")
         self.scrape("https://betr.com.au/sportsbook#/sport/13/competition/1000649/1003042")

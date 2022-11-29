@@ -19,6 +19,11 @@ class Tab(WebScraper):
 
     def scrape_data(self):
         self.scrape("https://www.tab.com.au/sports/betting/Basketball/competitions/NBA")
+        self.scrape("https://www.tab.com.au/sports/betting/Boxing/competitions/Boxing")
+        self.scrape("https://www.tab.com.au/sports/betting/Tennis/competitions/Challenger/tournaments/Challenger%20Maia")
+        self.scrape("https://www.tab.com.au/sports/betting/Tennis/competitions/Challenger/tournaments/Challenger%20Andria")
+        self.scrape("https://www.tab.com.au/sports/betting/American%20Football/competitions/NFL")
+        self.scrape("https://www.tab.com.au/sports/betting/Tennis/competitions/Challenger/tournaments/Challenger%20Maspalomas")
 
 
 if __name__ == "__main__":

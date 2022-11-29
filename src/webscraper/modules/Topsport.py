@@ -14,7 +14,6 @@ class Topsport(WebScraper):
         return self.find(rf"<span>{TEAM_NAME} <\/span>")
 
     def scrape_data(self):
-        self.scrape("https://www.topsport.com.au/Sport/Mixed_Martial_Arts/UFC_Fight_Night_215_-_Main_Card/Matches", name_index=-1)
         self.scrape("https://www.topsport.com.au/Sport/Basketball/NBA_Matches/Matches")
 
 
