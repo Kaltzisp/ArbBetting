@@ -2,10 +2,28 @@ import numpy as np
 from itertools import combinations
 import sympy
 
-backs = np.array([1.45, 1.65, 1.62, 2.4, 3.9, 3.5, 5, 2.25])
-horses = [i for i in range(len(backs))]
-win_list = [[0] + list(i) for i in combinations(horses[1:], 2)]
-loss_list = [list(i) for i in combinations(horses[1:], 3)]
+team_1_odds = [2.9, 1.77, 1.19]
+team_2_odds = [1.42, 2.02, 4.50]
+
+game_1_odds = [2.9, 1.42]
+game_2_odds = [1.77, 2.02]
+game_3_odds = [1.19, 4.50]
+
+backs = []
+for o1 in game_1_odds:
+    for o2 in game_2_odds:
+        for o3 in game_3_odds:
+            backs.append(o1*o2*o3)
+
+backs = np.array(backs)
+
+raw_a = []
+raw_b = []
+
+raw_a.append([1 for i in range(len(backs))])
+raw_b.append(1)
+
+
 
 # bet total volume of 1 unit
 # if horse wins, payout is 0
@@ -41,13 +59,10 @@ a = np.array(a)
 b = [raw_b[i] for i in lin_independent_rows]
 np.array(b)
 
-# x = np.linalg.solve(a, b)
-# win = (x[1]*backs[1]+x[3]*backs[3]+x[4]*backs[4])-1
-# loss = 1-(x[0]*backs[0]+x[3]*backs[3]+x[4]*backs[4])
-# back_lay = (win+loss)/loss
-# lay_odds = (back_lay)/(back_lay-1)
-# print(win, loss)
-# print(lay_odds)
-# print(1/backs)
-print((1/backs)/(sum(1/backs)/3))
-print((1/backs)-((1/backs)-(1/backs)/(sum(1/backs)/3))*len(horses))
+x = np.linalg.solve(a, b)
+win = (x[1]*backs[1]+x[3]*backs[3]+x[4]*backs[4])-1
+loss = 1-(x[0]*backs[0]+x[3]*backs[3]+x[4]*backs[4])
+back_lay = (win+loss)/loss
+lay_odds = (back_lay)/(back_lay-1)
+print(win, loss)
+print(lay_odds)

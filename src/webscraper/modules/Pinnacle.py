@@ -15,7 +15,7 @@ class Pinnacle(WebScraper):
 
     def scrape_data(self):
         self.scrape("https://www.pinnacle.com/en/basketball/nba/matchups/#period:0:moneyline")
-        
+
 
 if __name__ == "__main__":
     scrape_obj = Pinnacle()

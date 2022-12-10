@@ -11,7 +11,7 @@ class Pointsbet(WebScraper):
         return [float(i) for i in self.find(rf"(?:Market0|Outcome[0-9])OddsButton.*?<span class=\"fheif50\">{TEAM_ODDS}<\/span>")]
 
     def get_teams(self):
-        return self.find(rf"(?:<p class=\"feu1e1k fyraa0v f1qmefvr\">|FixedOdds.*?>.*?>){TEAM_NAME}<\/(?:p|span)")
+        return self.find(rf"(?:<p class=\"feu1e1k fyraa0v f1wtz5iq f1qmefvr\">|FixedOdds.*?>.*?>){TEAM_NAME}<\/(?:p|span)")
 
     def scrape_data(self):
         self.scrape("https://pointsbet.com.au/sports/mma/UFC", name_index=-1)
