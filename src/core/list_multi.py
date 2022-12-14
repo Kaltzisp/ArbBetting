@@ -3,10 +3,10 @@ import numpy as np
 from itertools import combinations, product
 from src.webscraper.modules import Betr, Pinnacle, Pointsbet, Sportsbet
 
-def main(source="Betr", amount=50):
-    Betr.Betr().write_to_csv()
+def main(source="Pointsbet", amount=50):
+    # Betr.Betr().write_to_csv()
     # Sportsbet.Sportsbet().write_to_csv()
-    # Pointsbet.Pointsbet().write_to_csv()
+    Pointsbet.Pointsbet().write_to_csv()
     # Pinnacle.Pinnacle().write_to_csv()
     # pinnacle_df = pd.read_csv(f"src/webscraper/data/Pinnacle.csv")
 
@@ -16,8 +16,8 @@ def main(source="Betr", amount=50):
     # pinnacle_df["Probability 2"] = (1/pinnacle_df["Lay 2"])
 
     opp_df = pd.read_csv(f"src/webscraper/data/{source}.csv")
-    opp_df["NBA?"] = opp_df["Link"].apply(lambda x: 'https://betr.com.au/sportsbook#/sport/13/competition/1000649/1003042' == x)
-    #opp_df["NBA?"] = opp_df["Link"].apply(lambda x: 'https://pointsbet.com.au/sports/basketball/NBA' == x)
+    #opp_df["NBA?"] = opp_df["Link"].apply(lambda x: 'https://betr.com.au/sportsbook#/sport/13/competition/1000649/1003042' == x)
+    opp_df["NBA?"] = opp_df["Link"].apply(lambda x: 'https://pointsbet.com.au/sports/basketball/NBA' == x)
     #opp_df["NBA?"] = opp_df["Link"].apply(lambda x: x == "https://www.sportsbet.com.au/betting/basketball-us")
     opp_df = opp_df[opp_df["NBA?"]].reset_index(drop=True)
     opp_df["Lay 1"] = opp_df["Odds 2"]/(opp_df["Odds 2"] - 1)
