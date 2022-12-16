@@ -4,30 +4,32 @@ import sympy
 from scipy.optimize import linprog
 import itertools
 
-# backs = np.array(sorted([5, 6.5, 2.5, 21, 4.8, 23, 5.5]))
-# horses = [i for i in range(len(backs))]
-# win_list = [list(i) for i in combinations(horses, 3)]
+odds = np.array(sorted([2, 5.5, 6, 4.6, 14]))
+horses = [i for i in range(len(odds))]
+win_list = [list(i) for i in combinations(horses, 3)]
 
-# # bet total volume of 1 unit
-# payout_list = []
-# for i in range(len(horses)):
-#     for lst in win_list:
-#         scenario_list = [0 for i in range(len(horses))]
-#         for top_3 in lst:
-#             scenario_list[top_3] = 0.65
-#         scenario_list[i] = backs[i] * 1.65
-#         payout_list.append(scenario_list)
+# bet total volume of 1 unit
+payout_list = []
+for i in range(len(horses)):
+    for lst in win_list:
+        scenario_list = [0 for i in range(len(horses))]
+        for top_3 in lst:
+            # bonus bet refund
+            scenario_list[top_3] = 0.65
+        # bet is won
+        scenario_list[i] = odds[i]
+        payout_list.append(scenario_list)
 
-# bounds = [0, 3]
+bounds = [0, 3]
 
-# while bounds[1] - bounds[0] > 0.001:
-#     res = linprog(np.array([0 for i in range(len(horses))]), A_ub=-np.array(payout_list), b_ub=[-(bounds[0]+bounds[1])/2 for i in range(len(payout_list))], A_eq=np.array([[1 for i in range(len(horses))]]), b_eq=np.array([1]))
-#     if res['success'] == False:
-#         bounds[1] = (bounds[0]+bounds[1])/2
-#     else:
-#         bounds[0] = (bounds[0]+bounds[1])/2 
-# x = linprog(np.array([0 for i in range(len(horses))]), A_ub=-np.array(payout_list), b_ub=[-bounds[0] for i in range(len(payout_list))], A_eq=np.array([[1 for i in range(len(horses))]]), b_eq=np.array([1]))['x']
-# print(bounds)
+while bounds[1] - bounds[0] > 0.001:
+    res = linprog(np.array([0 for i in range(len(horses))]), A_ub=-np.array(payout_list), b_ub=[-(bounds[0]+bounds[1])/2 for i in range(len(payout_list))], A_eq=np.array([[1 for i in range(len(horses))]]), b_eq=np.array([1]))
+    if res['success'] == False:
+        bounds[1] = (bounds[0]+bounds[1])/2
+    else:
+        bounds[0] = (bounds[0]+bounds[1])/2 
+x = linprog(np.array([0 for i in range(len(horses))]), A_ub=-np.array(payout_list), b_ub=[-bounds[0] for i in range(len(payout_list))], A_eq=np.array([[1 for i in range(len(horses))]]), b_eq=np.array([1]))['x']
+print(bounds)
 
 # lst = []
 # for i in np.array(payout_list):
