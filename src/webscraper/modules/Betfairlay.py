@@ -15,7 +15,7 @@ class Betfairlay(WebScraper):
         odds = odds[1::2]
         # Need to reverse odd orders as we are lay betting.
         sorted_odds = [odds[i - 2 * (i % 2) + 1] for i, odd in enumerate(odds)]
-        return [1 + 0.95 / (odd - 1) for odd in sorted_odds]
+        return sorted_odds
 
     def get_teams(self):
         return self.find(rf"<li class=\"name\" title=\"{TEAM_NAME}\">")

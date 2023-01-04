@@ -8,7 +8,7 @@ class Betr(WebScraper):
         self.no_markets = r"No open markets available"
 
     def get_odds(self):
-        return [float(i) for i in self.find(rf"<span>{TEAM_ODDS}<\/span>")][:2] + [float(i) for i in self.find(rf"<span>{TEAM_ODDS}<\/span>")][6:]
+        return [float(i) for i in self.find(rf"<span>{TEAM_ODDS}<\/span>")[:-1]]
 
     def get_teams(self):
         return self.find(rf"OddsButton_priceType__ROL\+V\">{TEAM_NAME}<")
